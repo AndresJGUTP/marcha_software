@@ -1,0 +1,13 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+}
+
+.headerIcon{
+    padding: 0.5em 0;
+}
+
+.menuHeader{
+    width: 50%;
+}

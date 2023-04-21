@@ -1,0 +1,10 @@
+.Icon{
+    background-image: url('../../../src/images/salud_comfamiliar.png');
+    width: 300px;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 0px;
+    left: 0px;
+    display: inline-block;
+}

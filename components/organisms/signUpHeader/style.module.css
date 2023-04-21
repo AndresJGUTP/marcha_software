@@ -1,0 +1,8 @@
+.Header{
+    background-color: inherit;
+    margin: 0.5em 0px;
+    position: relative;
+
+    display: flex;
+    justify-content: space-between;
+}

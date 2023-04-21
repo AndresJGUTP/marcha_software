@@ -1,0 +1,31 @@
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header h1{
+    margin: 0;
+    padding: 0;
+    font-size: 35px;
+}
+
+.header :global h3.ant-typography{
+    margin: 0;
+    padding: 0;
+}
+.header :global h5.ant-typography{
+    margin: 0;
+    padding: 0;
+}
+
+.headerIcon{
+    top: 15px;
+    position: absolute;
+    width: 160px;
+    height: 60px;
+    background-size: 20px 10px;
+    background-image: url('../../../src/images/salud_comfamiliar.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-oy936imk$f)3o^!-ny8phz(*vrfe%-8c^ie+8(k@a+-dx1bmpf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -38,15 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'backend_marcha',
+    'rest'
 ]
 
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    ]
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#             'rest_framework.permissions.IsAuthenticated',
+#         ],
+#         'DEFAULT_AUTHENTICATION_CLASSES': (
+#             'rest_framework.authentication.BasicAuthentication',  # enables simple command line authentication
+#             'rest_framework.authentication.SessionAuthentication',
+#             'rest_framework.authentication.TokenAuthentication',
+#         )
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -20,9 +20,11 @@ const Report = forwardRef((props: any, ref: any) => {
     return (
         <A4Paper ref={ref}>
           <div style={{position: 'relative'}}>
-            <div className={styles.headerIcon}></div>
+            <div className={styles.headerIconComfa}></div>
+            <div className={styles.headerIconUTP}></div>
             <div className={styles.header}>
               <Title level={1}> Laboratorio de Marcha </Title>
+              <Title level={3}> Universidad Tecnológica de Pereira </Title>
               <Title level={3}> Comfamiliar Risaralda </Title>
               <Title level={3}> Salud Comfamiliar </Title>
               <Title level={5}> Avenida Circunvalar N° 3 – 01 </Title>

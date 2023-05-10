@@ -1,10 +1,22 @@
-.Icon{
+.logos{
+    width: fit-content;
+    height: 100%;
+}
+
+.IconComfa{
     background-image: url('../../../src/images/salud_comfamiliar.png');
-    width: 300px;
+    width: 150px;
     height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
-    top: 0px;
-    left: 0px;
     display: inline-block;
+}
+.IconUTP{
+    background-image: url('../../../src/images/logo_utp.png');
+    width: 130px;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-left: 1em;
 }

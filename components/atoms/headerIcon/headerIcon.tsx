@@ -12,7 +12,9 @@ const HeaderIcon : React.FC<Props> = (props) => {
 
     return(
         <a style={{textDecoration: 'none'}} className={props.className} onClick={() => router.push('/')}>
-            <div className={styles.Icon}>
+            <div className={styles.logos}>
+                <div className={styles.IconComfa}></div>
+                <div className={styles.IconUTP}></div>
             </div>
         </a>
     )

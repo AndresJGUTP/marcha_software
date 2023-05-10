@@ -12,7 +12,15 @@ export default function App({ Component, pageProps }: AppProps) {
     <HeaderMenu />
     <Component {...pageProps} />
     <Footer style={{ textAlign: 'center' }}>
-      Salud Comfamiliar ©2023
+      <div>
+      Grupo de investigación de automática
+      </div>
+      <div>
+      Salud Comfamiliar
+      </div>
+      <div>
+      ©2023
+      </div>
     </Footer>
   </Layout>
   )

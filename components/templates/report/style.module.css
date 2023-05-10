@@ -19,13 +19,25 @@
     padding: 0;
 }
 
-.headerIcon{
+.headerIconComfa{
     top: 15px;
     position: absolute;
     width: 160px;
     height: 60px;
     background-size: 20px 10px;
     background-image: url('../../../src/images/salud_comfamiliar.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.headerIconUTP{
+    top: 15px;
+    right: 0px;
+    position: absolute;
+    width: 140px;
+    height: 60px;
+    background-size: 20px 10px;
+    background-image: url('../../../src/images/logo_utp.png');
     background-repeat: no-repeat;
     background-size: contain;
 }

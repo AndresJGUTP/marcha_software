@@ -4,7 +4,7 @@
 }
 
 .IconComfa{
-    background-image: url('../../../src/images/salud_comfamiliar.png');
+    background-image: url('/images/salud_comfamiliar.png');
     width: 150px;
     height: 100%;
     background-size: contain;
@@ -12,7 +12,7 @@
     display: inline-block;
 }
 .IconUTP{
-    background-image: url('../../../src/images/logo_utp.png');
+    background-image: url('/images/logo_utp.png');
     width: 130px;
     height: 100%;
     background-size: contain;

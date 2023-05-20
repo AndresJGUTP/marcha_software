@@ -1,7 +1,6 @@
 .header{
     display: flex;
     flex-direction: row;
-    margin-bottom: 1em;
 }
 
 .headerIcon{
@@ -10,4 +9,6 @@
 
 .menuHeader{
     width: 50%;
+    height: 100%;
+    border: 0;
 }

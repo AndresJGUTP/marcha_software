@@ -10,7 +10,6 @@ import { mapPatientLabels, mapParentLabels } from '../../../constants/mapForms';
 import dynamic from "next/dynamic";
 
 import styles from './style.module.css';
-import HeaderIcon from '../../atoms/headerIcon/headerIcon';
 
 const { Title } = Typography;
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })

@@ -21,34 +21,34 @@ const AdminSidebar = () => {
             children:[
                 {
                     label: 'Consultar',
-                    key: '/consultar_reporte',
+                    key: 'consultar_reporte',
                     icon: <QuestionCircleOutlined />,
-                    onClick: (e) => router.push(router.asPath + e.key)
+                    onClick: (e) => router.push(e.key)
                 },
                 {
                     label: 'Gestionar',
-                    key: '/gestionar_reporte',
+                    key: 'gestionar_reporte',
                     icon: <FormOutlined />,
-                    onClick: (e) => router.push(router.asPath + e.key)
+                    onClick: (e) => router.push(e.key)
                 },
             ]
         },
         {
             label: 'Usuarios',
             icon: <UserOutlined />,
-            key: '/gestionar_usuarios',
+            key: 'item_usuarios',
             children:[
                 {
                     label: 'Consultar',
-                    key: '/consultar_usuario',
+                    key: 'consultar_usuario',
                     icon: <QuestionCircleOutlined />,
-                    onClick: (e) => router.push(router.asPath + e.key)
+                    onClick: (e) => router.push(e.key)
                 },
                 {
                     label: 'Gestionar',
-                    key: '/gestionar_usuario',
+                    key: '/admin/gestionar_usuario',
                     icon: <UserSwitchOutlined />,
-                    onClick: (e) => router.push(router.asPath + e.key)
+                    onClick: (e) => router.push(e.key)
                 },
             ]
         },

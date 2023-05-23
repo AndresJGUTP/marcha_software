@@ -36,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
           >
             <Component {...pageProps} />
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', padding: 0 }}>
             <div>
               Grupo de investigación de automática
             </div>

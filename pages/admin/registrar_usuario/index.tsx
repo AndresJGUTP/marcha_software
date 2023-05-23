@@ -6,6 +6,7 @@ import styles from './style.module.css';
 import { Select, Typography } from 'antd';
 
 import ParentForm from 'components/organisms/ParentForm';
+import PatientForm from 'components/organisms/PatientForm';
 
 const { Title } = Typography;
 
@@ -40,7 +41,7 @@ const RegisterParent = () => {
     },
     {
       title: 'Datos personales',
-      content: <ParentForm />
+      content: selectValue == 'responsable' ? <ParentForm /> : <PatientForm />
     },
   ];
   const items = steps.map((item) => ({ key: item.title, title: item.title }));

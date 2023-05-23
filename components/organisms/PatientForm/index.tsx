@@ -8,66 +8,71 @@ const axios = require('axios').default;
 import {Form,Input, InputNumber} from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
+import SelectParent from 'components/molecules/SelectParent';
 
-interface IParentFormProps {
-    readonly parentData ? : Record<string, any>
-    readonly formDisabled ? : boolean
+interface IPatientFormProps {
+    readonly patientData ? : Record<string, any>
+    readonly disabledForm ? : boolean 
 }
 
-const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
+const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [requestStatus, setRequestStatus] = useState<string>('');
+    const [idParent, setIdParent] = useState();
+    
     const [form] = Form.useForm();
-
     const router = useRouter()
 
     const instance = axios.create({
         baseURL:  process.env.BASE_URL,
         timeout: 1000,
     });
+
+    useEffect(() => {
+        if(!!patientData){
+            form.setFieldsValue({
+                ...patientData
+              });
+            setIdParent(patientData!['id_parent'])
+        }
+    }, [patientData] )
     
     const onFinish = (values : any) => {
         setModalOpen(true)
         setRequestStatus('loading')
+
+        values = {...values, 'id_parent': idParent}
         
-        if(!parentData){
-            instance.post('/parent/', values, {headers: {
+        if(!patientData){
+            instance.post('/patient/', values, {headers: {
                 'Content-Type': 'application/json'
-                }}).then((response: any) => {
+              }}).then((response: any) => {
                 setRequestStatus('success')
             })
             .catch((error: any) => {
-                    setRequestStatus(error.message)
-                    console.log(error)
-                });
-            }
-            else{
-                instance.put(`/parent/${values['id']}/`, values, {headers: {
-                    'Content-Type': 'application/json'
-                    }}).then((response: any) => {
-                    setRequestStatus('success')
-                })
-                .catch((error: any) => {
-                        setRequestStatus(error.message)
-                        console.log(error)
-                    });
-        }
-    }
-
-    useEffect(() => {
-        if(!!parentData){
-            form.setFieldsValue({
-                ...parentData
+                  setRequestStatus('error')
+                  console.log(error)
               });
         }
-    }, [parentData] )
+        else{
+            instance.put(`/patient/${values['id']}/`, values, {headers: {
+                'Content-Type': 'application/json'
+              }}).then((response: any) => {
+                setRequestStatus('success')
+            })
+            .catch((error: any) => {
+                  setRequestStatus('error')
+                  console.log(error)
+              });
+        }
+    }
 
     return <>
         <ModalStatus {...{
             requestStatus,
             successMessage: {
-                title: `Usuario ${!parentData ? 'registrado' : 'modificado'} con éxito`
+                title: `Usuario ${!patientData ? 'registrado' : 'modificado'} con éxito`
             },
             errorMessage: {
                 title: "Ha ocurrido un error, por favor intentelo nuevamente",
@@ -77,10 +82,10 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 centered: true,
                 open: modalOpen,
                 onOk: () => router.reload(),
-                onCancel: () => router.push('/admin'),
-                okText: `${!parentData ? 'Registrar' : 'Editar'} Otro Usuario`,
-                cancelText: 'Inicio',
-                closable: false,
+                onCancel: () => requestStatus == 'error' ? setModalOpen(false) : router.push(router.asPath),
+                okText: `${!patientData ? 'Registrar' : 'Editar'} Otro Usuario`,
+                cancelButtonProps: {hidden: true},
+                closable: requestStatus == 'error',
             }
         }} />
         <Form
@@ -90,9 +95,13 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
             className={styles.formStyles}
             onFinish={onFinish}
             id='userForm'
+            disabled={disabledForm}
             form={form}
-            disabled={formDisabled}
         >
+            {
+                !patientData && <SelectParent {...{setIdParent}} />
+            }
+
             <Form.Item label="Primer Nombre" name="first_name" rules={[{required: true, message: 'Campo obligatorio'}]}>
                 <Input />
             </Form.Item>
@@ -112,37 +121,12 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
             <SelectDocumentType />
 
             <Form.Item label="Número de documento" name="id" rules={[{required: true, message: 'Campo obligatorio'}]}>
-                {/* <Input disabled={!!parentData} /> */}
-                <InputNumber controls={false} style={{width: '100%'}} disabled={!!parentData} />
-            </Form.Item>
-
-            <Form.Item
-                name="email"
-                label="Correo Electrónico"
-                rules={[
-                {
-                    type: 'email',
-                    message: 'No se ha ingresado un correo válido',
-                },
-                {
-                    required: true,
-                    message: 'Campo obligatorio',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                name="phone"
-                label="Número de contacto"
-                rules={[{ required: true, message: 'Campo Obligatorio' }]}
-            >
-                <InputNumber controls={false} style={{width: '100%'}} />
+                {/* <Input disabled={!!patientData}/> */}
+                <InputNumber controls={false} style={{width: '100%'}} disabled={!!patientData} />
             </Form.Item>
 
         </Form>
     </>
 }
 
-export default ParentForm;
+export default PatientForm;

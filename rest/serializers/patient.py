@@ -9,6 +9,7 @@ class PatientSerializer(serializers.ModelSerializer):
             'id',
             'patient_document_number',
             'id_parent',
+            'age',
             'ID_document_type',
             'first_name',
             'second_name',

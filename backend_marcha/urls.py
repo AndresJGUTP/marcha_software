@@ -19,6 +19,8 @@ from rest.views.parent import ParentViewSet
 from rest.views.document_type import DocumentTypeViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet
+from rest.views.medical_history import MedicalHistoryViewSet
+from rest.views.physical_exam import PhysicalExamViewSet
 from django.urls import include, path
 from rest_framework import routers
 
@@ -27,6 +29,9 @@ router.register(r'document_type', DocumentTypeViewSet)
 router.register(r'parent', ParentViewSet)
 router.register(r'patient', PatientViewSet)
 router.register(r'session', SessionViewSet)
+router.register(r'medical_history', MedicalHistoryViewSet)
+router.register(r'physical_exam', PhysicalExamViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -7,7 +7,7 @@ class SessionSerializer(serializers.ModelSerializer):
         model = Session
         fields = (
             'session_id',
-            'patient_document_number',
+            'session_date',
+            'patient_id',
             'physiotherapist_name',
-            'patient_age'
             )

@@ -7,5 +7,5 @@ class SessionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Session.objects.all().order_by('session_id')
+    queryset = Session.objects.all().order_by('session_date')
     serializer_class = SessionSerializer

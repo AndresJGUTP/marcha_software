@@ -6,7 +6,6 @@ from .models.session import Session
 from .models.medical_history import MedicalHistory
 from .models.physical_exam import PhysicalExam
 
-
 # Register your models here.
 
 admin.site.register(DocumentType)

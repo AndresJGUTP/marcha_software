@@ -7,7 +7,7 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = (
             'id',
-            'patient_document_number',
+            # 'patient_document_number',
             'id_parent',
             'age',
             'ID_document_type',

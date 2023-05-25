@@ -22,4 +22,4 @@ class Session(models.Model):
         ordering = ['session_id']
     
     def __str__(self) -> str:
-        return f'{self.session_id} - {self.patient_id.first_name} - {self.patient_id.patient_document_number} - {self.patient_id.age} yars old - session {self.session_date}'
+        return f'{self.session_id} - {self.patient_id.first_name} - {self.patient_id.id} - {self.patient_id.age} yars old - session {self.session_date}'

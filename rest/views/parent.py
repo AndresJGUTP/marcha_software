@@ -7,5 +7,5 @@ class ParentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Parent.objects.all().order_by('parent_document_number')
+    queryset = Parent.objects.all().order_by('id')
     serializer_class = ParentSerializer

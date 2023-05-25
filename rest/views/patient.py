@@ -7,5 +7,5 @@ class PatientViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Patient.objects.all().order_by('patient_document_number')
+    queryset = Patient.objects.all().order_by('id')
     serializer_class = PatientSerializer

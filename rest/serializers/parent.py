@@ -7,7 +7,6 @@ class ParentSerializer(serializers.ModelSerializer):
         model = Parent
         fields = (
             'id',
-            'parent_document_number', 
             'ID_document_type', 
             'first_name', 
             'second_name', 

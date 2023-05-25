@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest.views.parent import ParentViewSet
-from rest.views.document_type import DocumentTypeViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet
 from rest.views.medical_history import MedicalHistoryViewSet
@@ -25,7 +24,6 @@ from django.urls import include, path
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'document_type', DocumentTypeViewSet)
 router.register(r'parent', ParentViewSet)
 router.register(r'patient', PatientViewSet)
 router.register(r'session', SessionViewSet)

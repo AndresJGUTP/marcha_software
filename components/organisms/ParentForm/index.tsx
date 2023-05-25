@@ -38,7 +38,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 setRequestStatus('success')
             })
             .catch((error: any) => {
-                    setRequestStatus(error.message)
+                    setRequestStatus('error')
                     console.log(error)
                 });
             }
@@ -49,7 +49,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                     setRequestStatus('success')
                 })
                 .catch((error: any) => {
-                        setRequestStatus(error.message)
+                        setRequestStatus('error')
                         console.log(error)
                     });
         }
@@ -71,16 +71,15 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
             },
             errorMessage: {
                 title: "Ha ocurrido un error, por favor intentelo nuevamente",
-                subTitle: requestStatus
             },
             modalProps: {
                 centered: true,
                 open: modalOpen,
                 onOk: () => router.reload(),
-                onCancel: () => router.push('/admin'),
+                onCancel: () => requestStatus == 'error' ? setModalOpen(false) : router.push(router.asPath),
                 okText: `${!parentData ? 'Registrar' : 'Editar'} Otro Usuario`,
-                cancelText: 'Inicio',
-                closable: false,
+                cancelButtonProps: {hidden: true},
+                closable: requestStatus == 'error',
             }
         }} />
         <Form
@@ -112,7 +111,6 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
             <SelectDocumentType />
 
             <Form.Item label="Número de documento" name="id" rules={[{required: true, message: 'Campo obligatorio'}]}>
-                {/* <Input disabled={!!parentData} /> */}
                 <InputNumber controls={false} style={{width: '100%'}} disabled={!!parentData} />
             </Form.Item>
 

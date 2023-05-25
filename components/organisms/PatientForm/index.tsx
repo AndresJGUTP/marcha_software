@@ -8,7 +8,7 @@ const axios = require('axios').default;
 import {Form,Input, InputNumber} from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
-import SelectParent from 'components/molecules/SelectParent';
+import SelectParent from 'components/molecules/SelectUser';
 
 interface IPatientFormProps {
     readonly patientData ? : Record<string, any>
@@ -19,7 +19,7 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
 
     const [modalOpen, setModalOpen] = useState(false);
     const [requestStatus, setRequestStatus] = useState<string>('');
-    const [idParent, setIdParent] = useState();
+    const [parent, setParent] = useState<Record<string, any>>();
     
     const [form] = Form.useForm();
     const router = useRouter()
@@ -34,7 +34,7 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
             form.setFieldsValue({
                 ...patientData
               });
-            setIdParent(patientData!['id_parent'])
+            setParent(patientData)
         }
     }, [patientData] )
     
@@ -42,7 +42,7 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
         setModalOpen(true)
         setRequestStatus('loading')
 
-        values = {...values, 'id_parent': idParent}
+        values = {...values, 'id_parent': parent!['id']}
         
         if(!patientData){
             instance.post('/patient/', values, {headers: {
@@ -76,7 +76,6 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
             },
             errorMessage: {
                 title: "Ha ocurrido un error, por favor intentelo nuevamente",
-                subTitle: requestStatus
             },
             modalProps: {
                 centered: true,
@@ -99,7 +98,13 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
             form={form}
         >
             {
-                !patientData && <SelectParent {...{setIdParent}} />
+                !patientData && <SelectParent 
+                                    user={parent}
+                                    setUser={setParent}
+                                    endpoint='/parent/'
+                                    tooltip='Cada paciente debe tener un responsable. Si este no existe, se debe crear primero'
+                                    userType='Responsable'
+                                />
             }
 
             <Form.Item label="Primer Nombre" name="first_name" rules={[{required: true, message: 'Campo obligatorio'}]}>
@@ -118,10 +123,13 @@ const PatientForm: React.FC<IPatientFormProps> = ({patientData, disabledForm}) =
                 <Input />
             </Form.Item>
 
+            <Form.Item label="Edad" name="age" rules={[{required: true, message: 'Campo obligatorio'}]}>
+                <InputNumber controls={false} style={{width: '100%'}} />
+            </Form.Item>
+
             <SelectDocumentType />
 
             <Form.Item label="Número de documento" name="id" rules={[{required: true, message: 'Campo obligatorio'}]}>
-                {/* <Input disabled={!!patientData}/> */}
                 <InputNumber controls={false} style={{width: '100%'}} disabled={!!patientData} />
             </Form.Item>
 

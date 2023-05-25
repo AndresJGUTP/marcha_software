@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-
-const axios = require('axios').default;
+import React from 'react';
 
 import {
     Form,
     Select,
 } from 'antd';
+import { DocumentTypes } from 'constants/DocumentTypes';
 
 interface ISelectDocumentTypeProps {
 
@@ -13,37 +12,9 @@ interface ISelectDocumentTypeProps {
 
 const SelectDocumentType: React.FC<ISelectDocumentTypeProps> = () => {
 
-
-    const [documentTypes, setDocumentTypes] = useState(null);
-
-
-    const instance = axios.create({
-        baseURL: process.env.BASE_URL,
-        timeout: 1000,
-    });
-
-    useEffect(() => {
-        instance.get('/document_type/').then((response: any) => {
-            response = response.data.map(
-                (docType: any) => {
-                    return {
-                        label: docType.document_name,
-                        value: docType.ID_document_type
-                    }
-                }
-            )
-            setDocumentTypes(response)
-        })
-            .catch((error: any) => {
-                setDocumentTypes(null)
-                console.log(error)
-            });
-    }, [])
-
-
     return <>
         <Form.Item label="Tipo de documento" name="ID_document_type" rules={[{ required: true, message: 'Campo obligatorio' }]}>
-            <Select loading={!documentTypes} options={documentTypes || []} />
+            <Select options={ DocumentTypes.map(({id, label}) => ({label, 'value': id}) ) } />
         </Form.Item>
     </>
 }

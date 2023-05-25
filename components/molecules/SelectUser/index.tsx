@@ -5,13 +5,16 @@ const axios = require('axios').default;
 
 import styles from "./style.module.css";
 
-interface ISelectParentProps {
-    setIdParent: Function
+interface ISelectUserProps {
+    readonly user? : Record<string, any>
+    readonly setUser : Function
+    readonly endpoint : string
+    readonly tooltip : string
+    readonly userType : string
 }
 
-const SelectParent: React.FC<ISelectParentProps> = ({ setIdParent }) => {
+const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, tooltip, userType}) => {
 
-    const [parent, setParent] = useState()
     const [requestStatus, setRequestStatus] = useState<string>()
 
     const instance = axios.create({
@@ -22,10 +25,9 @@ const SelectParent: React.FC<ISelectParentProps> = ({ setIdParent }) => {
 
     const searchParent = (e: any) => {
         setRequestStatus('loading')
-        instance.get(`/parent/${e}`).then((response: any) => {
+        instance.get(`${endpoint}${e}`).then((response: any) => {
             setRequestStatus('success')
-            setParent(response.data)
-            setIdParent(response.data.id)
+            setUser(response.data)
         })
             .catch((error: any) => {
                 setRequestStatus('error')
@@ -35,10 +37,10 @@ const SelectParent: React.FC<ISelectParentProps> = ({ setIdParent }) => {
 
     const { Search } = Input
 
-    return <>
+    return (<>
         <div className={styles.wraper}>
-            <Tooltip title="Cada paciente debe tener un responsable. Si este no existe, se debe crear primero" >
-                <span> Buscar Responsable <InfoCircleOutlined /> </span>
+            <Tooltip title={tooltip} >
+                <span> Buscar {userType} <InfoCircleOutlined /> </span>
             </Tooltip>
             <Search
                 placeholder="Numero de documento"
@@ -52,12 +54,12 @@ const SelectParent: React.FC<ISelectParentProps> = ({ setIdParent }) => {
                 requestStatus &&
                 <Alert
                     type={requestStatus as AlertProps['type']}
-                    message={requestStatus == 'success' ? 'Responsable encontrado' : requestStatus == 'loading' ? 'Cargando...' : 'Documento no encontrado'}
-                    description={requestStatus == 'success' ? `${parent!['first_name']} ${parent!['first_last_name']}` : ''}
+                    message={requestStatus == 'success' ? `${userType} encontrado` : requestStatus == 'loading' ? 'Cargando...' : 'Documento no encontrado'}
+                    description={requestStatus == 'success' ? `${user!['first_name']} ${user!['first_last_name']}` : ''}
                 />
             }
         </div>
-    </>
+    </>)
 }
 
-export default SelectParent;
+export default SelectUser;

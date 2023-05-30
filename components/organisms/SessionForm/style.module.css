@@ -1,0 +1,33 @@
+.formStyles{
+    margin-top: 1em;
+    padding: 2em;
+    width: 90%
+}
+
+.anchorClassName{
+    position: fixed;
+    right: 2em;
+    width: fit-content;
+    margin-top: 4em;
+}
+
+.columnItem div{
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 .1em;
+    text-align: left;
+}
+
+.columnItemNoMargin{
+    margin-bottom: 0px;
+}
+
+.centerLabel{
+    margin: auto 0;
+}
+
+.inputFullWidth div{
+    max-width: 100%;
+    margin: 0;
+}

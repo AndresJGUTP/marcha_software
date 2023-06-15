@@ -2,9 +2,16 @@ import os
 from datetime import datetime
 
 
-STORAGE_PATH = '../storage'
+STORAGE_PATH = 'storage'
 SESSION_STRING_TEMPLATE = 'session_{}_{}' # session_{datetime}_{patient_id}
-DATE_FORMAT = "%d%m%Y_%H%M%S"
+DATE_FORMAT = "%Y-%m-%dT%H%M%SZ"
+# DATE_FORMAT = "%d%m%Y_%H%M%S"
+
+def save_file(f, path):
+    destination = open(path, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
 
 class FolderHandler():
     def __init__(self, patient_id):
@@ -16,16 +23,21 @@ class FolderHandler():
         if not os.path.isdir( self.base_path ):
             os.mkdir(self.base_path)
 
-    def create_sesion(self):
-        current_datetime = datetime.now().strftime(DATE_FORMAT)
+    def create_sesion(self, current_datetime):
+        # current_datetime = datetime.now().strftime(DATE_FORMAT)
         session_folder_name = SESSION_STRING_TEMPLATE.format(current_datetime, self.patient_id)
         self.session_folder_name = session_folder_name
 
         session_path = os.path.join(self.base_path, session_folder_name)
-        os.mkdir( session_path )
-        os.mkdir( os.path.join(session_path, 'kinematic') )
-        os.mkdir( os.path.join(session_path, 'dynamic') )
-        os.mkdir( os.path.join(session_path, 'eeg') )
+
+        if not os.path.exists(session_path):
+            os.mkdir( session_path )
+            os.mkdir( os.path.join(session_path, 'kinematic') )
+            os.mkdir( os.path.join(session_path, 'dynamic') )
+            os.mkdir( os.path.join(session_path, 'eeg') )
+
+    def save_kinematic_csv(self, csv_file):
+        save_file(csv_file, os.path.join(self.base_path, self.session_folder_name, 'kinematic', '01_raw_kinematic_data.csv') )
 
     def get_kinematic_dir(self):
         return os.path.join(self.session_folder_name, 'kinematic')

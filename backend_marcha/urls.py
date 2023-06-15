@@ -20,6 +20,7 @@ from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet
 from rest.views.medical_history import MedicalHistoryViewSet
 from rest.views.physical_exam import PhysicalExamViewSet
+from rest.views.upload_file import FileUploadView
 from django.urls import include, path
 from rest_framework import routers
 
@@ -34,4 +35,5 @@ router.register(r'physical_exam', PhysicalExamViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('session_upload/', FileUploadView.as_view())
 ]

@@ -1,5 +1,10 @@
 # Created by https://www.gitignore.io
 
+# storage
+storage/*
+# exception to the rule
+!storage/.gitkeep 
+
 ### OSX ###
 .DS_Store
 .AppleDouble

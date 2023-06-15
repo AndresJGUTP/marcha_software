@@ -1,8 +1,9 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC, useEffect, useRef } from 'react';
 import SelectUser from 'components/molecules/SelectUser';
 import { Button, Steps, Typography } from 'antd';
 import styles from "./style.module.css";
 import SessionForm from 'components/organisms/SessionForm';
+import SessionFilesUpload from 'components/organisms/SessionFilesUpload';
 const axios = require('axios').default;
 
 const { Title } = Typography;
@@ -14,7 +15,10 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   
   const [patient, setPatient] = useState()
   const [parent, setParent] = useState()
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(0)
+  const [sessionId, setSessionId] = useState(null)
+
+  const formSessionRef = useRef<any>();
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
@@ -47,8 +51,14 @@ const CreateSession : FC<ICreateSessionProps> = () => {
       content: <SessionForm
                   patientData={patient!}
                   parentData={parent!}
+                  formSessionRef={formSessionRef}
+                  setSessionId={setSessionId}
                 />
     },
+    {
+      title: 'Subir Archivos',
+      content: <SessionFilesUpload session_id={sessionId!} />
+    }
   ];
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
@@ -71,19 +81,38 @@ const CreateSession : FC<ICreateSessionProps> = () => {
       </div>
 
       <div style={{ marginTop: 24}} className={styles.buttons}>
-        {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()} disabled={!patient}>
-            Siguiente
-          </Button>
-        )}
-        {current > 0 && (
+        {current == 1 && (
           <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
             Anterior
           </Button>
         )}
+        {(current < steps.length - 1 && current != 1 )&& (
+          <Button 
+            onClick={() => next()} 
+            disabled={!patient} 
+            type="primary" 
+            >
+            Siguiente
+          </Button>
+        )}
+        {
+          current == 1 && <Button 
+            onClick={() => {
+              next()
+              formSessionRef.current!.submit()
+            }
+            } 
+            disabled={!patient} 
+            type="primary" 
+            // htmlType='submit'
+            // form='sessionForm'
+            >
+            Guardar
+          </Button>
+        }
         {current === steps.length - 1 && (
-          <Button type="primary" htmlType='submit' form='userForm'>
-            Registrar
+          <Button>
+            Finalizar
           </Button>
         )}
       </div>

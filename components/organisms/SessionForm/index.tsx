@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Row, Col, Anchor, Divider } from 'antd';
+import { Form, Input, InputNumber, Row, Col, Anchor, Divider, message } from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
 
@@ -18,10 +18,12 @@ interface ISessionFormProps {
     readonly sessionData?: Record<string, any>
     readonly patientData: Record<string, any>
     readonly parentData: Record<string, any>
+    readonly setSessionId?: Function
     readonly disabledForm?: boolean
+    readonly formSessionRef : any
 }
 
-const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, sessionData, disabledForm }) => {
+const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, sessionData, disabledForm, formSessionRef, setSessionId }) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [requestStatus, setRequestStatus] = useState<string>('');
@@ -35,33 +37,25 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     });
 
 
-    const RowForm = ({ label }: Record<string, any>) => <Row gutter={[12, 0]}>
+    const RowForm = ({ label, name }: Record<string, any>) => {
+    let names = [
+        `${name}_movilidad`,
+        `${name}_control_selectivo`,
+        `${name}_fuerza_muscular`,
+    ]
+    return <Row gutter={[12, 0]}>
         <Col span={6}>
             <span>{label}</span>
         </Col>
         <Col span={6}>
             <Row gutter={[6, 0]}>
                 <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[0]}_i`}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
-                        <Input />
-                    </Form.Item>
-                </Col>
-            </Row>
-        </Col>
-        <Col span={6}>
-            <Row gutter={[6, 0]}>
-                <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[0]}_d`}>
                         <Input />
                     </Form.Item>
                 </Col>
@@ -70,18 +64,33 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         <Col span={6}>
             <Row gutter={[6, 0]}>
                 <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[1]}_i`}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[1]}_d`}>
+                        <Input />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Col>
+        <Col span={6}>
+            <Row gutter={[6, 0]}>
+                <Col span={12}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[2]}_i`}>
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[2]}_d`}>
                         <Input />
                     </Form.Item>
                 </Col>
             </Row>
         </Col>
     </Row>
+    }
 
     const RowEncabezado = () => <Row>
         <Col span={6}>
@@ -161,24 +170,50 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     }, [patientData])
 
     const onFinish = (values: any) => {
-        setModalOpen(true)
-        setRequestStatus('loading')
+
+        let dataSubmit : any = {}
+        
+        Object.keys(values).forEach( (key, index) => dataSubmit[key] = values[key] || null )
+        // console.log(values || null)
+        // setModalOpen(true)
+        // setRequestStatus('loading')
+
+        delete dataSubmit.email
+        delete dataSubmit.age 
+        delete dataSubmit.ID_document_type
+        delete dataSubmit.id
+        delete dataSubmit.id_parent
+        delete dataSubmit.parentName
+        delete dataSubmit.patientName
+        delete dataSubmit.phone
+
+        dataSubmit = {...dataSubmit, patient_id: patientData['id']}
 
         if (!sessionData) {
-            instance.post('/Session/', values, {
+
+            let session_date : any = new Date();
+            session_date = new Date(session_date.getTime() - (session_date.getTimezoneOffset() * 60000)).toJSON();
+
+            dataSubmit = {...dataSubmit, session_date}
+
+            instance.post('/session/', dataSubmit, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then((response: any) => {
-                setRequestStatus('success')
+                // setRequestStatus('success')
+                message.success('Guardado exitosamente');
+
+                setSessionId && setSessionId(response['data']['id'])
             })
-                .catch((error: any) => {
-                    setRequestStatus('error')
+            .catch((error: any) => {
+                    message.error('Ha ocurrido un error. Datos no guardados');
+                    // setRequestStatus('error')
                     console.log(error)
                 });
         }
         else {
-            instance.put(`/Session/${values['id']}/`, values, {
+            instance.put(`/session/${values['id']}/`, values, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -202,7 +237,9 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         <Anchor className={styles.anchorClassName} >
             <Link href="#datos_paciente" title="Datos del paciente" />
             <Link href="#datos_responsable" title="Datos del responsable" />
+            <Link href="#datos_sesion" title="Datos de la sesión" />
             <Link href="#datos_clinicos" title="Datos del clínicos" />
+            <Link href="#antecedentes" title="Antecedentes" />
             <Link href="#examen_fisico" title="Examen Físico" />
             <Link href="#test_articular_muscular" title="Test Articular y Muscular" />
         </Anchor>
@@ -232,9 +269,11 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             layout="horizontal"
             className={styles.formStyles}
             onFinish={onFinish}
-            id='userForm'
+            id='sessionForm'
             disabled={disabledForm}
             form={form}
+            name='sessionForm'
+            ref={formSessionRef}
         >
 
             <div id="datos_paciente">
@@ -275,6 +314,17 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 </Form.Item>
             </div>
 
+            <div id="datos_sesion">
+                <Divider orientation="left">Datos de la sesión</Divider>
+                <Form.Item label="Fisioterapeuta" name="physiotherapist_name" style={{marginBottom: '0.5em'}}>
+                    <Input />
+                </Form.Item>
+
+                {/* <Form.Item label="Fecha y Hora Sesión" name="session_date" style={{marginBottom: '0.5em'}}>
+                    <Input />
+                </Form.Item> */}
+            </div>
+
             <div id="datos_clinicos">
                 <Divider orientation="left">Datos del clínicos</Divider>
                 <Form.Item label="Motivo Consulta" name="motivo_consulta" style={{marginBottom: '0.5em'}}>
@@ -294,6 +344,96 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 </Form.Item>
             </div>
 
+            <div id="antecedentes">
+                <Divider orientation="left">Antecedentes</Divider>
+                <Form.Item label="Personales" name="antecedentes_personales" style={{marginBottom: '0.5em'}}>
+                    <TextArea rows={2} />
+                </Form.Item>
+
+                <Form.Item label="Quirurgicos" name="antecedentes_quirurgicos" style={{marginBottom: '0.5em'}}>
+                    <TextArea rows={2} />
+                </Form.Item>
+
+                <Form.Item label="Farmacológicos" name="antecedentes_farmacologicos" style={{marginBottom: '0.5em'}}>
+                    <TextArea rows={2} />
+                </Form.Item>
+
+                <Form.Item label="Familiares" name="antecedentes_familiares" style={{marginBottom: '0.5em'}}>
+                    <TextArea rows={5} />
+                </Form.Item>
+            </div>
+
+            <div id="ortesis_ayudas_externas__funcionalidad">
+                <Row>
+                    <Col span={12}>
+                        <Title level={5}>Ortesis y ayudas externas</Title>
+                    </Col>
+                    <Col span={12}>
+                        <Title level={5}>Funcionalidad</Title>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6}>
+                        <Form.Item label="Ortesis MID" name="ortesis_MID" style={{marginBottom: '0.5em'}} >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item label="Ortesis MII" name="ortesis_MII" style={{marginBottom: '0.5em'}} >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Row>
+                            <Col span={8}>
+                                <Form.Item label="PODCI" name="reflejos_patelar_i" style={{marginBottom: '0.5em'}} >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="GMFCS" name="gmfcs" style={{marginBottom: '0.5em'}} >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="FAQ" name="faq" style={{marginBottom: '0.5em'}} >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={8}>
+                                <Form.Item label="FSM 5" name="fms_5" >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="FMS 50" name="fms_50" >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="FMS 500" name="fms_500" >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <Form.Item label="Ayudas Externas" name="ayudas_externas" >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="FMS" name="fms" >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </div>
+
             <div id="examen_fisico">
                 <Divider orientation="left">Examen Físico</Divider>
 
@@ -310,12 +450,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Patelar </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} >
+                                <Form.Item label="Izquierdo" className={styles.columnItem} name="reflejos_patelar_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} >
+                                <Form.Item label="Derecho" className={styles.columnItem} name="reflejos_patelar_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -325,13 +465,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Aquilano </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} >
+                                <Form.Item label="" className={styles.columnItem} name="reflejos_aquilano_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
                                 <Form.Item className={styles.columnItem} >
-                                    <Input />
+                                    <Input name="reflejos_aquilano_d" />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -344,14 +484,14 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Equilibrio Monopodal Derecho" className={styles.columnItem} style={{ fontSize: '8px', marginBottom: 0 }}>
+                                <Form.Item label="Equilibrio Monopodal Derecho" className={styles.columnItem} style={{ fontSize: '8px', marginBottom: 0 }} name="equilibrio_monopodal_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Equilibrio Monopodal Izquierdo" className={styles.columnItem} style={{ fontSize: '8px' }}>
+                                <Form.Item label="Equilibrio Monopodal Izquierdo" className={styles.columnItem} style={{ fontSize: '8px' }} name="equilibrio_monopodal_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -366,22 +506,22 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Distancia Intercondilea (mm):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Distancia Intercondilea (mm):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="dist_intercondilea" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Distancia Intermaleolar (mm):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Distancia Intermaleolar (mm):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="dist_intermaleolar" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Perfil de Rodilla Derecho:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Perfil de Rodilla Derecho:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="perfil_rodilla_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Perfil de Rodilla Izquierdo:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Perfil de Rodilla Izquierdo:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="perfil_rodilla_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -400,12 +540,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Tobillo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -415,12 +555,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Retropie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -430,12 +570,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Mediopie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -445,12 +585,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Antepie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -460,12 +600,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Hallux </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -482,12 +622,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Tobillo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -497,12 +637,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Retropie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -512,12 +652,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Mediopie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -527,12 +667,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Antepie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -542,12 +682,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Hallux </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -564,24 +704,24 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={12}>
-                                <Form.Item label="Peso (Kg)" labelAlign='left' className={`${styles.columnItem} ${styles.columnItemNoMargin}`}>
+                                <Form.Item label="Peso (Kg)" labelAlign='left' className={`${styles.columnItem} ${styles.columnItemNoMargin}`} name="peso">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label="Talla (mm)" className={`${styles.columnItem} ${styles.columnItemNoMargin}`}>
+                                <Form.Item label="Talla (mm)" className={`${styles.columnItem} ${styles.columnItemNoMargin}`} name="talla">
                                     <Input />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row>
                             <Col span={12}>
-                                <Form.Item label="Longitud MID (mm)" className={styles.columnItem}>
+                                <Form.Item label="Longitud MID (mm)" className={styles.columnItem} name="longitud_MID">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label="Longitud MII (mm)" className={styles.columnItem}>
+                                <Form.Item label="Longitud MII (mm)" className={styles.columnItem} name="longitud_MII" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -598,12 +738,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Hiperlaxitud Muscular : </span>
                             </Col>
                             <Col span={6}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={6}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -611,7 +751,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Signos de Distonía" labelAlign='left' style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Signos de Distonía" labelAlign='left' style={{ marginBottom: '0.5em' }} name="signos_distonia">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -619,7 +759,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Tono Muscular" labelAlign='left'>
+                                <Form.Item label="Tono Muscular" labelAlign='left' name="tono_muscular">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -636,12 +776,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Flexores Cadera </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="flexores_cad_i" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="flexores_cad_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -651,12 +791,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Isquiotibial </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="isquiotibial_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="isquiotibial_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -666,12 +806,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Cuádriceps </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="cuadriceps_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="cuadriceps_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -681,12 +821,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Gastrosoleo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="gastrosoleo_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="gastrosoleo_d" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -701,12 +841,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Frecuencia Cardiaca Inicial" labelCol={{ span: 12 }} labelAlign='left' style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Frecuencia Cardiaca Inicial" labelCol={{ span: 12 }} labelAlign='left' style={{ marginBottom: '0.5em' }} name="frec_cardiaca_inicial" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Frecuencia Cardiaca Final" labelCol={{ span: 12 }} labelAlign='left' style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Frecuencia Cardiaca Final" labelCol={{ span: 12 }} labelAlign='left' style={{ marginBottom: '0.5em' }} name="frec_cardiaca_final" >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -734,17 +874,17 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                         <span> {idx + 1} </span>
                                     </Col>
                                     <Col span={6}>
-                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth}>
+                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name={`tiempo_${idx+1}_distancia`}>
                                             <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col span={6}>
-                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} >
+                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name={`tiempo_${idx+1}_distancia_acumulada`} >
                                             <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col span={6}>
-                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} >
+                                        <Form.Item label="" style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name={`tiempo_${idx+1}_frec_cardiaca`} >
                                             <Input />
                                         </Form.Item>
                                     </Col>
@@ -754,22 +894,22 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Gasto Energético:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Gasto Energético:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="gasto_energetico">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Velocidad (m/s):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Velocidad (m/s):" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="velocidad" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Escala de Borg:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
+                                <Form.Item label="Escala de Borg:" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} name="escala_borg" >
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
-                                <Form.Item label="Observaciones:" labelAlign='left' style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} >
+                                <Form.Item label="Observaciones:" labelAlign='left' style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name="observaciones_prueba_6_min" >
                                     <TextArea rows={2} />
                                 </Form.Item>
                             </Col>
@@ -786,7 +926,6 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 <Title level={5}>Tronco</Title>
                 <Row>
                     <Col span={6}>
-                        {/* <span> Tronco </span> */}
                     </Col>
                     <Col span={6}>
                         <span> Movilidad Articular </span>
@@ -802,18 +941,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <span> Abdominales </span>
                     </Col>
-                    <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
-                            <Input />
-                        </Form.Item>
+                    <Col span={6}>  
                     </Col>
                     <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
-                            <Input />
-                        </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_fuerza_muscular">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -823,17 +956,11 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <span> Lumbares </span>
                     </Col>
                     <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth}>
-                            <Input />
-                        </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth}>
-                            <Input />
-                        </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth}>
+                        <Form.Item className={styles.inputFullWidth} name="tronco_lumbares_fuerza_muscular">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -842,10 +969,10 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 <Title level={5}>Cadera</Title>
 
                 {RowEncabezado()}
-                {RowForm({ label: 'Flexión' })}
-                {RowForm({ label: 'Extensión' })}
-                {RowForm({ label: 'Abducción' })}
-                {RowForm({ label: 'Aducción' })}
+                {RowForm({ label: 'Flexión', name: 'cadera_flexion'  })}
+                {RowForm({ label: 'Extensión', name: 'cadera_extension'  })}
+                {RowForm({ label: 'Abducción', name: 'cadera_abduccion'  })}
+                {RowForm({ label: 'Aducción', name: 'cadera_aduccion'  })}
 
                 <Row>
                     <Col span={6}>
@@ -854,12 +981,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth}>
+                                <Form.Item className={styles.inputFullWidth} name="cadera_rot_int_movilidad_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth}>
+                                <Form.Item className={styles.inputFullWidth} name="cadera_rot_int_movilidad_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -876,12 +1003,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth}>
+                                <Form.Item className={styles.inputFullWidth} name="cadera_rot_ext_movilidad_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth}>
+                                <Form.Item className={styles.inputFullWidth} name="cadera_rot_ext_movilidad_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -907,12 +1034,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_thomas_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_thomas_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -924,12 +1051,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="anteversion_femoral_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="anteversion_femoral_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -944,12 +1071,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_phelps_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_phelps_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -964,12 +1091,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="test_ober_i">
                                     <Input />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="test_ober_d">
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -979,8 +1106,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 <Title level={5}>Rodilla</Title>
                 {RowEncabezado()}
-                {RowForm({ label: 'Flexión' })}
-                {RowForm({ label: 'Extensión' })}
+                {RowForm({ label: 'Flexión', name: 'rodilla_flexion' })}
+                {RowForm({ label: 'Extensión', name: 'extension_flexion' })}
 
                 <Row gutter={[24, 0]} >
                     <Col span={12}>
@@ -993,12 +1120,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 {
                     [
-                        ['Angulo Poplíteo', 'Angulo Muslo Pie'],
-                        ['A. Poplíteo Cadera en Flex', 'Angulo Bimaleolar'],
-                        ['Variación A. Poplíteo', 'Test 2do Dedo'],
-                        ['Signo de Ely Duncan', 'Patela Alta'],
-                        ['Déficit de Extensión activa en Supino', 'Peroné Corto']
-                    ].map(([itemLeft, itemRight]: any, idx: number) => createRow({
+                        [['angulo_popliteo','Angulo Poplíteo'], ['angulo_muslo', 'Angulo Muslo Pie']],
+                        [['angulo_popliteo_cadera_flex', 'A. Poplíteo Cadera en Flex'], ['angulo_bimaleolar', 'Angulo Bimaleolar']],
+                        [['variacion_angulo_popliteo', 'Variación A. Poplíteo'], ['test_2do_dedo', 'Test 2do Dedo']],
+                        [['signo_ely_duncan', 'Signo de Ely Duncan'], ['patela_alta', 'Patela Alta']],
+                        [['deficit_ext_act_supino', 'Déficit de Extensión activa en Supino'], ['perone_corto', 'Peroné Corto']]
+                    ].map(([[nameItemLeft, itemLeft], [nameItemRight, itemRight]]: any, idx: number) => createRow({
                         rowProps: { gutter: [24, 0], key: idx },
                         items: [
                             {
@@ -1012,13 +1139,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_i`}>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_i`}>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1036,13 +1163,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_d`}>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_d`}>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1057,8 +1184,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 <Title level={5}>Tobillo</Title>
                 {RowEncabezado()}
-                {RowForm({ label: 'Plantiflexión G' })}
-                {RowForm({ label: 'Dorsiflexión' })}
+                {RowForm({ label: 'Plantiflexión G', name: 'tobillo_plantiflexion' })}
+                {RowForm({ label: 'Dorsiflexión', name: 'tobillo_dorsiflexion' })}
                 {
                     createRow({
                         rowProps: { gutter: [24, 0] },
@@ -1074,13 +1201,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='tobillo_soleo_control_selectivo_i'>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='tobillo_soleo_control_selectivo_d'>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1109,13 +1236,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_i">
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_d">
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1132,8 +1259,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 <Title level={5}>Pie</Title>
                 {RowEncabezado()}
-                {RowForm({ label: 'Inversión' })}
-                {RowForm({ label: 'Eversión' })}
+                {RowForm({ label: 'Inversión', name: 'pie_inversion' })}
+                {RowForm({ label: 'Eversión', name: 'pie_eversion' })}
                 {
                     createRow({
                         rowProps: { gutter: [24, 0] },
@@ -1149,13 +1276,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='pie_flexores_hallux_control_selectivo_i'>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='pie_flexores_hallux_control_selectivo_d'>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1184,13 +1311,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='pie_extensores_hallux_control_selectivo_i'>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }}>
+                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name='pie_extensores_hallux_control_selectivo_d'>
                                                 <Input />
                                             </Form.Item>
                                         }

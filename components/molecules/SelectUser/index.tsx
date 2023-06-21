@@ -6,7 +6,7 @@ const axios = require('axios').default;
 import styles from "./style.module.css";
 
 interface ISelectUserProps {
-    readonly user? : Record<string, any>
+    readonly user? : Record<string, any> | null
     readonly setUser : Function
     readonly endpoint : string
     readonly tooltip : string
@@ -31,6 +31,7 @@ const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, toolti
         })
             .catch((error: any) => {
                 setRequestStatus('error')
+                setUser(null)
                 console.error(error)
             });
     };

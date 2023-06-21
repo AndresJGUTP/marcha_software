@@ -1,0 +1,20 @@
+.wraper{
+    width: 100%;
+    margin: auto;
+    padding: 3em;
+}
+
+.stepsWrap{
+    padding: 1em 4em;
+}
+
+.selectForm{
+    width: 75%;
+    margin: 2em auto;
+}
+
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3em;
+}

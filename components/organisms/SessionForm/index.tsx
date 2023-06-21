@@ -15,7 +15,7 @@ const axios = require('axios').default;
 
 
 interface ISessionFormProps {
-    readonly sessionData?: Record<string, any>
+    readonly sessionData?: Record<string, any> | null
     readonly patientData: Record<string, any>
     readonly parentData: Record<string, any>
     readonly setSessionId?: Function
@@ -141,6 +141,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         }
     </Row>
 
+    useEffect(() => {
+        if(!!sessionData){
+            form.setFieldsValue({
+                ...sessionData
+              });
+        }
+    }, [])
 
     useEffect(() => {
         if (!!patientData) {
@@ -213,7 +220,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 });
         }
         else {
-            instance.put(`/session/${values['id']}/`, values, {
+            dataSubmit = {...dataSubmit, session_date: sessionData['session_date']}
+            instance.put(`/session/${sessionData['id']}/`, dataSubmit, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

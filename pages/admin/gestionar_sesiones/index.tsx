@@ -33,14 +33,14 @@ const ManageSessions : FC<IManageSessionsProps> = () => {
                 </Card>
             </Col>
             <Col span={4}>
-                {/* <Card
+                <Card
                     hoverable
                     style={{ width: 250, padding: '1em' }}
-                    cover={<img alt="Editar Usuario" src="/images/user_config.png" />}
-                    onClick={ () => router.push('editar_usuario')}
+                    cover={<img alt="Editar Usuario" src="/images/editar_reporte.png" />}
+                    onClick={ () => router.push('gestionar_sesiones/editar_sesion/')}
                 >
-                    <Meta title="Editar Usuario Existente" description="Sección dedicada a editar usuarios ya creados" />
-                </Card> */}
+                    <Meta title="Editar sesión" description="Sección dedicada a editar sesiones ya creadas" />
+                </Card>
             </Col>
         </Row>
 

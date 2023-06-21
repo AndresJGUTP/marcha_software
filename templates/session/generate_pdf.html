@@ -1,0 +1,10 @@
+{% extends 'session/base.html' %}
+
+{% block content %}
+    <img src="static/logo_utp.png" alt="user logo" height="150px">
+    <!-- <hr> -->
+    <!-- <img src="{{ user.logo.path }}" alt="user logo" height="150px"> -->
+    <h3>{{ session.id }}</h3>
+    <img src="data:image/png;base64,{{ graphic|safe }}">
+    <!-- {{ user.description|linebreaks }} -->
+{% endblock content %}

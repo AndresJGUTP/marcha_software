@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path
 from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
-from rest.views.session import SessionViewSet
+from rest.views.session import SessionViewSet, session_render_pdf_view
 from rest.views.medical_history import MedicalHistoryViewSet
 from rest.views.physical_exam import PhysicalExamViewSet
 from rest.views.upload_file import FileUploadView
 from django.urls import include, path
 from rest_framework import routers
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 router = routers.DefaultRouter()
 router.register(r'parent', ParentViewSet)
@@ -35,5 +38,9 @@ router.register(r'physical_exam', PhysicalExamViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('session_upload/', FileUploadView.as_view())
+    path('session_upload/', FileUploadView.as_view()),
+    path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view')
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

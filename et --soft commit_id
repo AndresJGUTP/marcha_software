@@ -1,0 +1,77 @@
+[33mcommit ae7ce2dd878d760ec29d1bb043b275d3cf49f57c[m[33m ([m[1;36mHEAD -> [m[1;32mbackend[m[33m)[m
+Author: Jonathan Cruz <j.cruz@utp.edu.co>
+Date:   Mon Jul 24 12:26:41 2023 -0500
+
+    Template_PDF_modifications
+
+[33mcommit 8ede3b6f2cd0925a31f34c36f88ca3ddf0871fd8[m
+Author: Jonathan Cruz <j.cruz@utp.edu.co>
+Date:   Mon Jul 24 12:25:38 2023 -0500
+
+    Template_PDF
+
+[33mcommit 46fd0f212086a622818ef90855f817b52a87e968[m
+Author: AndresJG <jg.andresjg@gmail.com>
+Date:   Wed Jun 21 18:20:43 2023 -0500
+
+    feat(report): initial report plots
+
+[33mcommit 56aabf0ac77b415c9647bccb7d97f8921522daa9[m
+Author: AndresJG <jg.andresjg@gmail.com>
+Date:   Wed Jun 21 11:07:43 2023 -0500
+
+    feat(session): session model
+
+[33mcommit c4877206f06ce289440a8df3a347fb53c980479e[m
+Author: AndresJG <jg.andresjg@gmail.com>
+Date:   Wed Jun 21 11:07:23 2023 -0500
+
+    feat(plot): plot kinematic
+
+[33mcommit aa8fb4eb80813050a241a61d9886ec65668f5321[m
+Author: AndresJG <jg.andresjg@gmail.com>
+Date:   Wed Jun 14 21:06:09 2023 -0500
+
+    feat(session): csv storage and session models are created
+
+[33mcommit 2413d00f8114273bbaf2aee21548283767143cb8[m
+Author: andresjg <ajimenezg@comfamiliar.com>
+Date:   Thu May 25 11:50:49 2023 -0500
+
+    fix(Merging changes):
+
+[33mcommit 10f47fbd65cb566f4642e881d53031182f0e0043[m
+Author: Jonathan Cruz <j.cruz@utp.edu.co>
+Date:   Thu May 25 08:25:20 2023 -0500
+
+    admin_actualization
+
+[33mcommit 568c96e25ca2271ee7136bcc07eba48b901c3df4[m
+Author: Jonathan Cruz <j.cruz@utp.edu.co>
+Date:   Thu May 25 08:19:10 2023 -0500
+
+    models_actualization
+
+[33mcommit 0c931491745ccfd9a7d1236f6c1e072e8b9d5711[m
+Author: andresjg <ajimenezg@comfamiliar.com>
+Date:   Tue May 16 09:40:41 2023 -0500
+
+    feat(cors app, requirements): updated cors apps and requirements
+
+[33mcommit 2f81f729f187b5565c75189840d876267577dd1c[m
+Author: andresjg <ajimenezg@comfamiliar.com>
+Date:   Tue May 2 09:00:17 2023 -0500
+
+    feat(models): Se añaden los modelos iniciales
+
+[33mcommit f0e78bd972c310e0dda67fbd96e8364f9685c1ca[m
+Author: andresjg <ajimenezg@comfamiliar.com>
+Date:   Tue Apr 25 21:48:05 2023 -0500
+
+    refactor(structure): Initial folder structure
+
+[33mcommit 8ed788b71e9ddee13f235bac3838571d665f3782[m
+Author: AndresJGUTP <99511715+AndresJGUTP@users.noreply.github.com>
+Date:   Tue Apr 11 12:09:25 2023 -0500
+
+    Initial commit

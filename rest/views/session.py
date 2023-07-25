@@ -30,36 +30,6 @@ def session_render_pdf_view(request, *args, **kwargs):
     session = get_object_or_404(Session, pk=pk)
     title_file = f"PDF - Sesión ID {session.id} - {session.patient_id.first_name} {session.patient_id.first_last_name}"
 
-    # pos = np.arange(10)+ 2 
-    # fig = plt.figure(figsize=(8, 3))
-    # ax = fig.add_subplot(111)
-    # ax.barh(pos, np.arange(1, 11), align='center')
-    # ax.set_yticks(pos)
-    # ax.set_yticklabels(('#hcsm',
-    # '#ukmedlibs',
-    # '#ImmunoChat',
-    # '#HCLDR',
-    # '#ICTD2015',
-    # '#hpmglobal',
-    # '#BRCA',
-    # '#BCSM',
-    # '#BTSM',
-    # '#OTalk',), 
-    # fontsize=15)
-    # ax.set_xticks([])
-    # ax.invert_yaxis()
-    # ax.set_xlabel('Popularity')
-    # ax.set_ylabel('Hashtags')
-    # ax.set_title('Hashtags')
-    # plt.tight_layout()
-    # buffer = BytesIO()
-    # plt.savefig(buffer, format='png')
-    # buffer.seek(0)
-    # image_png = buffer.getvalue()
-    # buffer.close()
-    # graphic = base64.b64encode(image_png)
-    # graphic = graphic.decode('utf-8')
-
     graphic = plot_kinematics('notebooks/data.c3d', return_base64=True)
 
     template_path = 'session/generate_pdf.html'

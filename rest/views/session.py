@@ -3,15 +3,11 @@ from rest.serializers.session import SessionSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-import matplotlib.pyplot as plt
 from utils.plot_kinematics import plot_kinematics
-import numpy as np
-from io import BytesIO
-import base64
 
 
 class SessionViewSet(viewsets.ModelViewSet):
@@ -32,6 +28,7 @@ class SessionViewSet(viewsets.ModelViewSet):
 def session_render_pdf_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     session = get_object_or_404(Session, pk=pk)
+    title_file = f"PDF - Sesión ID {session.id} - {session.patient_id.first_name} {session.patient_id.first_last_name}"
 
     # pos = np.arange(10)+ 2 
     # fig = plt.figure(figsize=(8, 3))
@@ -65,23 +62,23 @@ def session_render_pdf_view(request, *args, **kwargs):
 
     graphic = plot_kinematics('notebooks/data.c3d', return_base64=True)
 
-
     template_path = 'session/generate_pdf.html'
     context = {'session': session, 'graphic':graphic}
-    # Create a Django response object, and specify content_type as pdf
+
+    # # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
 
-    # to directly download the pdf we need attachment 
-    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # # to directly download the pdf we need attachment 
+    # # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
 
     # to view on browser we can remove attachment 
-    response['Content-Disposition'] = 'filename="report.pdf"'
+    response['Content-Disposition'] = f'filename="{title_file}.pdf"' #'filename="report.pdf"'
 
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
 
-    # create a pdf
+    # # create a pdf
     pisa_status = pisa.CreatePDF(
         html, dest=response)
     # if error then show some funy view

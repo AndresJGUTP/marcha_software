@@ -4,6 +4,11 @@ from .validators import validator_document_number,validator_document_type, valid
 from constants.document_choices import DOCUMENT_CHOICES
 
 class Patient(models.Model):
+    # ================================================================================
+    # Variables creadas:
+    # birthdate = models.DateTimeField(help_text="Birthdate", blank=False, null=False)
+    # ================================================================================
+
     
     id_parent = models.ForeignKey(Parent, help_text="ID parent", on_delete=models.PROTECT)
     id = models.CharField(help_text='Patient document number', max_length=20, blank=False, null=False,

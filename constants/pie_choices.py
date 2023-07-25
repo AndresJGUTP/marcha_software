@@ -1,0 +1,10 @@
+PIE_CHOICES = [(0,'-'),
+                (1, 'Cavo'),
+                (2, 'Equino'),
+                (3, 'Flexible'),
+                (4, 'Neutro'),
+                (5, 'Plano'),
+                (6, 'Valgo'),
+                (7, 'Varo'),
+                (8, 'Zambo'),
+                ]

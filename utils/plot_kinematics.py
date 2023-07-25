@@ -1,6 +1,7 @@
 # conda install -c conda-forge ezc3d
 
-from ezc3d import c3d
+import c3d
+import numpy as np
 from io import BytesIO
 import base64
 
@@ -18,18 +19,19 @@ ANGLES_TO_PLOT = [
 
 def plot_kinematics(data_path, return_base64=False):
 
-    c = c3d(data_path)
-    point_data = c['data']['points']
-    # points_residuals = c['data']['meta_points']['residuals']
-    # analog_data = c['data']['analogs']
+    with open(data_path, 'rb') as handle:
+        reader = c3d.Reader(handle)
+        point_labels = [label.strip() for label in reader.point_labels]
+        data = list(reader.read_frames())
 
-    point_labels = c['parameters']['POINT']['LABELS']['value']
+        point_data = np.array([tuple_frame[1] for tuple_frame in data])
+        point_data = np.transpose(point_data, (2, 1, 0))
 
     fig, axs = plt.subplots(5, 3, figsize=(10, 10))
 
     for row, (l_angle_plot, r_angle_plot) in enumerate(ANGLES_TO_PLOT):
-            X_l, Y_l, Z_l, _ = point_data[:, point_labels.index(l_angle_plot), :]
-            X_r, Y_r, Z_r, _ = point_data[:, point_labels.index(r_angle_plot), :]
+            X_l, Y_l, Z_l, _, _ = point_data[:, point_labels.index(l_angle_plot), :]
+            X_r, Y_r, Z_r, _, _ = point_data[:, point_labels.index(r_angle_plot), :]
 
             title = l_angle_plot[1:]
 

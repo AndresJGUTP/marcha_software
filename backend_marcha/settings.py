@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'backend_marcha',
     'rest',
-    'corsheaders'
+    'corsheaders',
 ]
 
 MIDDLEWARE = [

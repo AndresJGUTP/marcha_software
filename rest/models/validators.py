@@ -1,5 +1,11 @@
 from django.core.exceptions import ValidationError
 
+def validator_cognitive_deficit(value):
+    if value == 0:
+        raise ValidationError('Por favor seleccione.')
+    else:
+        return value
+
 def validator_document_number(value):    
     if value.isdigit():    
         if len(value) <5:

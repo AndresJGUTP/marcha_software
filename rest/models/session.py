@@ -1,8 +1,90 @@
 from rest.models.patient import Patient
 from django.db import models
 from django.core.validators import RegexValidator
+from .validators import validator_cognitive_deficit
+from constants.cognitive_deficit_choices import COGNITIVE_DEFICIT_CHOISES
+from constants.valproic_acid_choices import VALPROIC_ACID_CHOISES
+from constants.pie_choices import PIE_CHOICES
+from constants.tono_muscular_choices import HIPERLAXITUD_CHOICES, SIGNOS_DISTONIA_CHOISES,TONO_MUSCULAR_CHOICES
+from constants.signos_retraccion_muscular_choices import SIGNOS_RETRACCION_MUSCULAR_CHOICES
+from constants.rodilla_patela_perone_choices import RODILLA_PATELA_PERONE_CHOICES
+
+
+
 
 class Session(models.Model):
+    # ================================================================================
+    # Variables CREADAS:
+    # ________________________________________________________________________________
+    ############## Procedimientos realizados:
+    # examen_medico = models.BooleanField(help_text="Examen médico")
+    # prueba_6_minutos = models.BooleanField(help_text="Prueba de 6 minutos")
+    # video_analogo = models.BooleanField(help_text="Video Análogo")
+    # podobarometria = models.BooleanField(help_text="Podobarometría")
+    # examen_computarizado = models.BooleanField(help_text="Examen computarizado de la marcha")
+
+    ############## Antecedentes
+    # take_valproic_acid = models.IntegerField(choices=VALPROIC_ACID_CHOISES,) #validators=[validator_cognitive_deficit])
+    # cognitive_deficit = models.IntegerField(choices=COGNITIVE_DEFICIT_CHOISES,) #validators=[validator_cognitive_deficit])
+
+
+
+    # ================================================================================
+    # Variables MODIFICADAS:
+    # ________________________________________________________________________________
+    ############## Tono muscular
+    # hiperlaxitud_articular_i = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
+    # hiperlaxitud_articular_d = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
+    # signos_distonia = models.IntegerField(choices=SIGNOS_DISTONIA_CHOISES)
+    # tono_muscular = models.IntegerField(choices=TONO_MUSCULAR_CHOICES)
+
+
+    ############## Descripción del pie
+    # descr_pie_apoyo_tobillo_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_tobillo_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_retropie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_retropie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_mediopie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_mediopie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_antepie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_antepie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_hallux_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_apoyo_hallux_i = models.IntegerField(choices=PIE_CHOICES)
+
+    # descr_pie_sin_apoyo_tobillo_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_tobillo_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_retropie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_retropie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_mediopie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_mediopie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_antepie_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_antepie_i = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_hallux_d = models.IntegerField(choices=PIE_CHOICES)
+    # descr_pie_sin_apoyo_hallux_i = models.IntegerField(choices=PIE_CHOICES)
+
+
+    ############## Test articular y muscular
+    #### CADERA
+    # signo_phelps_d = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # signo_phelps_i = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # test_ober_d = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # test_ober_i = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    #### RODILLA
+    # signo_ely_duncan_d = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # signo_ely_duncan_i = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+
+    # patela_alta_d = models.IntegerField(choices=RODILLA_PATELA_PERONE_CHOICES,)
+    # patela_alta_i = models.IntegerField(choices=RODILLA_PATELA_PERONE_CHOICES,)
+    # perone_corto_d = models.IntegerField(choices=RODILLA_PATELA_PERONE_CHOICES,)
+    # perone_corto_i = models.IntegerField(choices=RODILLA_PATELA_PERONE_CHOICES,)
+    #### TOBILLO
+    # tobillo_signo_silverskiold_movilidad_d = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # tobillo_signo_silverskiold_movilidad_i = models.IntegerField(choices=SIGNOS_RETRACCION_MUSCULAR_CHOICES,)
+    # ================================================================================
+
+
+
+
     id = models.AutoField(primary_key=True)
     patient_id = models.ForeignKey(Patient, help_text="patient document number", on_delete=models.CASCADE)
     session_date = models.DateTimeField(help_text="Session date", blank=False, null=False)
@@ -11,7 +93,7 @@ class Session(models.Model):
     # DATOS CLÍNICOS
     motivo_consulta = models.CharField(help_text="Motivo de consulta", max_length=255, blank=True, null=True)
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
-    alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True)
+    alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
 
 
@@ -20,9 +102,7 @@ class Session(models.Model):
     antecedentes_quirurgicos = models.TextField(help_text="Antecedentes quirúrgicos", blank=True, null=True)
     antecedentes_farmacologicos = models.TextField(help_text="Antecedentes farmacológicos", blank=True, null=True)
     antecedentes_familiares = models.TextField(help_text="Antecedentes familiares", blank=True, null=True)
-    # take_valproic_acid = models.BooleanField(help_text="Toma ácido valproico")
-    # cognitive_deficit = models.IntegerField(help_text="Déficit cognitivo", default=None, choices=COGNITIVE_DEFICIT_CHOISES,
-    #                                         null=False)
+
     
 
     # ORTESIS Y AYUDAS EXTERNAS
@@ -46,7 +126,7 @@ class Session(models.Model):
     reflejos_patelar_d = models.FloatField(null=True, blank=True)
     reflejos_patelar_i = models.FloatField(null=True, blank=True)
     reflejos_aquilano_d = models.FloatField(null=True, blank=True)
-    reflejos_aquilano_d = models.FloatField(null=True, blank=True)
+    reflejos_aquilano_i = models.FloatField(null=True, blank=True)
 
     # Medidas antropométricas
     peso = models.FloatField(help_text="Peso [kg]", null=True, blank=True)
@@ -58,11 +138,12 @@ class Session(models.Model):
     equilibrio_monopodal_d = models.FloatField(help_text="Equilibrio monopodal derecho", null=True, blank=True)
     equilibrio_monopodal_i = models.FloatField(help_text="Equilibrio monopodal izquierdo", null=True, blank=True)
 
-    # Tono muscular
+    # Tono muscular ======================================================================================================
     hiperlaxitud_articular_i = models.CharField(max_length=50, null=True, blank=True)
     hiperlaxitud_articular_d = models.CharField(max_length=50, null=True, blank=True)
     signos_distonia = models.CharField(max_length=50, null=True, blank=True)
     tono_muscular = models.CharField(max_length=50, null=True, blank=True)
+    # ====================================================================================================================
 
     # Espacidad (ashworth)
     flexores_cad_d = models.FloatField(help_text="Flexores cadera derecho", null=True, blank=True)
@@ -84,7 +165,7 @@ class Session(models.Model):
     perfil_rodilla_d = models.FloatField(help_text="Perfil de rodilla derecho", null=True, blank=True)
     perfil_rodilla_i = models.FloatField(help_text="Perfil de rodilla izquierdo", null=True, blank=True)
 
-    # Descripción del pie
+    # Descripción del pie =========================================================================================================
     descr_pie_apoyo_tobillo_d = models.CharField(max_length=50, null=True, blank=True)
     descr_pie_apoyo_tobillo_i = models.CharField(max_length=50, null=True, blank=True)
     descr_pie_apoyo_retropie_d = models.CharField(max_length=50, null=True, blank=True)
@@ -106,30 +187,34 @@ class Session(models.Model):
     descr_pie_sin_apoyo_antepie_i = models.CharField(max_length=50, null=True, blank=True)
     descr_pie_sin_apoyo_hallux_d = models.CharField(max_length=50, null=True, blank=True)
     descr_pie_sin_apoyo_hallux_i = models.CharField(max_length=50, null=True, blank=True)
+    # ================================================================================================================
 
     # prueba_6_minutos
     frec_cardiaca_inicial = models.FloatField(null=True, blank=True)
     frec_cardiaca_final = models.FloatField(null=True, blank=True)
 
     tiempo_1_distancia = models.FloatField(null=True, blank=True)
-    tiempo_2_distancia = models.FloatField(null=True, blank=True)
-    tiempo_3_distancia = models.FloatField(null=True, blank=True)
-    tiempo_4_distancia = models.FloatField(null=True, blank=True)
-    tiempo_5_distancia = models.FloatField(null=True, blank=True)
-    tiempo_6_distancia = models.FloatField(null=True, blank=True)
-
     tiempo_1_distancia_acumulada = models.FloatField(null=True, blank=True)
-    tiempo_2_distancia_acumulada = models.FloatField(null=True, blank=True)
-    tiempo_3_distancia_acumulada = models.FloatField(null=True, blank=True)
-    tiempo_4_distancia_acumulada = models.FloatField(null=True, blank=True)
-    tiempo_5_distancia_acumulada = models.FloatField(null=True, blank=True)
-    tiempo_6_distancia_acumulada = models.FloatField(null=True, blank=True)
-
     tiempo_1_frec_cardiaca = models.FloatField(null=True, blank=True)
+
+    tiempo_2_distancia = models.FloatField(null=True, blank=True)
+    tiempo_2_distancia_acumulada = models.FloatField(null=True, blank=True)
     tiempo_2_frec_cardiaca = models.FloatField(null=True, blank=True)
+
+    tiempo_3_distancia = models.FloatField(null=True, blank=True)
+    tiempo_3_distancia_acumulada = models.FloatField(null=True, blank=True)
     tiempo_3_frec_cardiaca = models.FloatField(null=True, blank=True)
+
+    tiempo_4_distancia = models.FloatField(null=True, blank=True)
+    tiempo_4_distancia_acumulada = models.FloatField(null=True, blank=True)
     tiempo_4_frec_cardiaca = models.FloatField(null=True, blank=True)
+
+    tiempo_5_distancia = models.FloatField(null=True, blank=True)
+    tiempo_5_distancia_acumulada = models.FloatField(null=True, blank=True)
     tiempo_5_frec_cardiaca = models.FloatField(null=True, blank=True)
+
+    tiempo_6_distancia = models.FloatField(null=True, blank=True)
+    tiempo_6_distancia_acumulada = models.FloatField(null=True, blank=True)
     tiempo_6_frec_cardiaca = models.FloatField(null=True, blank=True)
 
     gasto_energetico = models.FloatField(null=True, blank=True)
@@ -178,10 +263,12 @@ class Session(models.Model):
 
     signo_thomas_d = models.FloatField(null=True, blank=True)
     signo_thomas_i = models.FloatField(null=True, blank=True)
+    # =============================================================================================================
     signo_phelps_d = models.FloatField(null=True, blank=True)
     signo_phelps_i = models.FloatField(null=True, blank=True)
     test_ober_d = models.FloatField(null=True, blank=True)
     test_ober_i = models.FloatField(null=True, blank=True)
+    # =============================================================================================================
 
     anteversion_femoral_d = models.FloatField(null=True, blank=True)
     anteversion_femoral_i = models.FloatField(null=True, blank=True)
@@ -206,22 +293,27 @@ class Session(models.Model):
     angulo_popliteo_cadera_flex_i = models.FloatField(null=True, blank=True)
     variacion_angulo_popliteo_d = models.FloatField(null=True, blank=True)
     variacion_angulo_popliteo_i = models.FloatField(null=True, blank=True)
+    # ====================================================================================================
     signo_ely_duncan_d = models.FloatField(null=True, blank=True)
     signo_ely_duncan_i = models.FloatField(null=True, blank=True)
+    # ====================================================================================================
+
     deficit_ext_act_supino_d = models.FloatField(null=True, blank=True)
     deficit_ext_act_supino_i = models.FloatField(null=True, blank=True)
 
-    angulo_muslo_pie_i = models.FloatField(null=True, blank=True)
     angulo_muslo_pie_d = models.FloatField(null=True, blank=True)
-    angulo_bimaleolar_i = models.FloatField(null=True, blank=True)
+    angulo_muslo_pie_i = models.FloatField(null=True, blank=True)
     angulo_bimaleolar_d = models.FloatField(null=True, blank=True)
-    test_2do_dedo_i = models.FloatField(null=True, blank=True)
+    angulo_bimaleolar_i = models.FloatField(null=True, blank=True)
     test_2do_dedo_d = models.FloatField(null=True, blank=True)
-    patela_alta_i = models.FloatField(null=True, blank=True)
-    patela_alta_d = models.FloatField(null=True, blank=True)
-    perone_corto_i = models.FloatField(null=True, blank=True)
-    perone_corto_d = models.FloatField(null=True, blank=True)
+    test_2do_dedo_i = models.FloatField(null=True, blank=True)
 
+    # =========================================================================================================
+    patela_alta_d = models.FloatField(null=True, blank=True)
+    patela_alta_i = models.FloatField(null=True, blank=True)
+    perone_corto_d = models.FloatField(null=True, blank=True)
+    perone_corto_i = models.FloatField(null=True, blank=True)
+    # =========================================================================================================
 
     tobillo_plantiflexion_movilidad_d = models.FloatField(null=True, blank=True)
     tobillo_plantiflexion_movilidad_i = models.FloatField(null=True, blank=True)
@@ -239,9 +331,12 @@ class Session(models.Model):
 
     tobillo_soleo_control_selectivo_d = models.FloatField(null=True, blank=True)
     tobillo_soleo_control_selectivo_i = models.FloatField(null=True, blank=True)
-    
+
+    # =========================================================================================================
     tobillo_signo_silverskiold_movilidad_d = models.FloatField(null=True, blank=True)
     tobillo_signo_silverskiold_movilidad_i = models.FloatField(null=True, blank=True)
+    # =========================================================================================================
+
 
     pie_inversion_movilidad_d = models.FloatField(null=True, blank=True)
     pie_inversion_movilidad_i = models.FloatField(null=True, blank=True)
@@ -257,11 +352,11 @@ class Session(models.Model):
     pie_eversion_fuerza_muscular_d = models.FloatField(null=True, blank=True)
     pie_eversion_fuerza_muscular_i = models.FloatField(null=True, blank=True)
 
-    pie_flexores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
     pie_flexores_hallux_control_selectivo_d = models.FloatField(null=True, blank=True)
-    
-    pie_extensores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
+    pie_flexores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
     pie_extensores_hallux_control_selectivo_d = models.FloatField(null=True, blank=True)
+    pie_extensores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
+
 
     class Meta:
         db_table = 'session'

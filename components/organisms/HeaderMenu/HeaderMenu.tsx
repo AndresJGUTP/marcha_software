@@ -15,48 +15,44 @@ const items: MenuProps['items'] = [
       icon: <HomeOutlined />,
     },
     {
-      label: '¿Quiénes somos?',
-      key: '/about',
-    },
-    {
-      label: 'Servicios',
-      key: '/SubMenu',
+      label: 'Gestionar Usuarios',
       icon: <DownOutlined />,
+      key: '/gestionar_usuarios',
       children: [
         {
           type: 'group',
-          label: 'Análisis de la marcha',
           children: [
             {
-              label: 'Cinemática',
-              key: '/setting:1',
+              label: 'Agregar usuario',
+              key: '/gestionar_usuarios/registrar_usuario',
             },
             {
-              label: 'Cinética',
-              key: '/setting:2',
+              label: 'Editar usuario',
+              key: '/gestionar_usuarios/editar_usuario',
             },
           ],
         },
-        {
-          type: 'group',
-          label: 'Volumetría Cerebral',
-          children: [
-            {
-              label: 'Cambio temporal en volumetría',
-              key: '/setting:3',
-            },
-            {
-              label: 'Registro de imágenes medicas',
-              key: '/setting:4',
-            },
-          ],
-        },
-      ],
+      ]
     },
     {
-      label: 'Contacto',
-      key: '/contact',
-      icon: <PhoneOutlined />
+      label: 'Gestionar Sesiones',
+      icon: <DownOutlined />,
+      key: '/gestionar_sesiones',
+      children: [
+        {
+          type: 'group',
+          children: [
+            {
+              label: 'Agregar sesión',
+              key: '/gestionar_sesiones/crear_sesion',
+            },
+            {
+              label: 'Editar sesión',
+              key: '/gestionar_sesiones/editar_sesion',
+            },
+          ],
+        },
+      ]
     },
     {
       label: 'Consultar Reporte',
@@ -78,7 +74,7 @@ const HeaderMenu : React.FC = () => {
         <Header className={styles.header} style={{backgroundColor: 'white', paddingLeft:'1em'}}>
             <HeaderIcon className={styles.headerIcon} />
             <Menu onClick={onClick} mode="horizontal" items={items} className={styles.menuHeader} />
-            <UserAccessMenu />
+            {/* <UserAccessMenu /> */}
         </Header>
     )
 }

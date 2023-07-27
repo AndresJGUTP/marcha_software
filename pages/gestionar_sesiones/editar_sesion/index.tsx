@@ -160,6 +160,16 @@ const EditUser: FC<IEditUserProps> = () => {
         }
     };
 
+    const final = () => {
+        setCurrent(0);
+        setSessions(null)
+        setParent(null)
+        setPatient(null)
+        setSessionId(null)
+        setSessionEdit(null)
+        
+    };
+
     return (
         <div>
             <Title level={1}> Editar Sesión </Title>
@@ -193,14 +203,12 @@ const EditUser: FC<IEditUserProps> = () => {
                         }
                         disabled={!patient}
                         type="primary"
-                    // htmlType='submit'
-                    // form='sessionForm'
                     >
                         Guardar
                     </Button>
                 }
                 {current === steps.length - 1 && (
-                    <Button>
+                    <Button onClick={() => final()} >
                         Finalizar
                     </Button>
                 )}

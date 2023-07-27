@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Row, Col, Anchor, Divider, message } from 'antd';
+import { Form, Input, InputNumber, Row, Col, Anchor, Divider, message, Switch } from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 import styles from "./style.module.css";
 
@@ -144,7 +145,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     useEffect(() => {
         if(!!sessionData){
             form.setFieldsValue({
-                ...sessionData
+                ...sessionData,
               });
         }
     }, [])
@@ -194,7 +195,17 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         delete dataSubmit.patientName
         delete dataSubmit.phone
 
-        dataSubmit = {...dataSubmit, patient_id: patientData['id']}
+        dataSubmit = {
+            ...dataSubmit, 
+            patient_id: patientData['id'],
+            examen_medico: dataSubmit['examen_medico'] || false,
+            examen_computarizado: dataSubmit['examen_computarizado'] || false,
+            podobarometria: dataSubmit['podobarometria'] || false,
+            prueba_6_minutos: dataSubmit['prueba_6_minutos'] || false,
+            video_analogo: dataSubmit['video_analogo'] || false,
+        }
+
+        console.log(patientData)
 
         if (!sessionData) {
 
@@ -246,6 +257,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             <Link href="#datos_paciente" title="Datos del paciente" />
             <Link href="#datos_responsable" title="Datos del responsable" />
             <Link href="#datos_sesion" title="Datos de la sesión" />
+            <Link href="#procedimientos_realizados" title="Procedimientos realizados" />
             <Link href="#datos_clinicos" title="Datos del clínicos" />
             <Link href="#antecedentes" title="Antecedentes" />
             <Link href="#examen_fisico" title="Examen Físico" />
@@ -331,6 +343,45 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 {/* <Form.Item label="Fecha y Hora Sesión" name="session_date" style={{marginBottom: '0.5em'}}>
                     <Input />
                 </Form.Item> */}
+            </div>
+
+            <div id="procedimientos_realizados">
+                <Divider orientation="left">Procedimientos realizados</Divider>
+                <Form.Item label="Examen Físico" name="examen_medico" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
+                        />
+                </Form.Item>
+                <Form.Item label="Prueba de 6 minutos" name="prueba_6_minutos" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
+                        />
+                </Form.Item>
+                <Form.Item label="Video análogo" name="video_analogo" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
+                        />
+                </Form.Item>
+                <Form.Item label="Podobarometría" name="podobarometria" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
+                        />
+                </Form.Item>
+                <Form.Item label="Examen computarizado de la marcha" name="examen_computarizado" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
+                        />
+                </Form.Item>
             </div>
 
             <div id="datos_clinicos">

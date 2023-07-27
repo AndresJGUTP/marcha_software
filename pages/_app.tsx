@@ -20,16 +20,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <Layout>
 
-        {
-          router.pathname.startsWith('/admin') && <AdminSidebar />
-        }
+        {/* <AdminSidebar /> */}
 
         <Layout>
           <Content
             style={{
               overflow: 'visible',
               minHeight: "auto",
-              backgroundColor: router.pathname.startsWith('/admin') ? 'white' : 'inherit',
+              // backgroundColor: router.pathname.startsWith('/admin') ? 'white' : 'inherit',
+              backgroundColor: 'white',
               padding: "1em",
               margin: "1em"
             }}

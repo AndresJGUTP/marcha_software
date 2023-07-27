@@ -4,3 +4,12 @@
     flex-direction: column;
     align-items: center;
 }
+
+.formStyles{
+    width: 50%;
+    margin: auto;
+}
+
+.modalPDF{
+    background-color: red !important;
+}

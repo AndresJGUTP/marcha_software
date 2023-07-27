@@ -1,0 +1,2 @@
+docker build . --tag backend_marcha
+docker run -dp 8000:8000 --name cont_marcha --rm -it backend_marcha

@@ -22,8 +22,6 @@ export interface IEditarUsuarioProps {
 
 export default function EditarUsuario (props: IEditarUsuarioProps) {
 
-  // const [resquestStatus, setRequestStatus] = useState<string>()
-  const [messageApi, contextHolder] = message.useMessage();
   const [current, setCurrent] = useState(0);
   const [selectValue, setSelectValue] = useState("")
   const [user, setUser] = useState<any>()
@@ -34,23 +32,14 @@ export default function EditarUsuario (props: IEditarUsuarioProps) {
   });
 
   const onFinish = (data: any) => {
-    // setRequestStatus('loading')
     instance.get(`/${data['userType']}/${data['id']}`).then((response: any) => {
-        // setRequestStatus('success')
         setSelectValue(data['userType'])
         setUser(response.data)
-        messageApi.open({
-          type: 'success',
-          content: `Usuario encontrado`,
-        });
+        message.success('Usuario encontrado')
       })
       .catch((error: any) => {
-        // setRequestStatus('error')
         console.error(error)
-        messageApi.open({
-          type: 'error',
-          content: `Usuario no encontrado`,
-        });
+        message.error('Usuario no encontrado')
         setUser(null)
     });
   };
@@ -111,7 +100,6 @@ export default function EditarUsuario (props: IEditarUsuarioProps) {
   return (
     <div className={styles.stepsWrap}>
       <Title>Editar Usuario</Title>
-        {contextHolder}
         <Steps current={current} items={items} style={{width: '75%', margin: 'auto'}} />
 
           { steps[current].content }

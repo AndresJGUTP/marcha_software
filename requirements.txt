@@ -4,5 +4,6 @@ django-cors-headers==3.14.0
 pillow==9.5.0
 xhtml2pdf==0.2.11
 c3d==0.5.2
+opencv-python
 matplotlib
 numpy

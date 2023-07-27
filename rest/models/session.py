@@ -17,11 +17,11 @@ class Session(models.Model):
     # Variables CREADAS:
     # ________________________________________________________________________________
     ############## Procedimientos realizados:
-    # examen_medico = models.BooleanField(help_text="Examen médico")
-    # prueba_6_minutos = models.BooleanField(help_text="Prueba de 6 minutos")
-    # video_analogo = models.BooleanField(help_text="Video Análogo")
-    # podobarometria = models.BooleanField(help_text="Podobarometría")
-    # examen_computarizado = models.BooleanField(help_text="Examen computarizado de la marcha")
+    examen_medico = models.BooleanField(help_text="Examen médico", default=False)
+    prueba_6_minutos = models.BooleanField(help_text="Prueba de 6 minutos", default=False)
+    video_analogo = models.BooleanField(help_text="Video Análogo", default=False)
+    podobarometria = models.BooleanField(help_text="Podobarometría", default=False)
+    examen_computarizado = models.BooleanField(help_text="Examen computarizado de la marcha", default=False)
 
     ############## Antecedentes
     # take_valproic_acid = models.IntegerField(choices=VALPROIC_ACID_CHOISES,) #validators=[validator_cognitive_deficit])

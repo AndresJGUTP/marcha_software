@@ -18,8 +18,6 @@ from django.urls import path
 from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet, session_render_pdf_view
-from rest.views.medical_history import MedicalHistoryViewSet
-from rest.views.physical_exam import PhysicalExamViewSet
 from rest.views.upload_file import FileUploadView
 from django.urls import include, path
 from rest_framework import routers
@@ -31,8 +29,6 @@ router = routers.DefaultRouter()
 router.register(r'parent', ParentViewSet)
 router.register(r'patient', PatientViewSet)
 router.register(r'session', SessionViewSet)
-router.register(r'medical_history', MedicalHistoryViewSet)
-router.register(r'physical_exam', PhysicalExamViewSet)
 
 
 urlpatterns = [

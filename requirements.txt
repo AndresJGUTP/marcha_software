@@ -7,3 +7,4 @@ c3d==0.5.2
 opencv-python
 matplotlib
 numpy
+django-import-export

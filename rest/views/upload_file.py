@@ -27,9 +27,9 @@ class FileUploadView(APIView):
 
             session_date = session_serializer['session_date'].value.replace(':', '-')
             patient_id = session_serializer['patient_id'].value
-            folder_handler = FolderHandler(patient_id)
+            folder_handler = FolderHandler(session_id, patient_id)
             folder_handler.create_sesion(session_date)
-            folder_handler.save_kinematic_csv(request.FILES['file'])
+            folder_handler.save_kinematic_c3d(request.FILES['kinematic'])
 
             return Response(status=status.HTTP_200_OK)
 

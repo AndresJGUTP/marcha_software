@@ -8,7 +8,9 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from utils.plot_kinematics import plot_kinematics
-
+from utils.folder_handler import FolderHandler
+import os
+from utils.constants import RAW_C3D_FILENAME
 
 class SessionViewSet(viewsets.ModelViewSet):
     """
@@ -30,7 +32,14 @@ def session_render_pdf_view(request, *args, **kwargs):
     session = get_object_or_404(Session, pk=pk)
     title_file = f"PDF - Sesión ID {session.id} - {session.patient_id.first_name} {session.patient_id.first_last_name}"
 
-    graphic = plot_kinematics('notebooks/data.c3d', return_base64=True)
+    folderHandler = FolderHandler(session.id, session.patient_id.id)
+
+    c3d_path = os.path.join(folderHandler.get_kinematic_dir(), RAW_C3D_FILENAME)
+    print('##: ', c3d_path)
+
+    graphic = None
+    if os.path.exists(c3d_path):
+        graphic = plot_kinematics(c3d_path, return_base64=True)
 
     template_path = 'session/generate_pdf.html'
     context = {'session': session, 'graphic':graphic}

@@ -12,9 +12,9 @@ const { Dragger } = Upload;
 
 const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => {
     const props: UploadProps = {
-        name: 'file',
+        name: 'kinematic',
         multiple: false,
-        accept: '.csv,.c3d',
+        accept: '.c3d',
         showUploadList: {showRemoveIcon: false},
         action: `${process.env.BASE_URL}/session_upload/`,
         data: {session_id},
@@ -24,15 +24,16 @@ const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => 
             // console.log(info.file, info.fileList);
           }
           if (status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully.`);
+            message.success(`${info.file.name}: Subido exitosamente.`);
           } else if (status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            message.error(`${info.file.name}: Falló.`);
           }
         },
         onDrop(e) {
           // console.log('Dropped files', e.dataTransfer.files);
         },
       };
+      
     return (
         <>
             <Divider orientation="left">Cinemática</Divider>

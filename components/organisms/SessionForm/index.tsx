@@ -221,14 +221,14 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             }).then((response: any) => {
                 // setRequestStatus('success')
                 message.success('Guardado exitosamente');
-
+                
                 setSessionId && setSessionId(response['data']['id'])
             })
             .catch((error: any) => {
-                    message.error('Ha ocurrido un error. Datos no guardados');
-                    // setRequestStatus('error')
-                    console.log(error)
-                });
+                message.error('Ha ocurrido un error. Datos no guardados');
+                // setRequestStatus('error')
+                console.log(error)
+            });
         }
         else {
             dataSubmit = {...dataSubmit, session_date: sessionData['session_date']}
@@ -238,6 +238,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 }
             }).then((response: any) => {
                 setRequestStatus('success')
+                message.success('Guardado exitosamente');
+                setSessionId && setSessionId(sessionData['id'])
             })
                 .catch((error: any) => {
                     setRequestStatus('error')

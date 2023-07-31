@@ -3,7 +3,7 @@ import { Header } from "antd/lib/layout/layout";
 import HeaderIcon from "../../atoms/headerIcon/headerIcon";
 import styles from "./style.module.css";
 import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
+import { Button, Menu } from 'antd';
 import { HomeOutlined, PhoneOutlined, DownOutlined, FundOutlined} from '@ant-design/icons';
 import UserAccessMenu from '../UserAccessMenu/UserAccessMenu';
 import { useRouter } from 'next/router'
@@ -61,9 +61,15 @@ const items: MenuProps['items'] = [
     },
   ]
 
-const HeaderMenu : React.FC = () => {
-
+  
+  const HeaderMenu : React.FC = () => {
+    
     const router = useRouter()
+    
+    const openInNewTab = (url: string) => {
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+      if (newWindow) newWindow.opener = null
+    }
 
     const onClick: MenuProps['onClick'] = (e) => {
 
@@ -74,6 +80,7 @@ const HeaderMenu : React.FC = () => {
         <Header className={styles.header} style={{backgroundColor: 'white', paddingLeft:'1em'}}>
             <HeaderIcon className={styles.headerIcon} />
             <Menu onClick={onClick} mode="horizontal" items={items} className={styles.menuHeader} />
+            <Button type='primary' style={{margin: 'auto 0 auto auto'}} onClick={() => openInNewTab(process.env.BASE_URL+'/admin')}>Admin</Button>
             {/* <UserAccessMenu /> */}
         </Header>
     )

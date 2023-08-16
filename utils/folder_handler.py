@@ -1,5 +1,5 @@
 import os
-from utils.constants import STORAGE_PATH, SESSION_STRING_TEMPLATE, RAW_C3D_FILENAME
+from utils.constants import STORAGE_PATH, SESSION_STRING_TEMPLATE, RAW_C3D_FILENAME, RAW_CSV_EEG_FILENAME
 
 def save_file(f, path):
     destination = open(path, 'wb+')
@@ -35,15 +35,18 @@ class FolderHandler():
 
     def save_kinematic_c3d(self, c3d_file):
         save_file(c3d_file, os.path.join(self.base_path, self.session_folder_name, 'kinematic', RAW_C3D_FILENAME) )
+        
+    def save_eeg_csv(self, csv_file):
+        save_file(csv_file, os.path.join(self.base_path, self.session_folder_name, 'eeg', RAW_CSV_EEG_FILENAME) )
 
     def get_kinematic_dir(self):
         return os.path.join(self.base_path, self.session_folder_name, 'kinematic')
 
     def get_dynamic_dir(self):
-        return os.path.join(self.session_folder_name, 'dynamic')
+        return os.path.join(self.base_path, self.session_folder_name, 'dynamic')
 
     def get_eeg_dir(self):
-        return os.path.join(self.session_folder_name, 'eeg')
+        return os.path.join(self.base_path, self.session_folder_name, 'eeg')
     
     def set_session_folder_name(self, folder_name):
         self.session_folder_name = folder_name

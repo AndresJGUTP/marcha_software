@@ -4,6 +4,7 @@ import c3d
 import numpy as np
 from io import BytesIO
 import base64
+import pandas as pd
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -70,6 +71,44 @@ def plot_kinematics(data_path, return_base64=False):
                     alpha= 0.2)
 
 
+
+    plt.tight_layout()
+
+    if return_base64:
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
+
+        return graphic
+    else:
+         return fig
+
+def plot_eeg(data_path, return_base64=False):
+
+    df = pd.read_csv(data_path)
+
+    fig, axs = plt.subplots(4, 1, figsize=(8, 8))
+
+    axs[0].plot(df['Channel1'])
+    axs[0].set_title('Canal #1')
+    axs[0].grid('on')
+
+    axs[1].plot(df['Channel2'])
+    axs[1].set_title('Canal #2')
+    axs[1].grid('on')
+
+    axs[2].plot(df['Channel3'])
+    axs[2].set_title('Canal #3')
+    axs[2].grid('on')
+
+    axs[3].plot(df['Channel4'])
+    axs[3].set_title('Canal #4')
+    axs[3].grid('on')
 
     plt.tight_layout()
 

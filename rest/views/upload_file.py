@@ -6,11 +6,11 @@ from rest.models.session import Session
 from rest_framework import status
 from rest.serializers.session import SessionSerializer
 
-def handle_uploaded_file(f):
-    destination = open('storage/prueba.csv', 'wb+')
-    for chunk in f.chunks():
-        destination.write(chunk)
-    destination.close()
+# def handle_uploaded_file(f):
+#     destination = open('storage/prueba.csv', 'wb+')
+#     for chunk in f.chunks():
+#         destination.write(chunk)
+#     destination.close()
 
 class FileUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -29,7 +29,14 @@ class FileUploadView(APIView):
             patient_id = session_serializer['patient_id'].value
             folder_handler = FolderHandler(session_id, patient_id)
             folder_handler.create_sesion(session_date)
-            folder_handler.save_kinematic_c3d(request.FILES['kinematic'])
+
+            if request.FILES.get('kinematic', False):
+                folder_handler.save_kinematic_c3d(request.FILES['kinematic'])
+            elif request.FILES.get('eeg', False):
+                folder_handler.save_eeg_csv(request.FILES['eeg'])
+
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
             return Response(status=status.HTTP_200_OK)
 

@@ -8,3 +8,4 @@ opencv-python
 matplotlib
 numpy
 django-import-export
+pandas

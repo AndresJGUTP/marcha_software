@@ -1097,7 +1097,19 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 
 <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINEMÁTICA</h1>
 
-<img src="data:image/png;base64,{{ graphic|safe }}">
+<img src="data:image/png;base64,{{ c3d_graphic|safe }}">
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 5-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+<div>
+    <pdf:nextpage />
+</div>
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">ELECTROMIOGRAFÍA</h1>
+
+<img src="data:image/png;base64,{{ eeg_graphic|safe }}">
 
 
 <!-- ------------------------------------------------------------------------------------------------------ -->

@@ -11,6 +11,11 @@
     margin-top: 4em;
 }
 
+.selectItem div{
+    width: 100%;
+    max-width: 100%;
+}
+
 .columnItem div{
     flex-direction: column;
     width: 100%;

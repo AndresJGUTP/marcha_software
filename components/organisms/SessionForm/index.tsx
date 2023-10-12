@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Row, Col, Anchor, Divider, message, Switch } from 'antd';
+import { Form, Input, InputNumber, Row, Col, Anchor, Divider, message, Switch, Select } from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
@@ -8,6 +8,7 @@ import styles from "./style.module.css";
 
 import { useRouter } from 'next/router'
 import Title from 'antd/lib/typography/Title';
+import { HIPERLAXITUD_CHOICES, PIE_CHOICES, RODILLA_PATELA_PERONE_CHOICES, SIGNOS_RETRACCION_MUSCULAR_CHOICES } from 'constants/SessionForm_Choices';
 
 const { Link } = Anchor;
 const { TextArea } = Input;
@@ -203,6 +204,42 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             podobarometria: dataSubmit['podobarometria'] || false,
             prueba_6_minutos: dataSubmit['prueba_6_minutos'] || false,
             video_analogo: dataSubmit['video_analogo'] || false,
+            tobillo_signo_silverskiold_movilidad_d: dataSubmit['tobillo_signo_silverskiold_movilidad_d'] || 0,
+            tobillo_signo_silverskiold_movilidad_i: dataSubmit['tobillo_signo_silverskiold_movilidad_i'] || 0,
+            signo_ely_duncan_d: dataSubmit['signo_ely_duncan_d'] || 0,
+            signo_ely_duncan_i: dataSubmit['signo_ely_duncan_i'] || 0,
+            signo_phelps_d: dataSubmit['signo_phelps_d'] || 0,
+            signo_phelps_i: dataSubmit['signo_phelps_i'] || 0,
+            test_ober_d: dataSubmit['test_ober_d'] || 0,
+            test_ober_i: dataSubmit['test_ober_i'] || 0,
+            descr_pie_apoyo_tobillo_d: dataSubmit['descr_pie_apoyo_tobillo_d'] || 0,
+            descr_pie_apoyo_tobillo_i: dataSubmit['descr_pie_apoyo_tobillo_i'] || 0,
+            descr_pie_apoyo_retropie_d: dataSubmit['descr_pie_apoyo_retropie_d'] || 0,
+            descr_pie_apoyo_retropie_i: dataSubmit['descr_pie_apoyo_retropie_i'] || 0,
+            descr_pie_apoyo_mediopie_d: dataSubmit['descr_pie_apoyo_mediopie_d'] || 0,
+            descr_pie_apoyo_mediopie_i: dataSubmit['descr_pie_apoyo_mediopie_i'] || 0,
+            descr_pie_apoyo_antepie_d: dataSubmit['descr_pie_apoyo_antepie_d'] || 0,
+            descr_pie_apoyo_antepie_i: dataSubmit['descr_pie_apoyo_antepie_i'] || 0,
+            descr_pie_apoyo_hallux_d: dataSubmit['descr_pie_apoyo_hallux_d'] || 0,
+            descr_pie_apoyo_hallux_i: dataSubmit['descr_pie_apoyo_hallux_i'] || 0,
+            descr_pie_sin_apoyo_tobillo_d: dataSubmit['descr_pie_sin_apoyo_tobillo_d'] || 0,
+            descr_pie_sin_apoyo_tobillo_i: dataSubmit['descr_pie_sin_apoyo_tobillo_i'] || 0,
+            descr_pie_sin_apoyo_retropie_d: dataSubmit['descr_pie_sin_apoyo_retropie_d'] || 0,
+            descr_pie_sin_apoyo_retropie_i: dataSubmit['descr_pie_sin_apoyo_retropie_i'] || 0,
+            descr_pie_sin_apoyo_mediopie_d: dataSubmit['descr_pie_sin_apoyo_mediopie_d'] || 0,
+            descr_pie_sin_apoyo_mediopie_i: dataSubmit['descr_pie_sin_apoyo_mediopie_i'] || 0,
+            descr_pie_sin_apoyo_antepie_d: dataSubmit['descr_pie_sin_apoyo_antepie_d'] || 0,
+            descr_pie_sin_apoyo_antepie_i: dataSubmit['descr_pie_sin_apoyo_antepie_i'] || 0,
+            descr_pie_sin_apoyo_hallux_d: dataSubmit['descr_pie_sin_apoyo_hallux_d'] || 0,
+            descr_pie_sin_apoyo_hallux_i: dataSubmit['descr_pie_sin_apoyo_hallux_i'] || 0,
+            hiperlaxitud_articular_i: dataSubmit['hiperlaxitud_articular_i'] || 0,
+            hiperlaxitud_articular_d: dataSubmit['hiperlaxitud_articular_d'] || 0,
+            signos_distonia: dataSubmit['signos_distonia'] || 0,
+            tono_muscular: dataSubmit['tono_muscular'] || 0,
+            patela_alta_d: dataSubmit['patela_alta_d'] || 0,
+            patela_alta_i: dataSubmit['patela_alta_i'] || 0,
+            perone_corto_d: dataSubmit['perone_corto_d'] || 0,
+            perone_corto_i: dataSubmit['perone_corto_i'] || 0,  
         }
 
         console.log(patientData)
@@ -590,10 +627,16 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
 
                         <Row>
-                            <Col span={24}>
+                            <Col span={6}>
                                 <Title level={5} style={{ margin: 0 }}> Descripción Del Pie </Title>
                                 <Title level={5} style={{ margin: 0 }}> CON APOYO </Title>
                             </Col>
+                        </Row>
+
+                        <Row>
+                            <Col span={6}></Col>
+                            <Col span={9}>Izquierdo:</Col>
+                            <Col span={9}>Derecho:</Col>
                         </Row>
 
                         <Row>
@@ -601,13 +644,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Tobillo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_i">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_i">
+                                    <Select defaultValue={0} options={PIE_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_tobillo_d" >
+                                    <Select defaultValue={0} options={PIE_CHOICES}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -616,13 +659,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Retropie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_i">
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_i">
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_d">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_retropie_d">
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -631,13 +674,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Mediopie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_mediopie_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -646,13 +689,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Antepie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_d">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_antepie_d">
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -661,13 +704,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Hallux </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_apoyo_hallux_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -679,17 +722,23 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         </Row>
 
                         <Row>
+                            <Col span={6}></Col>
+                            <Col span={9}>Izquierdo:</Col>
+                            <Col span={9}>Derecho:</Col>
+                        </Row>
+
+                        <Row>
                             <Col span={6} className={styles.centerLabel}>
                                 <span> Tobillo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_i" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_i">
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_tobillo_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -698,13 +747,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Retropie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_retropie_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -713,13 +762,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Mediopie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_mediopie_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -728,13 +777,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Antepie </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_antepie_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -743,13 +792,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Hallux </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_i" >
-                                    <Input />
+                                <Form.Item label="" className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_i" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_d" >
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="descr_pie_sin_apoyo_hallux_d" >
+                                    <Select options={PIE_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -795,17 +844,18 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         </Row>
 
                         <Row>
-                            <Col span={10} >
+                            <Col span={8} >
                                 <span> Hiperlaxitud Muscular : </span>
                             </Col>
                             <Col span={6}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_i">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_i">
+                                    <Select defaultValue={0} options={HIPERLAXITUD_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={6}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_d">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_d">
+                                    <Select defaultValue={0} options={HIPERLAXITUD_CHOICES}/>
+                                    {/* <Input /> */}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1132,13 +1182,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_phelps_i">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="signo_phelps_i">
+                                    <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="signo_phelps_d">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="signo_phelps_d">
+                                    <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1152,13 +1202,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="test_ober_i">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="test_ober_i">
+                                    <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="test_ober_d">
-                                    <Input />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="test_ober_d">
+                                    <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1200,13 +1250,21 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_i`}>
+                                            content: nameItemLeft == 'signo_ely_duncan' ? 
+                                            <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_i`}>
+                                                <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
+                                            </Form.Item> : 
+                                            <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_i`}>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_i`}>
+                                            content: nameItemLeft == 'signo_ely_duncan' ? 
+                                            <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_d`}>
+                                                <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
+                                            </Form.Item> : 
+                                            <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_d`}>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1224,13 +1282,21 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemLeft}_d`}>
+                                            content: nameItemRight == 'patela_alta' || nameItemRight== 'perone_corto' ? 
+                                            <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_i`}>
+                                                <Select options={RODILLA_PATELA_PERONE_CHOICES} defaultValue={0}/>
+                                            </Form.Item> : 
+                                            <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_i`}>
                                                 <Input />
                                             </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_d`}>
+                                            content: nameItemRight == 'patela_alta' || nameItemRight== 'perone_corto' ? 
+                                            <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_d`}>
+                                                <Select options={RODILLA_PATELA_PERONE_CHOICES} defaultValue={0}/>
+                                            </Form.Item> : 
+                                            <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${nameItemRight}_d`}>
                                                 <Input />
                                             </Form.Item>
                                         }
@@ -1297,15 +1363,15 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                     items: [
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_i">
-                                                <Input />
-                                            </Form.Item>
+                                            content: <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_i">
+                                            <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
+                                        </Form.Item>
                                         },
                                         {
                                             span: 12,
-                                            content: <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_d">
-                                                <Input />
-                                            </Form.Item>
+                                            content: <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="tobillo_signo_silverskiold_movilidad_d">
+                                            <Select options={SIGNOS_RETRACCION_MUSCULAR_CHOICES} defaultValue={0}/>
+                                        </Form.Item>
                                         }
                                     ]
                                 })

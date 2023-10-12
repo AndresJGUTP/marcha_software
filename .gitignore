@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io
 
+# Openpose Models
+openpose_models
+
 # storage
 storage/*
 # exception to the rule

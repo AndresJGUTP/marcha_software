@@ -65,10 +65,22 @@ RUN ./bootstrap
 RUN make -j $(nproc)
 RUN make install -j`nproc`
 
+# RUN wget https://developer.download.nvidia.com/compute/redist/cudnn/v7.6.5/cudnn-10.1-linux-x64-v7.6.5.32.tgz
+# RUN mkdir /usr/local/cudnn-10.1-7.6.5.32
+# RUN tar -xzf cudnn-10.1-linux-x64-v7.6.5.32.tgz -C /usr/local/cudnn-10.1-7.6.5.32 
+
+# CUDNN_URL="http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz"
+RUN echo "wget -c http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz ${WGET_VERBOSE}"
+RUN wget -c http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz ${WGET_VERBOSE}
+RUN tar -xzf cudnn-8.0-linux-x64-v5.1.tgz -C /usr/local
+RUN rm cudnn-8.0-linux-x64-v5.1.tgz && ldconfig
+RUN echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ~/.bashrc
+
 RUN apt install -y git
 
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose /usr/src/openpose/
 WORKDIR /usr/src/openpose/
+# RUN git reset --hard 5e57c2d
 RUN bash ./scripts/ubuntu/install_deps.sh
 
 # RUN deb http://ftp2.cn.debian.org/debian sid main contrib non-free
@@ -85,22 +97,13 @@ WORKDIR /usr/src/openpose/3rdparty/
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/caffe.git
 RUN git clone https://github.com/pybind/pybind11
 
-# RUN wget https://developer.download.nvidia.com/compute/redist/cudnn/v7.6.5/cudnn-10.1-linux-x64-v7.6.5.32.tgz
-# RUN mkdir /usr/local/cudnn-10.1-7.6.5.32
-# RUN tar -xzf cudnn-10.1-linux-x64-v7.6.5.32.tgz -C /usr/local/cudnn-10.1-7.6.5.32 
-
-# CUDNN_URL="http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz"
-RUN echo "wget -c http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz ${WGET_VERBOSE}"
-RUN wget -c http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-x64-v5.1.tgz ${WGET_VERBOSE}
-RUN tar -xzf cudnn-8.0-linux-x64-v5.1.tgz -C /usr/local
-RUN rm cudnn-8.0-linux-x64-v5.1.tgz && ldconfig
-
-RUN echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ~/.bashrc
-
 
 WORKDIR /usr/src/openpose/
 RUN mkdir build/
 WORKDIR /usr/src/openpose/build/
+
+COPY models/* /usr/src/openpose/models/
+
 RUN cmake ..
 # RUN make -j`nproc`
 RUN make -j $(nproc)

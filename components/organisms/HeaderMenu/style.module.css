@@ -1,14 +1,18 @@
 .header{
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .headerIcon{
     padding: 0.5em 0;
+    width: 25%;
 }
 
 .menuHeader{
-    width: 50%;
+    width: 75%;
     height: 100%;
     border: 0;
+    /* background-color: red; */
+    /* display: inline-block; */
 }

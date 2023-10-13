@@ -435,12 +435,12 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                     <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_d %}{{ session.get_descr_pie_apoyo_retropie_d_display }}{% else %}-{% endif %}</p></td>
                     <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_i %}{{ session.get_descr_pie_apoyo_retropie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
-                <tr class="tr_data falta" style="padding: 0;">
+                <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Mediopie:</td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}Verificar{% endif %}</p></td>
+                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
+                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Antepie:</td>
@@ -469,12 +469,12 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                     <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_d %}{{ session.get_descr_pie_sin_apoyo_retropie_d_display }}{% else %}-{% endif %}</p></td>
                     <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_i %}{{ session.get_descr_pie_sin_apoyo_retropie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
-                <tr class="tr_data falta" style="padding: 0;">
+                <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Mediopie:</td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}Verificar{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}Verificar{% endif %}</p></td>
+                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
+                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Antepie:</td>
@@ -1086,31 +1086,55 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
     </table>
 </div>
 
-<div>
-    <pdf:nextpage />
-</div>
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
 <!-- ----------------------------------------------PAGE 4-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
+{% if c3d_graphic %}
+<div>
+    <pdf:nextpage />
+</div>
 
 <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINEMÁTICA</h1>
-
 <img src="data:image/png;base64,{{ c3d_graphic|safe }}">
+
+{% else %}
+
+{% endif %}
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
 <!-- ----------------------------------------------PAGE 5-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
+{% if force_plates_graphic %}
+<div>
+    <pdf:nextpage />
+</div>
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">PLACAS DE FUERZA</h1>
+<img src="data:image/png;base64,{{ force_plates_graphic|safe }}">
+
+{% else %}
+
+{% endif %}
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 6-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+
+{% if eeg_graphic %}
 <div>
     <pdf:nextpage />
 </div>
 
 <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">ELECTROMIOGRAFÍA</h1>
-
 <img src="data:image/png;base64,{{ eeg_graphic|safe }}">
 
+{% else %}
+
+{% endif %}
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <!-- ---------------------------------------------- END --------------------------------------------------- -->

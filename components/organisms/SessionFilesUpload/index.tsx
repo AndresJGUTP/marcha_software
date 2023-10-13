@@ -12,9 +12,7 @@ const { Dragger } = Upload;
 
 const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => {
     const props: UploadProps = {
-        name: 'kinematic',
         multiple: false,
-        accept: '.c3d',
         showUploadList: {showRemoveIcon: false},
         action: `${process.env.BASE_URL}/session_upload/`,
         data: {session_id},
@@ -37,7 +35,7 @@ const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => 
     return (
         <>
             <Divider orientation="left">Cinemática</Divider>
-                <Dragger {...props} style={{width: '75%', margin: 'auto'}}>
+                <Dragger {...props} name='kinematic' accept='.c3d' style={{width: '75%', margin: 'auto'}}>
                     <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                     </p>
@@ -47,8 +45,8 @@ const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => 
                     </p>
                 </Dragger>
 
-            <Divider orientation="left">Electromiografía</Divider>
-                <Dragger {...props} style={{width: '75%', margin: 'auto'}}>
+            {/* <Divider orientation="left">Electromiografía</Divider>
+                <Dragger {...props} name='eeg' accept='.csv' style={{width: '75%', margin: 'auto'}}>
                     <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                     </p>
@@ -56,7 +54,7 @@ const SessionFilesUpload: React.FC<SessionFilesUploadProps> = ({session_id}) => 
                     <p className="ant-upload-hint">
                         Click o arrastre los archivos a esta área para cargar
                     </p>
-                </Dragger>
+                </Dragger> */}
         </>
     );
 };

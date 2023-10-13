@@ -13,8 +13,8 @@ export interface ICreateSessionProps {
 
 const CreateSession : FC<ICreateSessionProps> = () => {
   
-  const [patient, setPatient] = useState()
-  const [parent, setParent] = useState()
+  const [patient, setPatient] = useState(null)
+  const [parent, setParent] = useState(null)
   const [current, setCurrent] = useState(0)
   const [sessionId, setSessionId] = useState(null)
 
@@ -71,6 +71,13 @@ const CreateSession : FC<ICreateSessionProps> = () => {
     setCurrent(current - 1);
   };
 
+  const resetStates = () => {
+    setPatient(null)
+    setParent(null)
+    setCurrent(0)
+    setSessionId(null)
+  }
+
   return (
     <div>
       <Title level={1}> Registrar Sesión </Title>
@@ -111,7 +118,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
           </Button>
         }
         {current === steps.length - 1 && (
-          <Button>
+          <Button onClick={() => resetStates()} >
             Finalizar
           </Button>
         )}

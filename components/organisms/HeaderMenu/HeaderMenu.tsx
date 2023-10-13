@@ -59,6 +59,11 @@ const items: MenuProps['items'] = [
       key: '/consultar_reporte',
       icon: <FundOutlined />,
     },
+    // {
+    //   label: 'Visualizar Resonancia',
+    //   key: '/visualizar_resonancia',
+    //   icon: <FundOutlined />,
+    // },
   ]
 
   
@@ -80,7 +85,7 @@ const items: MenuProps['items'] = [
         <Header className={styles.header} style={{backgroundColor: 'white', paddingLeft:'1em'}}>
             <HeaderIcon className={styles.headerIcon} />
             <Menu onClick={onClick} mode="horizontal" items={items} className={styles.menuHeader} />
-            <Button type='primary' style={{margin: 'auto 0 auto auto'}} onClick={() => openInNewTab(process.env.BASE_URL+'/admin')}>Admin</Button>
+            {/* <Button type='primary' style={{margin: 'auto 0 auto auto'}} onClick={() => openInNewTab(process.env.BASE_URL+'/admin')}>Admin</Button> */}
             {/* <UserAccessMenu /> */}
         </Header>
     )

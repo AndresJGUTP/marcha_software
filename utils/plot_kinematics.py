@@ -35,6 +35,13 @@ def plot_kinematics(data_path, return_base64=False):
         point_data = np.array([tuple_frame[1] for tuple_frame in data])
         point_data = np.transpose(point_data, (2, 1, 0))
 
+    uncertanty_angles = None
+    try:
+        uncertanty_angles = pd.read_json('app_config/gait_normality_cycle.json')
+    except:
+        uncertanty_angles = None
+         
+
     fig, axs = plt.subplots(5, 3, figsize=(10, 10))
 
     if ANGLES_TO_PLOT[0][0] not in point_labels:
@@ -46,41 +53,63 @@ def plot_kinematics(data_path, return_base64=False):
 
             title = l_angle_plot[1:]
 
-            axs[row, 0].plot(X_l, 'r')
-            axs[row, 0].plot(X_r, 'g')
+            x_axis = np.linspace(0, 1, len(X_l))
 
+            axs[row, 0].plot(x_axis, X_l, 'r')
+            axs[row, 0].plot(x_axis, X_r, 'g')
             axs[row, 0].set_title(f'{title} X')
-            axs[row, 0].fill_between(
-                    x= range(len(X_l)), 
-                    y1= X_l+X_l*0.5, 
-                    y2= X_l-X_l*0.5,
-                    color= "gray",
-                    alpha= 0.2)
-            
-            axs[row, 1].plot(Y_l, 'r')
-            axs[row, 1].plot(Y_r, 'g')
 
+            axs[row, 1].plot(x_axis, Y_l, 'r')
+            axs[row, 1].plot(x_axis, Y_r, 'g')
             axs[row, 1].set_title(f'{title} Y')
-            axs[row, 1].fill_between(
-                    x= range(len(Y_l)), 
-                    y1= Y_l+Y_l*0.5, 
-                    y2= Y_l-Y_l*0.5,
-                    color= "gray",
-                    alpha= 0.2)
             
 
-            axs[row, 2].plot(Z_l, 'r')
-            axs[row, 2].plot(Z_r, 'g')
-
+            axs[row, 2].plot(x_axis, Z_l, 'r')
+            axs[row, 2].plot(x_axis, Z_r, 'g')
             axs[row, 2].set_title(f'{title} Z')
-            axs[row, 2].fill_between(
-                    x= range(len(Z_l)), 
-                    y1= Z_l+Z_l*0.5, 
-                    y2= Z_l-Z_l*0.5,
-                    color= "gray",
-                    alpha= 0.2)
 
+            if uncertanty_angles is not None:
+                 
+                axs[row, 0].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[l_angle_plot+'X'][0], 
+                    y2 = uncertanty_angles[l_angle_plot+'X'][1],
+                    color= "#E3BCBC"
+                )
+                axs[row, 0].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[r_angle_plot+'X'][0], 
+                    y2 = uncertanty_angles[r_angle_plot+'X'][1],
+                    color= "#BCE3BC", alpha=0.5
+                )
+    
 
+                axs[row, 1].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[l_angle_plot+'Y'][0], 
+                    y2 = uncertanty_angles[l_angle_plot+'Y'][1],
+                    color= "#E3BCBC"
+                )
+                axs[row, 1].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[r_angle_plot+'Y'][0], 
+                    y2 = uncertanty_angles[r_angle_plot+ 'Y'][1],
+                    color= "#BCE3BC", alpha=0.5
+                )
+                 
+
+                axs[row, 2].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[l_angle_plot+'Z'][0], 
+                    y2 = uncertanty_angles[l_angle_plot+'Z'][1],
+                    color= "#E3BCBC"
+                )
+                axs[row, 2].fill_between(
+                    x = x_axis, 
+                    y1 = uncertanty_angles[r_angle_plot+'Z'][0], 
+                    y2 = uncertanty_angles[r_angle_plot+'Z'][1],
+                    color= "#BCE3BC", alpha=0.5
+                )
 
     plt.tight_layout()
 
@@ -149,6 +178,12 @@ def plot_force_plate(data_path, return_base64=False):
 
         analog_data = np.array([tuple_frame[2] for tuple_frame in data])
         analog_data = np.transpose(analog_data, (2, 1, 0))
+
+    uncertanty_force = None
+    try:
+        uncertanty_force = pd.read_json('app_config/force_plate_normality.json')
+    except:
+        uncertanty_force = None
      
     fig, axs = plt.subplots(4, 3, figsize=(10, 10))
 
@@ -161,34 +196,42 @@ def plot_force_plate(data_path, return_base64=False):
         except:
                 print(f'No existe: {x_measure}, {y_measure}, {z_measure}')
                 continue
+        
+        x_axis = np.linspace(0, 1, len(X))
 
-        axs[row, 0].plot(X, 'r')
+        axs[row, 0].plot(x_axis, X, 'r')
         axs[row, 0].set_title(f'{x_measure}')
-        axs[row, 0].fill_between(
-                x= range(len(X)), 
-                y1= X+X*0.5, 
-                y2= X-X*0.5,
-                color= "gray",
-                alpha= 0.2)
         
-        axs[row, 1].plot(Y, 'b')
+        axs[row, 1].plot(x_axis, Y, 'b')
         axs[row, 1].set_title(f'{y_measure}')
-        axs[row, 1].fill_between(
-                x= range(len(Y)), 
-                y1= Y+Y*0.5, 
-                y2= Y-Y*0.5,
-                color= "gray",
-                alpha= 0.2)
                 
-        axs[row, 2].plot(Z, 'g')
+        axs[row, 2].plot(x_axis, Z, 'g')
         axs[row, 2].set_title(f'{z_measure}')
-        axs[row, 2].fill_between(
-                x= range(len(Z)), 
-                y1= Z+Z*0.5, 
-                y2= Z-Z*0.5,
-                color= "gray",
-                alpha= 0.2)
-        
+
+        if uncertanty_force is not None:
+                 
+            axs[row, 0].fill_between(
+                x = x_axis, 
+                y1 = uncertanty_force[x_measure][0], 
+                y2 = uncertanty_force[x_measure][1],
+                color= "#E3BCBC"
+            )
+
+            axs[row, 1].fill_between(
+                x = x_axis, 
+                y1 = uncertanty_force[y_measure][0], 
+                y2 = uncertanty_force[y_measure][1],
+                color= "#8495FF"
+            )
+
+            axs[row, 2].fill_between(
+                x = x_axis, 
+                y1 = uncertanty_force[z_measure][0], 
+                y2 = uncertanty_force[z_measure][1],
+                color= "#BCE3BC"
+            )
+                
+  
     plt.tight_layout()
 
     if return_base64:

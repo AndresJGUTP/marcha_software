@@ -19,6 +19,7 @@ from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet, session_render_pdf_view
 from rest.views.upload_file import FileUploadView
+from rest.views.upload_config_file import ConfigFileUploadView
 from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
@@ -35,6 +36,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('session_upload/', FileUploadView.as_view()),
+    path('upload_configfile/', ConfigFileUploadView.as_view()),
     path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view')
 ]
 

@@ -4,7 +4,7 @@ import HeaderIcon from "../../atoms/headerIcon/headerIcon";
 import styles from "./style.module.css";
 import type { MenuProps } from 'antd';
 import { Button, Menu } from 'antd';
-import { HomeOutlined, PhoneOutlined, DownOutlined, FundOutlined} from '@ant-design/icons';
+import { HomeOutlined, ToolOutlined, DownOutlined, FundOutlined} from '@ant-design/icons';
 import UserAccessMenu from '../UserAccessMenu/UserAccessMenu';
 import { useRouter } from 'next/router'
 
@@ -58,6 +58,11 @@ const items: MenuProps['items'] = [
       label: 'Consultar Reporte',
       key: '/consultar_reporte',
       icon: <FundOutlined />,
+    },
+    {
+      label: 'Configuración',
+      key: '/configuracion',
+      icon: <ToolOutlined />,
     },
     // {
     //   label: 'Visualizar Resonancia',

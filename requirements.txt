@@ -9,3 +9,5 @@ matplotlib
 numpy
 django-import-export
 pandas
+pyyaml
+uritemplate

@@ -24,6 +24,8 @@ from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
 
 
 router = routers.DefaultRouter()
@@ -37,7 +39,16 @@ urlpatterns = [
     path('', include(router.urls)),
     path('session_upload/', FileUploadView.as_view()),
     path('upload_configfile/', ConfigFileUploadView.as_view()),
-    path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view')
+    path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view'),
+    path('openapi', get_schema_view(
+            title="Your Project",
+            description="API for all things …",
+            version="1.0.0"
+        ), name='openapi-schema'),
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url':'openapi-schema'}
+    ), name='swagger-ui'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

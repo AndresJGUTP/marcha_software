@@ -41,8 +41,8 @@ urlpatterns = [
     path('upload_configfile/', ConfigFileUploadView.as_view()),
     path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view'),
     path('openapi', get_schema_view(
-            title="Your Project",
-            description="API for all things …",
+            title="Backend Marcha Software Docs",
+            description="API for backend marcha software",
             version="1.0.0"
         ), name='openapi-schema'),
     path('swagger-ui/', TemplateView.as_view(

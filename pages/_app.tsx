@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import HeaderMenu from '../components/organisms/HeaderMenu/HeaderMenu'
 import { Layout } from 'antd';
 import React from 'react';
+import Head from 'next/head'
 
 const { Footer, Content } = Layout
 import { useRouter } from 'next/router';
@@ -15,6 +16,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Layout style={{ height: '100vh' }}>
+
+      <Head>
+        <title>Software Marcha</title>
+      </Head>
 
       <HeaderMenu />
 

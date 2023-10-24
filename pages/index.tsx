@@ -30,16 +30,16 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '400px'}}
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px'}}
                   onClick={() => router.push('gestionar_usuarios/registrar_usuario')}
-                  cover={<img alt="Agregar Usuario" src="/images/add_user.png" />}
+                  cover={<img alt="Agregar Usuario" src="/images/add_user.png" style={{width: '75%', margin: 'auto'}} />}
                 >
                   <Meta title="Crear Usuario Nuevo" description="En esta sección podrás registrar un nuevo paciente o responsable" />
                 </Card>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '400px' }}
-                  cover={<img alt="Editar Usuario" src="/images/user_config.png" />}
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  cover={<img alt="Editar Usuario" src="/images/user_config.png" style={{width: '75%', margin: 'auto'}} />}
                   onClick={() => router.push('gestionar_usuarios/editar_usuario')}
                 >
                   <Meta title="Editar Usuario Existente" description="Sección dedicada a editar usuarios ya creados" />
@@ -54,16 +54,16 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '400px' }}
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
                   onClick={() => router.push('gestionar_sesiones/crear_sesion/')}
-                  cover={<img alt="Agregar Usuario" src="/images/add_report.png" />}
+                  cover={<img alt="Agregar Usuario" src="/images/add_report.png" style={{width: '75%', margin: 'auto'}} />}
                 >
                   <Meta title="Nueva Sesión" description="En esta sección podrás crear una nueva sesión" />
                 </Card>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '400px' }}
-                  cover={<img alt="Editar Usuario" src="/images/editar_reporte.png" />}
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  cover={<img alt="Editar Usuario" src="/images/editar_reporte.png" style={{width: '75%', margin: 'auto'}} />}
                   onClick={() => router.push('gestionar_sesiones/editar_sesion/')}
                 >
                   <Meta title="Editar sesión" description="Sección dedicada a editar sesiones ya creadas" />
@@ -78,11 +78,11 @@ export default function Home() {
               <>
                 <Card
                     hoverable
-                    style={{ width: 250, margin: '1em', height: '400px' }}
+                    style={{ width: 250, margin: '1em', height: '350px' }}
                     onClick={ () => router.push('consultar_reporte/')}
-                    cover={<img alt="Agregar Usuario" src="/images/add_report.png" />}
+                    cover={<img alt="Agregar Usuario" src="/images/report_icon.png" style={{width: '75%', margin: 'auto'}} />}
                     >
-                    <Meta title="Nuevo Reporte" description="En esta sección podrás generar un nuevo reporte" />
+                    <Meta title="Consultar Reporte" description="En esta sección podrás generar un nuevo reporte" />
                 </Card>
               </>
             }

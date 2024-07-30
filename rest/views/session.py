@@ -11,6 +11,7 @@ from utils.plot_kinematics import plot_kinematics, plot_eeg, plot_force_plate
 from utils.folder_handler import FolderHandler
 import os
 from utils.constants import RAW_C3D_FILENAME, RAW_CSV_EEG_FILENAME
+from time import strftime
 
 class SessionViewSet(viewsets.ModelViewSet):
     """
@@ -30,7 +31,7 @@ class SessionViewSet(viewsets.ModelViewSet):
 def session_render_pdf_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     session = get_object_or_404(Session, pk=pk)
-    title_file = f"PDF - Sesión ID {session.id} - {session.patient_id.first_name} {session.patient_id.first_last_name}"
+    title_file = f"{strftime('%Y%m%d')}_sesion_{session.id}"
 
     folderHandler = FolderHandler(session.id, session.patient_id.id)
 

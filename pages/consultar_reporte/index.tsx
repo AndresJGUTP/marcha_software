@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Button, Table, Typography, Select, Form, Space, message, InputNumber, Tag, Modal, Spin } from 'antd';
+import { Button, Table, Typography, Select, Form, Space, message, InputNumber, Tag, Spin } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 const axios = require('axios').default;
 
@@ -13,11 +13,8 @@ export interface IShowReportProps {
 }
 
 const ShowReport = () => {
-  const [selectValue, setSelectValue] = useState("id_session")
-  const [sessionData, setSessionData] = useState<any>(null)
-  const [sessionSelected, setSessionSelected] = useState<any>(null)
-  const [currentPDF, setCurrentPDF] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectValue, setSelectValue] = useState("id_session");
+  const [sessionData, setSessionData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const instance = axios.create({
@@ -25,82 +22,40 @@ const ShowReport = () => {
     timeout: 1000,
   });
 
-  const resetPDFRender = () => {
-    setIsModalOpen(false);
-    setSessionSelected(null)
-    setIsLoading(false)
-    setCurrentPDF(null)
-  }
-
-  const showModal = (id: string) => {
-    setSessionSelected(id)
-    setIsModalOpen(true);
-    setIsLoading(true)
+  const showPDF = (id: string) => {
+    const url = `${process.env.BASE_URL}/pdf/${id}/`;
+    window.open(url, '_blank');
   };
-
-  const handleOk = () => {
-    resetPDFRender()
-  };
-
-  const handleCancel = () => {
-    resetPDFRender()
-  };
-
-  useEffect(() => {
-    if (sessionSelected) {
-      instance.get(`/pdf/${sessionSelected}/`,
-        {
-          responseType: 'arraybuffer',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/pdf'
-          },
-          timeout: 10000
-        }
-      ).then((response: any) => {
-
-        const encodedString = Buffer.from(response.data).toString('base64');
-
-        setCurrentPDF(encodedString)
-        setIsLoading(false)
-      })
-        .catch((error: any) => {
-          console.error(error)
-          message.error('PDF No encontrado')
-          resetPDFRender()
-        });
-    }
-  },
-    [sessionSelected])
 
   const onFinish = (data: Record<string, any>) => {
-    const { type_id, id } = data
-    const endpoint = type_id == 'id_session' ? `/session/${id}` : `/session/${id}/get_session_by_patient_id/`
+    const { type_id, id } = data;
+    const endpoint = type_id === 'id_session' ? `/session/${id}` : `/session/${id}/get_session_by_patient_id/`;
 
-    instance.get(endpoint).then((response: any) => {
-      if (type_id == 'id_session') {
-        response = [response.data]
-      } else {
-        response = response.data
-      }
+    instance.get(endpoint)
+      .then((response: any) => {
+        if (type_id === 'id_session') {
+          response = [response.data];
+        } else {
+          response = response.data;
+        }
 
-      setSessionData(response.map((isession: Record<string, any>) => ({
-        ...isession,
-        date: parse_date(isession.session_date),
-        procedures: [
-          { tag: 'examen_medico', value: isession['examen_medico'] },
-          { tag: 'prueba_6_minutos', value: isession['prueba_6_minutos'] },
-          { tag: 'video_analogo', value: isession['video_analogo'] },
-          { tag: 'podobarometria', value: isession['podobarometria'] },
-          { tag: 'examen_computarizado', value: isession['examen_computarizado'] },
-        ]
-      })))
-    })
+        setSessionData(response.map((isession: Record<string, any>) => ({
+          ...isession,
+          date: parse_date(isession.session_date),
+          procedures: [
+            { tag: 'examen_medico', value: isession['examen_medico'] },
+            { tag: 'prueba_6_minutos', value: isession['prueba_6_minutos'] },
+            { tag: 'video_analogo', value: isession['video_analogo'] },
+            { tag: 'podobarometria', value: isession['podobarometria'] },
+            { tag: 'examen_computarizado', value: isession['examen_computarizado'] },
+          ]
+        })));
+      })
       .catch((error: any) => {
-        console.error(error)
-        message.error(type_id == 'id_session' ? 'No existe la sesión' : 'No existe el paciente')
+        console.error(error);
+        message.error(type_id === 'id_session' ? 'No existe la sesión' : 'No existe el paciente');
       });
-  }
+  };
 
   interface DataType {
     key: string;
@@ -133,7 +88,7 @@ const ShowReport = () => {
       render: (_, { procedures }) => (
         <>
           {procedures.map(({ tag, value }, idx) => {
-            let color = value ? 'green' : 'volcano'
+            let color = value ? 'green' : 'volcano';
             return (
               <Tag color={color} key={idx}>
                 {tag.toUpperCase()}
@@ -148,17 +103,15 @@ const ShowReport = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => showModal(record.id)}>Ver PDF {record.patient}</a>
-          {/* <a>Delete</a> */}
+          <a onClick={() => showPDF(record.id)}>Ver PDF {record.patient}</a>
         </Space>
       ),
     },
   ];
 
-
   return (
     <div>
-      <Title level={1}> Consultar Reporte </Title>
+      <Title level={1}>Consultar Reporte</Title>
       <Form
         layout='vertical'
         className={styles.formStyles}
@@ -182,7 +135,7 @@ const ShowReport = () => {
         </Form.Item>
 
         <Form.Item
-          label={`Ingrese ID ${selectValue == 'id_session' ? 'sesión' : 'paciente'}`}
+          label={`Ingrese ID ${selectValue === 'id_session' ? 'sesión' : 'paciente'}`}
           name='id'
           rules={[{ required: true, message: 'Campo obligatorio' }]}
         >
@@ -192,34 +145,11 @@ const ShowReport = () => {
         <Button type='primary' htmlType='submit'>Buscar</Button>
       </Form>
 
-      {
-        sessionData && <Table columns={columns} dataSource={sessionData} style={{ margin: '2em 1em' }} />
-      }
+      {isLoading && <Spin tip="Cargando..." size='large' style={{ margin: '2em 1em' }} />}
 
-      <Modal
-        title={`Reporte Sesión ${sessionSelected}`}
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width='75%'
-        style={{ top: '1em' }}
-        bodyStyle={{
-        }}
-      >
-        {
-          isLoading && <Spin tip="Cargando..." size='large' style={{ margin: 'auto', width: '100%' }}></Spin>
-        }
-        {
-          currentPDF &&
-          <div style={{ height: '75vh' }}>
-            <embed src={`data:application/pdf;base64,${currentPDF}`} type="application/pdf" width="100%" height="100%" />
-          </div>
-        }
-
-      </Modal>
-
+      {sessionData && <Table columns={columns} dataSource={sessionData} style={{ margin: '2em 1em' }} />}
     </div>
   );
 };
 
-export default ShowReport
+export default ShowReport;

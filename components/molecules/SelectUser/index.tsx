@@ -11,9 +11,10 @@ interface ISelectUserProps {
     readonly endpoint : string
     readonly tooltip : string
     readonly userType : string
+    readonly setIsUserFound: Function; 
 }
 
-const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, tooltip, userType}) => {
+const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, tooltip, userType, setIsUserFound}) => {
 
     const [requestStatus, setRequestStatus] = useState<string>()
 
@@ -24,15 +25,25 @@ const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, toolti
 
 
     const searchParent = (e: any) => {
-        setRequestStatus('loading')
-        instance.get(`${endpoint}${e}`).then((response: any) => {
-            setRequestStatus('success')
-            setUser(response.data)
-        })
+        if (!e || e.trim() === '') {
+            setRequestStatus('error');
+            setUser(null);
+            setIsUserFound(false);
+            return;
+        }
+    
+        setRequestStatus('loading');
+        instance.get(`${endpoint}${e}`)
+            .then((response: any) => {
+                setRequestStatus('success');
+                setUser(response.data);
+                setIsUserFound(true); 
+            })
             .catch((error: any) => {
-                setRequestStatus('error')
-                setUser(null)
-                console.error(error)
+                setRequestStatus('error');
+                setUser(null);
+                setIsUserFound(false);
+                console.error(error);
             });
     };
 

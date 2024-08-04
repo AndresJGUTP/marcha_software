@@ -31,7 +31,6 @@ const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, toolti
             setIsUserFound(false);
             return;
         }
-    
         setRequestStatus('loading');
         instance.get(`${endpoint}${e}`)
             .then((response: any) => {

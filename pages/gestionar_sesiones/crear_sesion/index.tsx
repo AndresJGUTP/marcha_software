@@ -17,7 +17,8 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   const [parent, setParent] = useState(null)
   const [current, setCurrent] = useState(0)
   const [sessionId, setSessionId] = useState(null)
-
+  const [isUserFound, setIsUserFound] = useState(false);
+  const [isFormDisabled, setIsFormDisabled] = useState(true);
   const formSessionRef = useRef<any>();
 
   const instance = axios.create({
@@ -43,6 +44,10 @@ const CreateSession : FC<ICreateSessionProps> = () => {
                   endpoint='/patient/'
                   tooltip='El paciente debe estar registrado previamiente en Gestionar Usuarios'
                   userType='Paciente'
+                  setIsUserFound={(value: boolean) => {
+                    setIsUserFound(value);
+                    setIsFormDisabled(!value);
+                }}
                   />
                 </div>
     },

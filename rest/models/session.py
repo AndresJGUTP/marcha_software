@@ -299,7 +299,7 @@ class Session(models.Model):
     pie_flexores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
     pie_extensores_hallux_control_selectivo_d = models.FloatField(null=True, blank=True)
     pie_extensores_hallux_control_selectivo_i = models.FloatField(null=True, blank=True)
-
+    diagnostico_realizado = models.CharField(help_text="Diagnostico Final", max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'session'

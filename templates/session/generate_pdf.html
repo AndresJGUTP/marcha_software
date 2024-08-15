@@ -1231,6 +1231,18 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 <div>
     <pdf:nextpage />
 </div>
+
+<div>
+    <td style="padding-left: 7px; padding-right: 10px; vertical-align: top;">
+        <table style="font-size: 13px;">
+            <tr class="label_textarea"><td>Diagnóstico Final</td></tr>
+            <tr><td class="recuadro text_datos_clinicos_antec" style="height: 208px;">
+                {% if session.diagnostico_realizado %}{{ session.diagnostico_realizado }}{% else %}No refiere{% endif %}
+            </td></tr>
+        </table>
+    </td>
+</div>
+
 <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: 30px;">ANEXOS</h1>
 
 <div class="section-attacheds">

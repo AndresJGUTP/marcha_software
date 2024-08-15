@@ -26,6 +26,20 @@ class SessionViewSet(viewsets.ModelViewSet):
         queryset = Session.objects.filter(patient_id=pk).order_by('-session_date')
         serializer = SessionSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def list_all_sessions_diagnostico(self, request):
+        queryset = Session.objects.filter(diagnostico_realizado__isnull=True).order_by('session_date')
+        serializer = SessionSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'])
+    def get_attached_images_base64(self, request, pk=None):
+        session = get_object_or_404(Session, pk=pk)
+        folder_handler = FolderHandler(session.id, session.patient_id.id)
+        attached_images_graphics = folder_handler.get_attached_images_base64()
+
+        return Response({'attached_images_graphics': attached_images_graphics})
 
 def session_render_pdf_view(request, *args, **kwargs):
     pk = kwargs.get('pk')

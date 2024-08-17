@@ -13,6 +13,7 @@ import os
 from utils.constants import RAW_C3D_FILENAME, RAW_CSV_EEG_FILENAME
 from time import strftime
 import base64 
+from rest_framework import status
 
 class SessionViewSet(viewsets.ModelViewSet):
     """
@@ -20,6 +21,8 @@ class SessionViewSet(viewsets.ModelViewSet):
     """
     queryset = Session.objects.all().order_by('session_date')
     serializer_class = SessionSerializer
+
+    
 
     @action(detail=True)
     def get_session_by_patient_id(self, request, pk=None):
@@ -40,6 +43,21 @@ class SessionViewSet(viewsets.ModelViewSet):
         attached_images_graphics = folder_handler.get_attached_images_base64()
 
         return Response({'attached_images_graphics': attached_images_graphics})
+    
+    @action(detail=True, methods=['put'])
+    def update_diagnostico(self, request, pk=None):
+        """
+        Actualiza el campo diagnostico_realizado de una sesión específica.
+        """
+        session = get_object_or_404(Session, pk=pk)
+        diagnostico = request.data.get('diagnostico_realizado')
+
+        if diagnostico is not None:
+            session.diagnostico_realizado = diagnostico
+            session.save()
+            return Response({'status': 'diagnostico actualizado'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Campo diagnostico_realizado es requerido'}, status=status.HTTP_400_BAD_REQUEST)
 
 def session_render_pdf_view(request, *args, **kwargs):
     pk = kwargs.get('pk')

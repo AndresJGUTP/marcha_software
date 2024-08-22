@@ -24,7 +24,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
 
     const instance = axios.create({
         baseURL:  process.env.BASE_URL,
-        timeout: 1000,
+        timeout: 60000,
     });
     
     const onFinish = (values : any) => {

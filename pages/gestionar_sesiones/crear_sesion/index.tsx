@@ -23,7 +23,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
-    timeout: 1000,
+    timeout: 60000,
   });
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
               formSessionRef.current!.submit()
             }
             } 
-            disabled={!patient} 
+            disabled={!patient && !parent} 
             type="primary" 
             // htmlType='submit'
             // form='sessionForm'

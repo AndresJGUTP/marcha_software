@@ -27,7 +27,7 @@ const EditUser: FC<IEditUserProps> = () => {
 
     const instance = axios.create({
         baseURL: process.env.BASE_URL,
-        timeout: 1000,
+        timeout: 60000,
     });
 
     useEffect(() => {

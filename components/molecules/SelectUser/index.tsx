@@ -20,7 +20,7 @@ const SelectUser: React.FC<ISelectUserProps> = ({user, setUser, endpoint, toolti
 
     const instance = axios.create({
         baseURL: process.env.BASE_URL,
-        timeout: 1000,
+        timeout: 60000,
     });
 
 

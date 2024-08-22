@@ -1,4 +1,10 @@
-STORAGE_PATH = 'storage'
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+
+STORAGE_PATH = env('S3_ENV')
 
 SESSION_STRING_TEMPLATE = 'session_{}' # session_{session_id}
 

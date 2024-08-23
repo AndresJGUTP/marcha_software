@@ -21,12 +21,13 @@ const EditUser: FC<IEditUserProps> = () => {
     const [sessions, setSessions] = useState<any>(null)
     const [sessionEdit, setSessionEdit] = useState<any>(null)
     const [sessionId, setSessionId] = useState(null)
-
+    const [isUserFound, setIsUserFound] = useState(false);
+    const [isFormDisabled, setIsFormDisabled] = useState(true);
     const formSessionRef = useRef<any>();
 
     const instance = axios.create({
         baseURL: process.env.BASE_URL,
-        timeout: 1000,
+        timeout: 60000,
     });
 
     useEffect(() => {
@@ -87,7 +88,10 @@ const EditUser: FC<IEditUserProps> = () => {
                         setUser={setPatient}
                         endpoint='/patient/'
                         tooltip='El paciente debe estar registrado previamiente en Gestionar Usuarios'
-                        userType='Paciente'
+                        userType='Paciente'setIsUserFound={(value: boolean) => {
+                            setIsUserFound(value);
+                            setIsFormDisabled(!value);}}
+                        
                         />
                 </div>
                 {

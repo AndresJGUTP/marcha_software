@@ -60,10 +60,31 @@ const items: MenuProps['items'] = [
       icon: <FundOutlined />,
     },
     {
+      label: 'Diagnóstico',
+      key: '/gestionar_diagnosticos',
+      icon: <DownOutlined />,
+      children: [
+        {
+          type: 'group',
+          children: [
+            {
+              label: 'Realizar diagnóstico',
+              key: '/gestionar_diagnosticos/crear_diagnostico',
+            },
+            {
+              label: 'Editar diagnóstico',
+              key: '/gestionar_diagnosticos/editar_diagnostico',
+            },
+          ],
+        },
+      ]
+    },
+    {
       label: 'Configuración',
       key: '/configuracion',
       icon: <ToolOutlined />,
     },
+    
     // {
     //   label: 'Visualizar Resonancia',
     //   key: '/visualizar_resonancia',

@@ -17,12 +17,13 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   const [parent, setParent] = useState(null)
   const [current, setCurrent] = useState(0)
   const [sessionId, setSessionId] = useState(null)
-
+  const [isUserFound, setIsUserFound] = useState(false);
+  const [isFormDisabled, setIsFormDisabled] = useState(true);
   const formSessionRef = useRef<any>();
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
-    timeout: 1000,
+    timeout: 60000,
   });
 
   useEffect(() => {
@@ -43,6 +44,10 @@ const CreateSession : FC<ICreateSessionProps> = () => {
                   endpoint='/patient/'
                   tooltip='El paciente debe estar registrado previamiente en Gestionar Usuarios'
                   userType='Paciente'
+                  setIsUserFound={(value: boolean) => {
+                    setIsUserFound(value);
+                    setIsFormDisabled(!value);
+                }}
                   />
                 </div>
     },
@@ -109,7 +114,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
               formSessionRef.current!.submit()
             }
             } 
-            disabled={!patient} 
+            disabled={!patient && !parent} 
             type="primary" 
             // htmlType='submit'
             // form='sessionForm'

@@ -6,6 +6,7 @@ const axios = require('axios').default;
 
 import styles from './style.module.css';
 import { parse_date } from 'constants/parse_date';
+import { useRouter } from 'next/router';
 
 const { Title } = Typography;
 
@@ -16,6 +17,7 @@ const ShowReport = () => {
   const [selectValue, setSelectValue] = useState("id_session");
   const [sessionData, setSessionData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
@@ -57,6 +59,10 @@ const ShowReport = () => {
       });
   };
 
+  const handleDiagnosticarClick = (id: string) => {
+    router.push(`/gestionar_diagnosticos/editar_diagnostico/${id}`);
+  };
+
   interface DataType {
     key: string;
     id: string;
@@ -75,11 +81,6 @@ const ShowReport = () => {
       title: 'Fecha',
       dataIndex: 'date',
       key: 'date',
-    },
-    {
-      title: 'Fisioterapeuta',
-      dataIndex: 'physiotherapist_name',
-      key: 'name',
     },
     {
       title: 'Procedimientos',
@@ -101,9 +102,11 @@ const ShowReport = () => {
     {
       title: 'Acción',
       key: 'action',
-      render: (_, record) => (
+      render: (_: any, record: DataType) => (
         <Space size="middle">
-          <a onClick={() => showPDF(record.id)}>Ver PDF {record.patient}</a>
+          <Button type="link" onClick={() => handleDiagnosticarClick(record.id)}>
+            Diagnosticar Sesión {record.id}
+          </Button>
         </Space>
       ),
     },
@@ -111,7 +114,7 @@ const ShowReport = () => {
 
   return (
     <div>
-      <Title level={1}>Consultar Reporte</Title>
+      <Title level={1}>Consultar Diagnóstico</Title>
       <Form
         layout='vertical'
         className={styles.formStyles}

@@ -19,7 +19,7 @@ export default function Home() {
 
         <div>
           <Paragraph style={{ width: '75%', textAlign: 'justify' }}>
-            Software Desarrollado para el proyecto <i>"Sistema de monitoreo automático para la evaluación clínica de infantes con alteraciones neurológicas motoras mediante el análisis de volumetría cerebral y patrón de la marcha"</i> Financiado por MinCiencias bajo la convocatoria <i> 897 - Convocatoria para la financiación de proyectos de CTeI en salud que promuevan la medicina personalizada y la investigación traslacional </i>
+            Software Desarrollado para el proyecto <i>&quot;Sistema de monitoreo automático para la evaluación clínica de infantes con alteraciones neurológicas motoras mediante el análisis de volumetría cerebral y patrón de la marcha&quot;</i> Financiado por MinCiencias bajo la convocatoria <i> 897 - Convocatoria para la financiación de proyectos de CTeI en salud que promuevan la medicina personalizada y la investigación traslacional </i>
           </Paragraph>
         </div>
 

@@ -113,6 +113,7 @@ const EditUser: FC<IEditUserProps> = () => {
                                 cancelText="No"
                                 id={item['id']}
                                 onConfirm={() => handleOnDelete(item['id'])}
+                                key={item['id']}
                             >
                                 <Button key="delete" danger>Eliminar</Button>
                             </Popconfirm>

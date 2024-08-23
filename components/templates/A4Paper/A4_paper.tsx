@@ -16,5 +16,6 @@ const A4Paper: React.FC<IA4PaperProps> = forwardRef( (props, ref : React.LegacyR
     )
 })
 
+A4Paper.displayName = 'A4Paper';
 
 export default A4Paper;

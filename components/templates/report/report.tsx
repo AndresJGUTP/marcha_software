@@ -81,6 +81,8 @@ const Report = forwardRef((props: any, ref: any) => {
         </A4Paper>
     )
   });
-  
+
+Report.displayName = 'Report';
+
 export default Report;
 

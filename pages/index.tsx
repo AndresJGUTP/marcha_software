@@ -18,7 +18,7 @@ export default function Home() {
         <Title level={1}> Sistema para el monitoreo automático de la marcha </Title>
 
         <div>
-          <Paragraph style={{ width: '75%', textAlign: 'justify' }}>
+          <Paragraph style={{ width: '75%', textAlign: 'justify', fontSize: '1.2em' }} >
             Software Desarrollado para el proyecto <i>&quot;Sistema de monitoreo automático para la evaluación clínica de infantes con alteraciones neurológicas motoras mediante el análisis de volumetría cerebral y patrón de la marcha&quot;</i> Financiado por MinCiencias bajo la convocatoria <i> 897 - Convocatoria para la financiación de proyectos de CTeI en salud que promuevan la medicina personalizada y la investigación traslacional </i>
           </Paragraph>
         </div>
@@ -30,19 +30,19 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   onClick={() => router.push('gestionar_usuarios/registrar_usuario')}
                   cover={<img alt="Agregar Usuario" src="/images/add_user.png" style={{ width: '75%', margin: 'auto' }} />}
                 >
-                  <Meta title="Crear Usuario Nuevo" description="En esta sección podrás registrar un nuevo paciente o responsable" />
+                  <Meta title="Crear Usuario" description="En esta sección podrás registrar un nuevo paciente o responsable" />
                 </Card>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   cover={<img alt="Editar Usuario" src="/images/user_config.png" style={{ width: '75%', margin: 'auto' }} />}
                   onClick={() => router.push('gestionar_usuarios/editar_usuario')}
                 >
-                  <Meta title="Editar Usuario Existente" description="Sección dedicada a editar usuarios ya creados" />
+                  <Meta title="Editar Usuario" description="Sección dedicada a editar usuarios ya creados" />
                 </Card>
               </>
             }
@@ -54,7 +54,7 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   onClick={() => router.push('gestionar_sesiones/crear_sesion/')}
                   cover={<img alt="Agregar Usuario" src="/images/add_report.png" style={{ width: '75%', margin: 'auto' }} />}
                 >
@@ -62,7 +62,7 @@ export default function Home() {
                 </Card>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   cover={<img alt="Editar Usuario" src="/images/editar_reporte.png" style={{ width: '75%', margin: 'auto' }} />}
                   onClick={() => router.push('gestionar_sesiones/editar_sesion/')}
                 >
@@ -78,7 +78,7 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, margin: '1em', height: '350px' }}
+                  style={{ width: 240, margin: '1em', height: '300px' }}
                   onClick={() => router.push('consultar_reporte/')}
                   cover={<img alt="Consultar Reporte" src="/images/report_icon.png" style={{ width: '75%', margin: 'auto' }} />}
                 >
@@ -94,7 +94,7 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   onClick={() => router.push('gestionar_diagnosticos/crear_diagnostico/')}
                   cover={<img alt="Agregar Diagnostico" src="/images/realizar_diagnostico.png" style={{ width: '75%', margin: 'auto' }} />}
                 >
@@ -102,7 +102,7 @@ export default function Home() {
                 </Card>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 240, padding: '1em', margin: '1em', height: '300px' }}
                   cover={<img alt="Editar Diagnostico" src="/images/editar_diagnostico.png" style={{ width: '75%', margin: 'auto' }} />}
                   onClick={() => router.push('gestionar_diagnosticos/editar_diagnostico/')}
                 >

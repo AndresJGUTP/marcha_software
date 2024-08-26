@@ -46,7 +46,7 @@ const ShowReport = () => {
             { tag: 'examen_medico', value: isession['examen_medico'] },
             { tag: 'prueba_6_minutos', value: isession['prueba_6_minutos'] },
             { tag: 'video_analogo', value: isession['video_analogo'] },
-            { tag: 'podobarometria', value: isession['podobarometria'] },
+            // { tag: 'podobarometria', value: isession['podobarometria'] },
             { tag: 'examen_computarizado', value: isession['examen_computarizado'] },
           ]
         })));

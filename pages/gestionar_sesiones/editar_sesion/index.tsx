@@ -4,6 +4,7 @@ import { Button, Steps, Typography, List, Skeleton, Popconfirm, message  } from 
 import styles from "./style.module.css";
 import SessionForm from 'components/organisms/SessionForm';
 import SessionFilesUpload from 'components/organisms/SessionFilesUpload';
+import ModalStatus from 'components/molecules/ModalStatus';
 
 
 const axios = require('axios').default;
@@ -23,6 +24,8 @@ const EditUser: FC<IEditUserProps> = () => {
     const [sessionId, setSessionId] = useState(null)
     const [isUserFound, setIsUserFound] = useState(false);
     const [isFormDisabled, setIsFormDisabled] = useState(true);
+    const [requestStatus, setRequestStatus] = useState<string>('');
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
     const formSessionRef = useRef<any>();
 
     const instance = axios.create({
@@ -96,10 +99,7 @@ const EditUser: FC<IEditUserProps> = () => {
                 </div>
                 {
                     sessions && <List
-                    // className="demo-loadmore-list"
-                    // loading={initLoading}
                     itemLayout="horizontal"
-                    // loadMore={loadMore}
                     style={{width: '75%', margin: 'auto', maxHeight: '450px', overflowY: 'scroll'}}
                     dataSource={sessions}
                     renderItem={(item : any )=> (
@@ -139,6 +139,7 @@ const EditUser: FC<IEditUserProps> = () => {
                 formSessionRef={formSessionRef}
                 setSessionId={setSessionId}
                 sessionData={sessionEdit}
+                setRequestStatus={setRequestStatus}
             />
         },
         {
@@ -177,6 +178,36 @@ const EditUser: FC<IEditUserProps> = () => {
 
     return (
         <div>
+            <ModalStatus
+                requestStatus={requestStatus} 
+                modalProps = {
+                    {
+                        open: modalOpen,
+                        cancelButtonProps: {hidden: true},
+                        okButtonProps:{ hidden: requestStatus == 'loading' },
+                        closable: true,
+                        onCancel: () => {setModalOpen(false)},
+                        okText: requestStatus == 'error' ? 'Reenviar' : 'Siguiente',
+                        onOk: () => {
+                            if(requestStatus == 'success'){
+                                setModalOpen(false)
+                                next()
+                            } else{
+                                setSessionId(null)
+                                setRequestStatus('loading')
+                                formSessionRef.current!.submit()
+                            }
+                        }
+                    }
+                }
+                successMessage={
+                    { title: 'Sesión Guardada Exitosamente'}
+                }
+                errorMessage={
+                    {title: 'Error Guardando La Sesión'}
+                }
+            />
+            
             <Title level={1}> Editar Sesión </Title>
 
             <div className={styles.stepsWrap}>
@@ -202,7 +233,8 @@ const EditUser: FC<IEditUserProps> = () => {
                 {
                     current == 1 && <Button
                         onClick={() => {
-                            next()
+                            setRequestStatus('loading')
+                            setModalOpen(true)
                             formSessionRef.current!.submit()
                         }
                         }
@@ -213,7 +245,7 @@ const EditUser: FC<IEditUserProps> = () => {
                     </Button>
                 }
                 {current === steps.length - 1 && (
-                    <Button onClick={() => final()} >
+                    <Button onClick={() => final()} type="primary" >
                         Finalizar
                     </Button>
                 )}

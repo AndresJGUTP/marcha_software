@@ -4,6 +4,8 @@ import { Button, Steps, Typography } from 'antd';
 import styles from "./style.module.css";
 import SessionForm from 'components/organisms/SessionForm';
 import SessionFilesUpload from 'components/organisms/SessionFilesUpload';
+import ModalStatus from 'components/molecules/ModalStatus';
+
 const axios = require('axios').default;
 
 const { Title } = Typography;
@@ -19,6 +21,8 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   const [sessionId, setSessionId] = useState(null)
   const [isUserFound, setIsUserFound] = useState(false);
   const [isFormDisabled, setIsFormDisabled] = useState(true);
+  const [requestStatus, setRequestStatus] = useState<string>('');
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const formSessionRef = useRef<any>();
 
   const instance = axios.create({
@@ -58,6 +62,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
                   parentData={parent!}
                   formSessionRef={formSessionRef}
                   setSessionId={setSessionId}
+                  setRequestStatus={setRequestStatus}
                 />
     },
     {
@@ -85,11 +90,42 @@ const CreateSession : FC<ICreateSessionProps> = () => {
 
   return (
     <div>
+      <ModalStatus
+        requestStatus={requestStatus} 
+        modalProps = {
+            {
+                open: modalOpen,
+                cancelButtonProps: {hidden: true},
+                okButtonProps:{ hidden: requestStatus == 'loading' },
+                closable: false,
+                okText: requestStatus == 'error' ? 'Reenviar' : 'Siguiente',
+                onOk: () => {
+                    if(requestStatus == 'success'){
+                        setModalOpen(false)
+                        next()
+                    } else{
+                        setSessionId(null)
+                        setRequestStatus('loading')
+                        formSessionRef.current!.submit()
+                    }
+                }
+            }
+        }
+        successMessage={
+            { title: 'Sesión Guardada Exitosamente'}
+        }
+        errorMessage={
+            {title: 'Error Guardando La Sesión'}
+        }
+      />
+
       <Title level={1}> Registrar Sesión </Title>
 
       <div className={styles.stepsWrap}>
         <Steps current={current} items={items} style={{width: '75%', margin: 'auto'}} />
         { steps[current].content }
+
+
       </div>
 
       <div style={{ marginTop: 24}} className={styles.buttons}>
@@ -110,20 +146,19 @@ const CreateSession : FC<ICreateSessionProps> = () => {
         {
           current == 1 && <Button 
             onClick={() => {
-              next()
+              setRequestStatus('loading')
+              setModalOpen(true)
               formSessionRef.current!.submit()
             }
             } 
             disabled={!patient && !parent} 
             type="primary" 
-            // htmlType='submit'
-            // form='sessionForm'
             >
             Guardar
           </Button>
         }
         {current === steps.length - 1 && (
-          <Button onClick={() => resetStates()} >
+          <Button onClick={() => resetStates()} type="primary"  >
             Finalizar
           </Button>
         )}

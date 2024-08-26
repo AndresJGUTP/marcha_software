@@ -127,7 +127,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                     </tr>
                 </table>
             </td>
-            <td style="width: 17%;">
+            <td style="width: 40%;">
                 <table>
                     <tr class="tr_data"><td>{% if session.video_analogo %}
                             <img src="static/YesCheck.png" alt="Check" height="12pt">
@@ -138,7 +138,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                         {% endif %}
                         </td>                                
                     </tr>
-                    <tr class="tr_data"><td>{% if session.podobarometria %}
+                    <!-- <tr class="tr_data"><td>{% if session.podobarometria %}
                             <img src="static/YesCheck.png" alt="Check" height="12pt">
                             <span>&#160 Podobarometría</span>
                         {% else %}
@@ -146,11 +146,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                             <span>&#160 Podobarometría</span>
                         {% endif %}
                         </td>
-                    </tr>
-                </table>            
-            </td>
-            <td>
-                <table>
+                    </tr> -->
                     <tr  class="tr_data"><td>{% if session.examen_computarizado %}
                                 <img src="static/YesCheck.png" alt="Check" height="12pt">
                                 <span>&#160 Examen computarizado de la marcha</span>
@@ -160,6 +156,10 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                             {% endif %}
                         </td>
                     </tr>
+                </table>            
+            </td>
+            <td>
+                <table>
                     <tr class="tr_data"><td></td></tr>
                 </table>
             </td>

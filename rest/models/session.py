@@ -7,7 +7,7 @@ from constants.choices import (
     TONO_MUSCULAR_CHOICES, ESPASTICIDAD_CHOICES, PERFIL_RODILLA_CHOICES, DESCR_PIE_TOBILLO_CHOICES,
     DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_ANTEPIE_CHOICES,
     DESCR_PIE_HALLUX_CHOICES, FUERZA_MUSCULAR_CHOICES, CONTROL_SELECTIVO_CHOICES,
-    MOVILIDAD_ARTICULAR_CHOICES, POSITIVO_NEGATIVO_CHOICES)
+    POSITIVO_NEGATIVO_CHOICES)
 
 
 
@@ -168,41 +168,43 @@ class Session(models.Model):
     # ---------------------------------- TRONCO ---------------------------------- #
     tronco_abdominales_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     tronco_lumbares_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
+    tronco_abdominales_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
+    tronco_lumbares_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
 
     # ---------------------------------- CADERA ---------------------------------- #
-    cadera_flexion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_flexion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_flexion_movilidad_d = models.FloatField(null=True)
+    cadera_flexion_movilidad_i = models.FloatField(null=True)
     cadera_flexion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_flexion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_flexion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     cadera_flexion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    cadera_extension_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_extension_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_extension_movilidad_d = models.FloatField(null=True)
+    cadera_extension_movilidad_i = models.FloatField(null=True)
     cadera_extension_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_extension_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_extension_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     cadera_extension_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    cadera_abduccion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_abduccion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_abduccion_movilidad_d = models.FloatField(null=True)
+    cadera_abduccion_movilidad_i = models.FloatField(null=True)
     cadera_abduccion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_abduccion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_abduccion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     cadera_abduccion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    cadera_aduccion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_aduccion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_aduccion_movilidad_d = models.FloatField(null=True)
+    cadera_aduccion_movilidad_i = models.FloatField(null=True)
     cadera_aduccion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_aduccion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     cadera_aduccion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     cadera_aduccion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    cadera_rot_int_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_rot_int_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_rot_int_movilidad_d = models.FloatField(null=True)
+    cadera_rot_int_movilidad_i = models.FloatField(null=True)
 
-    cadera_rot_ext_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    cadera_rot_ext_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    cadera_rot_ext_movilidad_d = models.FloatField(null=True)
+    cadera_rot_ext_movilidad_i = models.FloatField(null=True)
     # cadera_rot_ext_movilidad_i = models.IntegerField(null=True, blank=True, choices=(10, '23'))
 
     # =============================================================================================================
@@ -220,15 +222,15 @@ class Session(models.Model):
     anteversion_femoral_i = models.CharField(max_length=50, null=True, blank=True)
 
     # ---------------------------------- RODILLA --------------------------------- #
-    rodilla_flexion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    rodilla_flexion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    rodilla_flexion_movilidad_d = models.FloatField(null=True)
+    rodilla_flexion_movilidad_i = models.FloatField(null=True)
     rodilla_flexion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     rodilla_flexion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     rodilla_flexion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     rodilla_flexion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    rodilla_extension_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    rodilla_extension_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    rodilla_extension_movilidad_d = models.FloatField(null=True)
+    rodilla_extension_movilidad_i = models.FloatField(null=True)
     rodilla_extension_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     rodilla_extension_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     rodilla_extension_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
@@ -259,15 +261,15 @@ class Session(models.Model):
     perone_corto_i = models.IntegerField(choices=YES_NO_CHOICES)
 
     # ---------------------------------- TOBILLO --------------------------------- #
-    tobillo_plantiflexion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    tobillo_plantiflexion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    tobillo_plantiflexion_movilidad_d = models.FloatField(null=True)
+    tobillo_plantiflexion_movilidad_i = models.FloatField(null=True)
     tobillo_plantiflexion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     tobillo_plantiflexion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     tobillo_plantiflexion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     tobillo_plantiflexion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    tobillo_dorsiflexion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    tobillo_dorsiflexion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    tobillo_dorsiflexion_movilidad_d = models.FloatField(null=True)
+    tobillo_dorsiflexion_movilidad_i = models.FloatField(null=True)
     tobillo_dorsiflexion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     tobillo_dorsiflexion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     tobillo_dorsiflexion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
@@ -280,15 +282,15 @@ class Session(models.Model):
     tobillo_signo_silverskiold_movilidad_i = models.IntegerField(choices=POSITIVO_NEGATIVO_CHOICES)
 
     # ------------------------------------ PIE ----------------------------------- #
-    pie_inversion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    pie_inversion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    pie_inversion_movilidad_d = models.FloatField(null=True)
+    pie_inversion_movilidad_i = models.FloatField(null=True)
     pie_inversion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     pie_inversion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     pie_inversion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     pie_inversion_fuerza_muscular_i = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
 
-    pie_eversion_movilidad_d = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
-    pie_eversion_movilidad_i = models.IntegerField(null=True, blank=True, choices=MOVILIDAD_ARTICULAR_CHOICES)
+    pie_eversion_movilidad_d = models.FloatField(null=True)
+    pie_eversion_movilidad_i = models.FloatField(null=True)
     pie_eversion_control_selectivo_d = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     pie_eversion_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
     pie_eversion_fuerza_muscular_d = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)

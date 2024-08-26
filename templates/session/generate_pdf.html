@@ -561,10 +561,8 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Mediopie:</td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
-                    <td style="width: 17.5%"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
+                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Antepie:</td>
@@ -595,10 +593,8 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Mediopie:</td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
+                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}-{% endif %}</p></td>
+                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}-{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Antepie:</td>
@@ -821,13 +817,13 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
         <tr class="tr_data" style=" padding-top: 10px; ">
             <td class="page3_labelLeft">Abdominales</td>
             <td></td>
-            <td></td>
+            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_control_selectivo %}{{ session.tronco_abdominales_control_selectivo }}{% else %}-{% endif %}</p></td>
             <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_fuerza_muscular %}{{ session.tronco_abdominales_fuerza_muscular }}{% else %}-{% endif %}</p></td>
         </tr>
         <tr class="tr_data">
             <td class="page3_labelLeft">Lumbares</td>
             <td></td>
-            <td></td>
+            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_control_selectivo %}{{ session.tronco_lumbares_control_selectivo }}{% else %}-{% endif %}</p></td>
             <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_fuerza_muscular %}{{ session.tronco_lumbares_fuerza_muscular }}{% else %}-{% endif %}</p></td>
         </tr>
 

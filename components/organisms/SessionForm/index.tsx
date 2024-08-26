@@ -8,7 +8,7 @@ import styles from "./style.module.css";
 
 import { useRouter } from 'next/router'
 import Title from 'antd/lib/typography/Title';
-import { COGNITIVE_DEFICIT_CHOICES, CONTROL_SELECTIVO_CHOICES, DESCR_PIE_ANTEPIE_CHOICES, DESCR_PIE_HALLUX_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_TOBILLO_CHOICES, ESPASTICIDAD_CHOICES, FAQ_CHOICES, FMS_CHOICES, FUERZA_MUSCULAR_CHOICES, GMFCS_CHOICES, HIPERLAXITUD_CHOICES, MOVILIDAD_ARTICULAR_CHOICES, PERFIL_RODILLA_CHOICES, POSITIVO_NEGATIVO_CHOICES, REFLEJOS_PATELAR_CHOICES, TONO_MUSCULAR_CHOICES, YES_NO_CHOICES } from 'constants/SessionForm_Choices';
+import { COGNITIVE_DEFICIT_CHOICES, CONTROL_SELECTIVO_CHOICES, DESCR_PIE_ANTEPIE_CHOICES, DESCR_PIE_HALLUX_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_TOBILLO_CHOICES, ESPASTICIDAD_CHOICES, FAQ_CHOICES, FMS_CHOICES, FUERZA_MUSCULAR_CHOICES, GMFCS_CHOICES, HIPERLAXITUD_CHOICES, PERFIL_RODILLA_CHOICES, POSITIVO_NEGATIVO_CHOICES, REFLEJOS_PATELAR_CHOICES, TONO_MUSCULAR_CHOICES, YES_NO_CHOICES } from 'constants/SessionForm_Choices';
 
 const { Link } = Anchor;
 const { TextArea } = Input;
@@ -50,12 +50,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             <Row gutter={[6, 0]}>
                 <Col span={12}>
                     <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[0]}_i`}>
-                        <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                        <InputNumber controls={false} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name={`${names[0]}_d`}>
-                        <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                        <InputNumber controls={false} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -1047,6 +1047,9 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>  
                     </Col>
                     <Col span={6}>
+                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_control_selectivo">
+                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES}/>
+                        </Form.Item>
                     </Col>
                     <Col span={6}>
                         <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_fuerza_muscular">
@@ -1061,6 +1064,9 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={6}>
                     </Col>
                     <Col span={6}>
+                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_lumbares_control_selectivo">
+                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES}/>
+                        </Form.Item>
                     </Col>
                     <Col span={6}>
                         <Form.Item className={styles.inputFullWidth} name="tronco_lumbares_fuerza_muscular">
@@ -1085,12 +1091,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
                                 <Form.Item className={styles.inputFullWidth} name="cadera_rot_int_movilidad_i">
-                                    <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                                    <InputNumber controls={false} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item className={styles.inputFullWidth} name="cadera_rot_int_movilidad_d">
-                                    <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                                    <InputNumber controls={false} />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1107,12 +1113,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <Row gutter={[6, 0]}>
                             <Col span={12}>
                                 <Form.Item className={styles.inputFullWidth} name="cadera_rot_ext_movilidad_i">
-                                    <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                                    <InputNumber controls={false} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item className={styles.inputFullWidth} name="cadera_rot_ext_movilidad_d">
-                                    <Select defaultValue={0} options={MOVILIDAD_ARTICULAR_CHOICES}/>
+                                    <InputNumber controls={false} />
                                 </Form.Item>
                             </Col>
                         </Row>

@@ -141,14 +141,6 @@ export const DESCR_PIE_HALLUX_CHOICES = [
 
 
 /* ------------------------ TEST ARTICULAR Y MUSCULAR ----------------------- */
-export const MOVILIDAD_ARTICULAR_CHOICES = [
-    {value: 0, label: '-'},
-    {value: 1, label: '-1'},
-    {value: 2, label: '0'},
-    {value: 3, label: '1'},
-    {value: 4, label: '2'},
-]
-
 export const CONTROL_SELECTIVO_CHOICES = [
     {value: 0, label: '-'},
     {value: 1, label: '-1'},

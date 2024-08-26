@@ -538,16 +538,22 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         </Row>
 
                         <Row>
+                            <Col span={6}></Col>
+                            <Col span={9}>Izquierdo:</Col>
+                            <Col span={9}>Derecho:</Col>
+                        </Row>
+
+                        <Row>
                             <Col span={6} className={styles.centerLabel}>
                                 <span> Patelar </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} name="reflejos_patelar_i" >
+                                <Form.Item label="" name="reflejos_patelar_i" labelAlign='left' labelCol={{ span: 12 }} style={{ marginBottom: '0.5em' }} >
                                     <Select defaultValue={0} options={REFLEJOS_PATELAR_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} name="reflejos_patelar_d">
+                                <Form.Item label="" name="reflejos_patelar_d">
                                     <Select defaultValue={0} options={REFLEJOS_PATELAR_CHOICES}/>
                                 </Form.Item>
                             </Col>
@@ -557,12 +563,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Aquilano </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} name="reflejos_aquilano_i" >
+                                <Form.Item label="" name="reflejos_aquilano_i" >
                                 <Select defaultValue={0} options={REFLEJOS_PATELAR_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} name="reflejos_aquilano_d">
+                                <Form.Item name="reflejos_aquilano_d">
                                     <Select defaultValue={0} options={REFLEJOS_PATELAR_CHOICES}/>
                                 </Form.Item>
                             </Col>
@@ -873,18 +879,24 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <Title level={5}> Espasticidad (ASHWORTH) </Title>
                             </Col>
                         </Row>
+                        
+                        <Row>
+                            <Col span={6}></Col>
+                            <Col span={9}>Izquierdo:</Col>
+                            <Col span={9}>Derecho:</Col>
+                        </Row>
 
                         <Row>
                             <Col span={6} className={styles.centerLabel}>
                                 <span> Flexores Cadera </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Izquierdo" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="flexores_cad_i" >
+                                <Form.Item style={{ marginBottom: '0.5em' }} name="flexores_cad_i" >
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="Derecho" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="flexores_cad_d" >
+                                <Form.Item style={{ marginBottom: '0.5em' }} name="flexores_cad_d" >
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
@@ -894,12 +906,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Isquiotibial </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="isquiotibial_i">
+                                <Form.Item label="" style={{ marginBottom: '0.5em' }} name="isquiotibial_i">
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="isquiotibial_d" >
+                                <Form.Item style={{ marginBottom: '0.5em' }} name="isquiotibial_d" >
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
@@ -909,12 +921,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Cuádriceps </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="cuadriceps_i">
+                                <Form.Item label="" style={{ marginBottom: '0.5em' }} name="cuadriceps_i">
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="cuadriceps_d" >
+                                <Form.Item style={{ marginBottom: '0.5em' }} name="cuadriceps_d" >
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
@@ -924,12 +936,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                                 <span> Gastrosoleo </span>
                             </Col>
                             <Col span={9}>
-                                <Form.Item label="" className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="gastrosoleo_i">
+                                <Form.Item label="" style={{ marginBottom: '0.5em' }} name="gastrosoleo_i">
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>
                             <Col span={9}>
-                                <Form.Item className={styles.columnItem} style={{ marginBottom: '0.5em' }} name="gastrosoleo_d" >
+                                <Form.Item style={{ marginBottom: '0.5em' }} name="gastrosoleo_d" >
                                     <Select defaultValue={0} options={ESPASTICIDAD_CHOICES}/>
                                 </Form.Item>
                             </Col>

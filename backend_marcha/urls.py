@@ -19,10 +19,13 @@ from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.session import SessionViewSet, session_render_pdf_view
 from rest.views.upload_file import FileUploadView
+from rest.views.upload_config_file import ConfigFileUploadView
 from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
 
 
 router = routers.DefaultRouter()
@@ -35,7 +38,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('session_upload/', FileUploadView.as_view()),
-    path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view')
+    path('upload_configfile/', ConfigFileUploadView.as_view()),
+    path('pdf/<pk>/', session_render_pdf_view, name='session_pdf_view'),
+    path('openapi', get_schema_view(
+            title="Backend Marcha Software Docs",
+            description="API for backend marcha software",
+            version="1.0.0"
+        ), name='openapi-schema'),
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url':'openapi-schema'}
+    ), name='swagger-ui'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -91,6 +91,7 @@ ESPASTICIDAD_CHOICES = [
     (2, '2'),
     (3, '3'),
     (4, '4'),
+    (5, '0'),
 ]
 
 # --------------------------- VARO/VALGO DE RODILLA -------------------------- #
@@ -120,7 +121,7 @@ DESCR_PIE_MEDIOPIE_CHOICES = [
     (0, '-'),
     (1, 'Tipico'),
     (2, 'Cavo'),
-    (3, 'Plavo'),
+    (3, 'Plano'),
 ]
 
 DESCR_PIE_ANTEPIE_CHOICES = [

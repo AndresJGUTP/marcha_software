@@ -122,7 +122,7 @@ export const DESCR_PIE_MEDIOPIE_CHOICES = [
     {value: 0, label: '-'},
     {value: 1, label: 'Tipico'},
     {value: 2, label: 'Cavo'},
-    {value: 3, label: 'Plavo'},
+    {value: 3, label: 'Plano'},
 ]
 
 export const DESCR_PIE_ANTEPIE_CHOICES = [

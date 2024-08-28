@@ -1228,7 +1228,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 <Title level={5}>Rodilla</Title>
                 {RowEncabezado()}
                 {RowForm({ label: 'Flexión', name: 'rodilla_flexion' })}
-                {RowForm({ label: 'Extensión', name: 'extension_flexion' })}
+                {RowForm({ label: 'Extensión', name: 'rodilla_extension' })}
 
                 <Row gutter={[24, 0]} >
                     <Col span={12}>
@@ -1241,7 +1241,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 {
                     [
-                        [['angulo_popliteo','Angulo Poplíteo'], ['angulo_muslo', 'Angulo Muslo Pie']],
+                        [['angulo_popliteo','Angulo Poplíteo'], ['angulo_muslo_pie', 'Angulo Muslo Pie']],
                         [['angulo_popliteo_cadera_flex', 'A. Poplíteo Cadera en Flex'], ['angulo_bimaleolar', 'Angulo Bimaleolar']],
                         [['variacion_angulo_popliteo', 'Variación A. Poplíteo'], ['test_2do_dedo', 'Test 2do Dedo']],
                         [['signo_ely_duncan', 'Signo de Ely Duncan'], ['patela_alta', 'Patela Alta']],

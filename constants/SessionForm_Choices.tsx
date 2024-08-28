@@ -1,19 +1,19 @@
 /* --------------------------------- GENERAL -------------------------------- */
 export const YES_NO_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'No'},
     {value: 2, label: 'Si'},
 ]
 
 export const POSITIVO_NEGATIVO_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Negativo'},
     {value: 2, label: 'Positivo'},
 ]
 
 /* ------------------------------ ANTECEDENTES ------------------------------ */
 export const COGNITIVE_DEFICIT_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label:  'No'},
     {value: 2, label:  'Leve'},
     {value: 3, label:  'Moderado'},
@@ -22,7 +22,7 @@ export const COGNITIVE_DEFICIT_CHOICES = [
 
 /* ------------------------------- REFLEJOS OT ------------------------------ */
 export const REFLEJOS_PATELAR_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '0'},
     {value: 2, label: '+'},
     {value: 3, label: '++'},
@@ -32,7 +32,7 @@ export const REFLEJOS_PATELAR_CHOICES = [
 
 /* ------------------------------ FUNCIONALIDAD ----------------------------- */
 export const GMFCS_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '1'},
     {value: 2, label: '2'},
     {value: 3, label: '3'},
@@ -41,7 +41,7 @@ export const GMFCS_CHOICES = [
 ]
 
 export const FMS_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '1'},
     {value: 2, label: '2'},
     {value: 3, label: '3'},
@@ -51,7 +51,7 @@ export const FMS_CHOICES = [
 ]
 
 export const FAQ_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '1'},
     {value: 2, label: '2'},
     {value: 3, label: '3'},
@@ -67,7 +67,7 @@ export const FAQ_CHOICES = [
 
 /* ------------------------------ TONO MUSCULAR ----------------------------- */
 export const HIPERLAXITUD_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '1/9'},
     {value: 2, label: '2/9'},
     {value: 3, label: '3/9'},
@@ -87,7 +87,7 @@ export const TONO_MUSCULAR_CHOICES = [
 ]
 
 export const ESPASTICIDAD_CHOICES = [
-    { value: 0, label: '-'},
+    { value: 0, label: ' '},
     { value: 5, label: '0'},
     { value: 1, label: '1'},
     { value: 2, label: '2'},
@@ -97,7 +97,7 @@ export const ESPASTICIDAD_CHOICES = [
 
 /* -------------------------- VARO/VALGO DE RODILLA ------------------------- */
 export const PERFIL_RODILLA_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Valgo'},
     {value: 2, label: 'Varo'},
     {value: 3, label: 'Normal'},
@@ -106,35 +106,35 @@ export const PERFIL_RODILLA_CHOICES = [
 /* ---------------------- DESCRIPCION DEL PIE --------------------- */
 
 export const DESCR_PIE_TOBILLO_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Neutro'},
     {value: 2, label: 'Varo'},
     {value: 3, label: 'Valgo'},
 ]
 
 export const DESCR_PIE_RETROPIE_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Neutro'},
     {value: 2, label: 'Supinación'},
     {value: 3, label: 'Pronación'},
 ]
 
 export const DESCR_PIE_MEDIOPIE_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Tipico'},
     {value: 2, label: 'Cavo'},
     {value: 3, label: 'Plano'},
 ]
 
 export const DESCR_PIE_ANTEPIE_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Neutro'},
     {value: 2, label: 'Supinación'},
     {value: 3, label: 'Pronación'},
 ]
 
 export const DESCR_PIE_HALLUX_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: 'Tipico'},
     {value: 2, label: 'Aducción'},
     {value: 3, label: 'Abducción'},
@@ -143,7 +143,7 @@ export const DESCR_PIE_HALLUX_CHOICES = [
 
 /* ------------------------ TEST ARTICULAR Y MUSCULAR ----------------------- */
 export const CONTROL_SELECTIVO_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '-1'},
     {value: 2, label: '0'},
     {value: 3, label: '1'},
@@ -151,7 +151,7 @@ export const CONTROL_SELECTIVO_CHOICES = [
 ]
 
 export const FUERZA_MUSCULAR_CHOICES = [
-    {value: 0, label: '-'},
+    {value: 0, label: ' '},
     {value: 1, label: '0'},
     {value: 2, label: '1'},
     {value: 3, label: '2'},

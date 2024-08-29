@@ -165,3 +165,72 @@ FUERZA_MUSCULAR_CHOICES = [
     (5, '4'),
     (6, '5'),
 ]
+
+# ------------------------- SURVEY CHOICES ------------------------ #
+
+EDUCATION_LEVEL = [(0,'Seleccione'),
+                        (1, 'Ninguno'),
+                        (2, 'Primarios'),
+                        (3, 'Medios'),
+                        (4, 'Universitarios')]
+
+MARITAL_STATUS = [(0,'Seleccione'),
+                        (1, 'Soltero/a'),
+                        (2, 'Separado/a'),
+                        (3, 'Casado/a'),
+                        (4, 'Divorciado/a'),
+                        (5, 'Viudo/a'),
+                        (6, 'En pareja')]
+
+SEX_CHOICES = [(0,'Seleccione'),
+                        ('M', 'Masculino'),
+                        ('F', 'Femenino'),
+                    ]
+
+SCALE1 = [(0,'Seleccione'),
+                        (1, 'Muy mala'),
+                        (2, 'Regular'),
+                        (3, 'Normal'),
+                        (4, 'Bastante buena'),
+                        (5, 'Muy buena')
+                    ]
+
+SCALE2 = [(0,'Seleccione'),
+                        (1, 'Muy insatisfecho/a'),
+                        (2, 'Un poco insatisfecho/a'),
+                        (3, 'Lo normal'),
+                        (4, 'Bastante satisfecho/a'),
+                        (5, 'Muy satisfecho/a')
+                    ]
+
+SCALE3 = [(0,'Seleccione'),
+                        (1, 'Nada'),
+                        (2, 'Un poco'),
+                        (3, 'Lo normal'),
+                        (4, 'Bastante'),
+                        (5, 'Extremadamente')
+                    ]
+
+SCALE4 = [(0,'Seleccione'),
+                        (1, 'Nada'),
+                        (2, 'Un poco'),
+                        (3, 'Lo normal'),
+                        (4, 'Bastante'),
+                        (5, 'Totalmente')
+                    ]
+
+SCALE5 = [(0,'Seleccione'),
+                        (1, 'Muy insatisfecho/a'),
+                        (2, 'Poco'),
+                        (3, 'Lo normal'),
+                        (4, 'Bastante satisfecho/a'),
+                        (5, 'Muy satisfecho/a')
+                    ]
+
+SCALE6 = [(0,'Seleccione'),
+                        (1, 'Nunca'),
+                        (2, 'Raramente'),
+                        (3, 'Moderadamente'),
+                        (4, 'Frecuentemente'),
+                        (5, 'Siempre')
+                    ]

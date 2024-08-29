@@ -40,4 +40,38 @@ def validator_age(value):
             return value
     else:
         raise ValidationError(err)
+
+def validator_sex_type(value):
+    if value == 0:
+        raise ValidationError('Por favor seleccione el género.')
+    else:
+        return value
+    
+def validator_education_choices(value):
+    if value == 0:
+        raise ValidationError('Por favor seleccione su nivel de educación.')
+    else:
+        return value
+
+def validator_satisfaction_scale(value):
+    if value == 0:
+        raise ValidationError('Por favor seleccione su escala de satisfacción.')
+    else:
+        return value
+
+def validator_maritalStatus_choices(value):
+    if value == 0:
+        raise ValidationError('Por favor seleccione su estado civil.')
+    else:
+        return value
+    
+def validator_time_taken_to_complete(value):
+    err = 'Por favor verifique el tiempo tomado.'
+    if value.isdigit():    
+        if len(value)>2:
+            raise ValidationError(err)
+        else:
+            return value
+    else:
+        raise ValidationError(err)
         

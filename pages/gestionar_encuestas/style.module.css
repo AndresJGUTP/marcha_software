@@ -1,0 +1,20 @@
+.content{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formStyles{
+    width: 50%;
+    margin: auto;
+}
+
+.createButton {
+    color: #20d80f;
+  }
+  
+
+.modalPDF{
+    background-color: red !important;
+}

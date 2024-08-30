@@ -3,11 +3,11 @@ import { Col, Row, Card, Divider, Space } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.css';
 import HomeOptionCard from 'components/organisms/HomeOptionCard';
+import React from 'react';
 
 const { Meta } = Card;
 const { Title, Paragraph } = Typography;
 const { Content } = Layout;
-
 
 export default function Home() {
   const router = useRouter();
@@ -107,6 +107,22 @@ export default function Home() {
                   onClick={() => router.push('gestionar_diagnosticos/editar_diagnostico/')}
                 >
                   <Meta title="Editar Diagnóstico" description="Sección dedicada a editar los diagnósticos ya realizados" />
+                </Card>
+              </>
+            }
+          />
+
+          <HomeOptionCard
+            cardTitle='Encuestas'
+            content={
+              <>
+                <Card
+                  hoverable
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  onClick={() => router.push('gestionar_encuestas/')}
+                  cover={<img alt="Gestionar encuestas" src="/images/encuestas.png" style={{ width: '75%', margin: 'auto' }} />}
+                >
+                  <Meta title="Crear/Editar Encuesta" description="En esta sección podrás gestionar las encuestas" />
                 </Card>
               </>
             }

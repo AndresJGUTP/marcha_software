@@ -146,6 +146,7 @@ CONTROL_SELECTIVO_CHOICES = [
     (2, '0'),
     (3, '1'),
     (4, '2'),
+    (5, 'NE'),
 ]
 
 MOVILIDAD_ARTICULAR_CHOICES = [

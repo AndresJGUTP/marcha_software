@@ -18,25 +18,30 @@ const DiagnosticarPaciente: React.FC = () => {
 
   const fetchPdf = useCallback(async () => {
     if (id && !pdfBase64) {
-      setLoadingPdf(true); 
+      setLoadingPdf(true);
       try {
-        const response = await axios.get(`${process.env.BASE_URL}/pdf/${id}/`, { responseType: 'arraybuffer' });
-        const base64 = Buffer.from(response.data, 'binary').toString('base64');
-        setPdfBase64(`data:application/pdf;base64,${base64}`);
+        const response = await axios.get(`${process.env.BASE_URL}/pdf/${id}/`, {
+          responseType: 'blob', 
+        });
+  
+        const pdfUrl = URL.createObjectURL(response.data);
+  
+        setPdfBase64(pdfUrl); 
+  
         setContent(
           <iframe
-            src={`data:application/pdf;base64,${base64}`}
+            src={pdfUrl}
             width="100%"
             height="600px"
             style={{ border: 'none' }}
             title="PDF"
           />
         );
-      } catch (error) {
-        console.error('Error al cargar el PDF:', error);
+      } catch (error: any) {
+        console.error('Error al cargar el PDF:', error.response?.data || error.message);
         setContent('Error al cargar el PDF.');
       } finally {
-        setLoadingPdf(false); 
+        setLoadingPdf(false);
       }
     }
   }, [id, pdfBase64]);

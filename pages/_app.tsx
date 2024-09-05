@@ -2,18 +2,33 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import HeaderMenu from '../components/organisms/HeaderMenu/HeaderMenu'
-import { Layout } from 'antd';
-import React from 'react';
+import { Layout, Grid } from 'antd';
+import React, {useEffect} from 'react';
 import Head from 'next/head'
 
 const { Footer, Content } = Layout
 import { useRouter } from 'next/router';
 import AdminSidebar from '../components/organisms/AdminSidebar/AdminSidebar';
+const { useBreakpoint } = Grid;
 
 export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter();
+  const screens = useBreakpoint();
 
+  useEffect(() => {
+    let sizes_list = Object.entries(screens)
+      .filter((screen) => !!screen[1])
+      .map((screen) => (
+          screen[0]
+      ))
+
+    if(sizes_list.length > 0 && sizes_list.length <= 2){
+      router.push('/gestionar_encuestas')  
+    }
+    
+  }, [screens])
+  
   return (
     <Layout style={{ height: '100vh' }}>
 

@@ -1,17 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Input, Button, message } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Layout, Menu, Input, Button, message, Spin } from 'antd';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const { Sider, Content } = Layout;
 const { TextArea } = Input;
-const axios = require('axios').default;
 
 const DiagnosticarPaciente: React.FC = () => {
   const [content, setContent] = useState<React.ReactNode>('Selecciona una opción para ver el contenido');
   const [anexos, setAnexos] = useState<{ name: string, element: React.ReactNode }[]>([]);
-  const [diagnostico, setDiagnostico] = useState<string>('');
+  const [diagnostico, setDiagnostico] = useState<string>(''); 
+  const [pdfBase64, setPdfBase64] = useState<string | null>(null); 
+  const [loadingPdf, setLoadingPdf] = useState<boolean>(false); 
+  const [selectedMenuKey, setSelectedMenuKey] = useState<string>('1'); 
   const router = useRouter();
   const { id } = router.query;
+
+  const fetchPdf = useCallback(async () => {
+    if (id && !pdfBase64) {
+      setLoadingPdf(true);
+      try {
+        const response = await axios.get(`${process.env.BASE_URL}/pdf/${id}/`, {
+          responseType: 'blob', 
+        });
+  
+        const pdfUrl = URL.createObjectURL(response.data);
+  
+        setPdfBase64(pdfUrl); 
+  
+        setContent(
+          <iframe
+            src={pdfUrl}
+            width="100%"
+            height="600px"
+            style={{ border: 'none' }}
+            title="PDF"
+          />
+        );
+      } catch (error: any) {
+        console.error('Error al cargar el PDF:', error.response?.data || error.message);
+        setContent('Error al cargar el PDF.');
+      } finally {
+        setLoadingPdf(false);
+      }
+    }
+  }, [id, pdfBase64]);
 
   useEffect(() => {
     if (id) {
@@ -21,7 +54,7 @@ const DiagnosticarPaciente: React.FC = () => {
           const sessionData = response.data;
 
           if (sessionData.diagnostico_realizado) {
-            setDiagnostico(sessionData.diagnostico_realizado);
+            setDiagnostico(sessionData.diagnostico_realizado); 
           }
         } catch (error) {
           console.error('Error al obtener los datos de la sesión:', error);
@@ -29,12 +62,6 @@ const DiagnosticarPaciente: React.FC = () => {
       };
 
       fetchSessionData();
-
-      setContent(
-        <a href={`${process.env.BASE_URL}/pdf/${id}/`} target="_blank" rel="noopener noreferrer">
-          Ver PDF
-        </a>
-      );
     }
   }, [id]);
 
@@ -56,8 +83,8 @@ const DiagnosticarPaciente: React.FC = () => {
                   padding: '10px',
                   textAlign: 'center',
                   boxSizing: 'border-box',
-                  maxHeight: '450px', 
-                  overflowY: 'auto',  
+                  maxHeight: '450px',
+                  overflowY: 'auto',
                 }}
               >
                 <img
@@ -79,14 +106,29 @@ const DiagnosticarPaciente: React.FC = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (id && selectedMenuKey === '1') {
+      fetchPdf(); 
+    }
+  }, [id, selectedMenuKey, fetchPdf]);
+
   const handleMenuClick = (e: { key: string }) => {
+    setSelectedMenuKey(e.key); 
     const keyParts = e.key.split('-');
     if (keyParts[0] === '1') {
-      setContent(
-        <a href={`${process.env.NEXT_PUBLIC_BASE_URL}/pdf/${id}/`} target="_blank" rel="noopener noreferrer">
-          Ver PDF
-        </a>
-      );
+      if (!pdfBase64) {
+        fetchPdf(); 
+      } else {
+        setContent(
+          <iframe
+            src={pdfBase64}
+            width="100%"
+            height="600px"
+            style={{ border: 'none' }}
+            title="PDF"
+          />
+        );
+      }
     } else if (keyParts[0] === '2') {
       setContent(`Contenido para la opción ${keyParts[0]}`);
     } else if (keyParts[0] === '3') {
@@ -124,7 +166,7 @@ const DiagnosticarPaciente: React.FC = () => {
       <Sider width={200} className="site-layout-background">
         <Menu
           mode="inline"
-          defaultSelectedKeys={['1']}
+          selectedKeys={[selectedMenuKey]} 
           style={{ height: '100%', borderRight: 0 }}
           onClick={handleMenuClick}
         >
@@ -141,7 +183,13 @@ const DiagnosticarPaciente: React.FC = () => {
         <Content style={{ padding: '24px', minHeight: 280 }}>
           <div style={{ marginBottom: '16px' }}>
             <h2>Diagnóstico para la Sesión {id}</h2>
-            <div>{content}</div>
+            {loadingPdf ? (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                <Spin tip="Cargando PDF..." />
+              </div>
+            ) : (
+              <div>{content}</div>
+            )}
           </div>
           <h3>Ingrese el Diagnóstico</h3>
           <TextArea
@@ -150,7 +198,7 @@ const DiagnosticarPaciente: React.FC = () => {
             value={diagnostico}
             onChange={handleDiagnosticoChange}
           />
-          <div style={{ paddingTop: '15px'}}>
+          <div style={{ paddingTop: '15px' }}>
             <Button type="primary" onClick={handleTerminarDiagnostico}>Terminar Diagnóstico</Button>
           </div>
         </Content>

@@ -118,7 +118,7 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  style={{ width: 250, padding: '1em', margin: '1em', height: '350px' }}
+                  style={{ width: 250, padding: '1em', margin: '1em', height: '300px' }}
                   onClick={() => router.push('gestionar_encuestas/')}
                   cover={<img alt="Gestionar encuestas" src="/images/encuestas.png" style={{ width: '75%', margin: 'auto' }} />}
                 >

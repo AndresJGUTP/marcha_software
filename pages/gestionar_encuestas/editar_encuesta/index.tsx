@@ -324,11 +324,9 @@ const SurveyForm: React.FC = () => {
             };
 
             if (surveyId) {
-                // Si la encuesta ya existe, hacemos un PUT
                 await axios.put(`${process.env.BASE_URL}/survey/${surveyId}/`, formattedValues);
                 message.success('Encuesta actualizada exitosamente');
             } else {
-                // Si no existe, hacemos un POST
                 await axios.post(`${process.env.BASE_URL}/survey/`, formattedValues);
                 message.success('Encuesta enviada exitosamente');
             }
@@ -337,7 +335,6 @@ const SurveyForm: React.FC = () => {
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 if (error.response?.status === 404) {
-                    // Si la encuesta no existe, hacemos un POST
                     try {
                         await axios.post(`${process.env.BASE_URL}/survey/`, formattedValues);
                         message.success('Encuesta enviada exitosamente');

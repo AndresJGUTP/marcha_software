@@ -294,14 +294,12 @@ const SurveyForm: React.FC = () => {
                 session: sessionIdAsNumber
             };
 
-            // Si no existe, hacemos un POST
             await axios.post(`${process.env.BASE_URL}/survey/`, formattedValues);
             message.success('Encuesta enviada exitosamente');
             router.push('/gestionar_encuestas');
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 if (error.response?.status === 404) {
-                    // Si la encuesta no existe, hacemos un POST
                     try {
                         await axios.post(`${process.env.BASE_URL}/survey/`, formattedValues);
                         message.success('Encuesta enviada exitosamente');

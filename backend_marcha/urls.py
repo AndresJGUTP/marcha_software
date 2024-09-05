@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
+from rest.views.survey import SurveyViewSet
 from rest.views.session import SessionViewSet, session_render_pdf_view
 from rest.views.upload_file import FileUploadView
 from rest.views.upload_config_file import ConfigFileUploadView
@@ -32,7 +33,7 @@ router = routers.DefaultRouter()
 router.register(r'parent', ParentViewSet)
 router.register(r'patient', PatientViewSet)
 router.register(r'session', SessionViewSet)
-
+router.register(r'survey', SurveyViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

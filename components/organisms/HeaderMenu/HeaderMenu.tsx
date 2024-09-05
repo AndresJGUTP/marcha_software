@@ -3,10 +3,12 @@ import { Header } from "antd/lib/layout/layout";
 import HeaderIcon from "../../atoms/headerIcon/headerIcon";
 import styles from "./style.module.css";
 import type { MenuProps } from 'antd';
-import { Button, Menu } from 'antd';
+import { Button, Menu, Grid } from 'antd';
 import { HomeOutlined, ToolOutlined, DownOutlined, FundOutlined} from '@ant-design/icons';
 import UserAccessMenu from '../UserAccessMenu/UserAccessMenu';
 import { useRouter } from 'next/router'
+
+const { useBreakpoint } = Grid;
 
 const items: MenuProps['items'] = [
     {
@@ -96,7 +98,8 @@ const items: MenuProps['items'] = [
   const HeaderMenu : React.FC = () => {
     
     const router = useRouter()
-    
+    const screens = useBreakpoint();
+
     const openInNewTab = (url: string) => {
       const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
       if (newWindow) newWindow.opener = null
@@ -106,6 +109,10 @@ const items: MenuProps['items'] = [
 
       router.push(e.key)
     };
+
+    if (!screens.lg) {
+      return null;
+    }
 
     return(
         <Header className={styles.header} style={{backgroundColor: 'white', paddingLeft:'1em'}}>

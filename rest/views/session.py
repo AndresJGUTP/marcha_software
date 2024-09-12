@@ -81,6 +81,7 @@ def session_render_pdf_view(request, *args, **kwargs):
 
     attached_images_graphics = folder_handler.get_attached_images_base64()
 
+    kinematic_plot = folder_handler.get_kinematic_plot_from_s3()
 
     template_path = 'session/generate_pdf.html'
     context = {
@@ -88,7 +89,8 @@ def session_render_pdf_view(request, *args, **kwargs):
         'c3d_graphic': c3d_graphic, 
         'eeg_graphic': eeg_graphic,
         'force_plates_graphic': force_plates_graphic,
-        'attached_images_graphics': attached_images_graphics
+        'attached_images_graphics': attached_images_graphics,
+        'kinematic_plot' : kinematic_plot
     }
 
     # # Create a Django response object, and specify content_type as pdf

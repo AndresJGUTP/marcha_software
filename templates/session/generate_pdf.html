@@ -1201,6 +1201,29 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 <!-- ----------------------------------------------PAGE 7 continue-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
+{% if kinematic_plot %}
+<div>
+    <pdf:nextpage />
+</div>
+
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINEMÁTICA</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ kinematic_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 8 continue-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+{% if attached_images_graphics %}
 <div>
     <pdf:nextpage />
 </div>
@@ -1208,33 +1231,15 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: 30px;">ANEXOS</h1>
 
 <div class="section-attacheds">
-    {% if attached_images_graphics %}
-        {% for image in attached_images_graphics %}
-            <img src="data:image/png;base64,{{ image }}" alt="Attached Image" style="max-width: 100%; height: auto;"/>
-            {% if not forloop.last %}
-                <div>
-                    <pdf:nextpage />
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% for image in attached_images_graphics %}
+        <img src="data:image/png;base64,{{ image }}" alt="Attached Image" style="max-width: 100%; height: auto;"/>
+        {% if not forloop.last %}
+            <div>
+                <pdf:nextpage />
+            </div>
+        {% endif %}
+    {% endfor %}
 </div>
-
-
-
-<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 8 continue-------------------------------------------------- -->
-<!-- ------------------------------------------------------------------------------------------------------ -->
-
-{% if c3d_graphic %}
-<div>
-    <pdf:nextpage />
-</div>
-
-<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINEMÁTICA</h1>
-<img src="data:image/png;base64,{{ c3d_graphic|safe }}">
-
-{% else %}
 
 {% endif %}
 

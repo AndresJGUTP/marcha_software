@@ -1,7 +1,8 @@
 from django.db import models
 from .parent import Parent
-from .validators import validator_document_number,validator_document_type, validator_age
+from .validators import validator_document_number,validator_document_type, validator_age, validator_sex_type
 from constants.document_choices import DOCUMENT_CHOICES
+from constants.choices import SEX_CHOICES
 
 class Patient(models.Model):
     # ================================================================================
@@ -11,9 +12,13 @@ class Patient(models.Model):
 
     
     id_parent = models.ForeignKey(Parent, help_text="ID parent", on_delete=models.PROTECT)
+
     id = models.CharField(help_text='Patient document number', max_length=20, blank=False, null=False,
                                                             # validators=[validator_document_number], 
                                                             primary_key=True)
+    
+    sex = models.CharField(help_text="Patient sex", max_length=2, blank=False, null=False, choices=SEX_CHOICES, validators=[validator_sex_type], default='M')
+    
     ID_document_type = models.CharField(help_text='ID document type', max_length=3, choices=DOCUMENT_CHOICES,
                                         validators=[validator_document_type])
     

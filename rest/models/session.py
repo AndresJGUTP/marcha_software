@@ -78,8 +78,7 @@ class Session(models.Model):
     equilibrio_monopodal_i = models.CharField(max_length=50, help_text="Equilibrio monopodal izquierdo", null=True, blank=True)
 
     # Tono muscular ======================================================================================================
-    hiperlaxitud_articular_i = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
-    hiperlaxitud_articular_d = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
+    hiperlaxitud_articular = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
     signos_distonia = models.IntegerField(choices=YES_NO_CHOICES)
     tono_muscular = models.IntegerField(choices=TONO_MUSCULAR_CHOICES)
 

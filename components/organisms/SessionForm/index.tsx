@@ -846,16 +846,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                             <Col span={8} >
                                 <span> Hiperlaxitud Muscular : </span>
                             </Col>
-                            <Col span={6}>
-                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_d">
+                            <Col span={10}>
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular">
                                     <Select defaultValue={0} options={HIPERLAXITUD_CHOICES}/>
                                 </Form.Item>
                             </Col>
-                            <Col span={6}>
-                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular_i">
-                                    <Select defaultValue={0} options={HIPERLAXITUD_CHOICES}/>
-                                </Form.Item>
-                            </Col>
+                            
                         </Row>
 
                         <Row>

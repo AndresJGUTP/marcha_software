@@ -64,10 +64,10 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
             <td style="width: 30%; text-align: left;"><p class="recuadro">{{ session.session_date|date:"d/m/Y" }} - {{ session.session_date|time:"g:i a" }}</p></td>
         </tr>
         <tr class="tr_data">
-            <td style="width: 20%; text-align: left;">Sexo paciente:</td>
-            <td style="width: 30%; text-align: left;"><p class="recuadro">{% if session.patient_id.id_parent.sex %}{{ session.patient_id.id_parent.sex }}{% else %}&nbsp;{% endif %}</p></td>
+            <td style="width: 20%; text-align: left;">Sexo del paciente:</td>
+            <td style="width: 30%; text-align: left;"><p class="recuadro">{% if session.patient_id.sex %}{{ session.patient_id.get_sex_display  }}{% else %}&nbsp;{% endif %}</p></td>
         </tr>
-    </table>
+
 </div>
 
 <!-- ------------------------------------------------------------------------------------------------------ -->

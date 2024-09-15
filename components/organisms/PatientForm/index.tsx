@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Form, Input, InputNumber } from 'antd';
+import { Form, Input, InputNumber, Select } from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
 import SelectParent from 'components/molecules/SelectUser';
@@ -41,9 +41,14 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
     const onFinish = (values: any) => {
         setModalOpen(true);
         setRequestStatus('loading');
-
-        values = { ...values, 'id_parent': parent!['id'] };
-
+    
+        //console.log("Valores del formulario antes de enviar:", values);
+        //console.log("Responsable seleccionado:", parent);
+    
+        values = { ...values, 'id_parent': parent!['id_parent'] };
+        
+        //console.log("Valores del formulario después de agregar id_parent:", values);
+    
         if (!patientData) {
             instance.post('/patient/', values, {
                 headers: {
@@ -53,7 +58,7 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
                 setRequestStatus('success');
             }).catch((error: any) => {
                 setRequestStatus('error');
-                console.log(error);
+                console.log("Error en la solicitud POST:", error);
             });
         } else {
             instance.put(`/patient/${values['id']}/`, values, {
@@ -64,10 +69,11 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
                 setRequestStatus('success');
             }).catch((error: any) => {
                 setRequestStatus('error');
-                console.log(error);
+                console.log("Error en la solicitud PUT:", error);
             });
         }
     };
+    
 
     return (
         <>
@@ -126,6 +132,17 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
 
                 <Form.Item label="Segundo Apellido" name="second_last_name">
                     <Input disabled={isFormDisabled} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Sexo"
+                    name="sex"
+                    rules={[{ required: true, message: 'Campo obligatorio' }]}
+                >
+                    <Select disabled={isFormDisabled}>
+                        <Select.Option value="M">Masculino</Select.Option>
+                        <Select.Option value="F">Femenino</Select.Option>
+                    </Select>
                 </Form.Item>
 
                 <Form.Item label="Edad" name="age" rules={[{ required: true, message: 'Campo obligatorio' }]}>

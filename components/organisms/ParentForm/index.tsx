@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./style.module.css";
 
 import { useRouter } from 'next/router'
 
 const axios = require('axios').default;
 
-import {Form,Input, InputNumber} from 'antd';
+import { Form, Input, InputNumber, Select } from 'antd';
 import SelectDocumentType from 'components/molecules/SelectDocumentType';
 import ModalStatus from 'components/molecules/ModalStatus';
 
 interface IParentFormProps {
-    readonly parentData ? : Record<string, any>
-    readonly formDisabled ? : boolean
+    readonly parentData?: Record<string, any>
+    readonly formDisabled?: boolean
 }
 
-const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
+const ParentForm: React.FC<IParentFormProps> = ({ parentData, formDisabled }) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [requestStatus, setRequestStatus] = useState<string>('');
@@ -23,45 +23,51 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
     const router = useRouter()
 
     const instance = axios.create({
-        baseURL:  process.env.BASE_URL,
+        baseURL: process.env.BASE_URL,
         timeout: 60000,
     });
-    
-    const onFinish = (values : any) => {
+
+    const onFinish = (values: any) => {
         setModalOpen(true)
         setRequestStatus('loading')
-        
-        if(!parentData){
-            instance.post('/parent/', values, {headers: {
-                'Content-Type': 'application/json'
-                }}).then((response: any) => {
+
+        if (!parentData) {
+            instance.post('/parent/', values, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response: any) => {
                 setRequestStatus('success')
             })
-            .catch((error: any) => {
+                .catch((error: any) => {
                     setRequestStatus('error')
                     console.log(error)
                 });
-            }
-            else{
-                instance.put(`/parent/${values['id']}/`, values, {headers: {
+        }
+        else {
+            instance.put(`/parent/${values['id']}/`, values, {
+                headers: {
                     'Content-Type': 'application/json'
-                    }}).then((response: any) => {
-                    setRequestStatus('success')
-                })
+                }
+            }).then((response: any) => {
+                setRequestStatus('success')
+            })
                 .catch((error: any) => {
-                        setRequestStatus('error')
-                        console.log(error)
-                    });
+                    setRequestStatus('error')
+                    console.log(error)
+                });
         }
     }
 
     useEffect(() => {
-        if(!!parentData){
+        if (!!parentData) {
+            //console.log(parentData); 
             form.setFieldsValue({
-                ...parentData
-              });
+                ...parentData,
+                sex: parentData.sex === 'Masculino' ? 'M' : parentData.sex === 'Femenino' ? 'F' : parentData.sex
+            });
         }
-    }, [parentData] )
+    }, [parentData])
 
     return <>
         <ModalStatus {...{
@@ -78,7 +84,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 onOk: () => router.reload(),
                 onCancel: () => requestStatus == 'error' ? setModalOpen(false) : router.push(router.asPath),
                 okText: `${!parentData ? 'Registrar' : 'Editar'} Otro Usuario`,
-                cancelButtonProps: {hidden: true},
+                cancelButtonProps: { hidden: true },
                 closable: requestStatus == 'error',
             }
         }} />
@@ -92,7 +98,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
             form={form}
             disabled={formDisabled}
         >
-            <Form.Item label="Primer Nombre" name="first_name" rules={[{required: true, message: 'Campo obligatorio'}]}>
+            <Form.Item label="Primer Nombre" name="first_name" rules={[{ required: true, message: 'Campo obligatorio' }]}>
                 <Input />
             </Form.Item>
 
@@ -100,7 +106,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 <Input />
             </Form.Item>
 
-            <Form.Item label="Primer Apellido" name="first_last_name" rules={[{required: true, message: 'Campo obligatorio'}]}>
+            <Form.Item label="Primer Apellido" name="first_last_name" rules={[{ required: true, message: 'Campo obligatorio' }]}>
                 <Input />
             </Form.Item>
 
@@ -108,24 +114,35 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 <Input />
             </Form.Item>
 
+            <Form.Item
+                label="Sexo"
+                name="sex"
+                rules={[{ required: true, message: 'Campo obligatorio' }]}
+            >
+                <Select defaultValue={parentData?.sex}>
+                    <Select.Option value="M">Masculino</Select.Option>
+                    <Select.Option value="F">Femenino</Select.Option>
+                </Select>
+            </Form.Item>
+
             <SelectDocumentType />
 
-            <Form.Item label="Número de documento" name="id" rules={[{required: true, message: 'Campo obligatorio'}]}>
-                <InputNumber controls={false} style={{width: '100%'}} disabled={!!parentData} />
+            <Form.Item label="Número de documento" name="id" rules={[{ required: true, message: 'Campo obligatorio' }]}>
+                <InputNumber controls={false} style={{ width: '100%' }} disabled={!!parentData} />
             </Form.Item>
 
             <Form.Item
                 name="email"
                 label="Correo Electrónico"
                 rules={[
-                {
-                    type: 'email',
-                    message: 'No se ha ingresado un correo válido',
-                },
-                {
-                    required: true,
-                    message: 'Campo obligatorio',
-                },
+                    {
+                        type: 'email',
+                        message: 'No se ha ingresado un correo válido',
+                    },
+                    {
+                        required: true,
+                        message: 'Campo obligatorio',
+                    },
                 ]}
             >
                 <Input />
@@ -136,7 +153,7 @@ const ParentForm: React.FC<IParentFormProps> = ({parentData, formDisabled}) => {
                 label="Número de contacto"
                 rules={[{ required: true, message: 'Campo Obligatorio' }]}
             >
-                <InputNumber controls={false} style={{width: '100%'}} />
+                <InputNumber controls={false} style={{ width: '100%' }} />
             </Form.Item>
 
         </Form>

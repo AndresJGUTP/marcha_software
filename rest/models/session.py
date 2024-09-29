@@ -3,7 +3,7 @@ from django.db import models
 from constants.choices import REFLEJOS_PATELAR_CHOICES
 from constants.choices import (
     YES_NO_CHOICES, COGNITIVE_DEFICIT_CHOICES, 
-    GMFCS_CHOICES, FMS_CHOICES, FAQ_CHOICES, HIPERLAXITUD_CHOICES,
+    GMFCS_CHOICES, FMS_CHOICES, FAQ_CHOICES, SCORE_BEIGHTON_CHOICES,
     TONO_MUSCULAR_CHOICES, ESPASTICIDAD_CHOICES, PERFIL_RODILLA_CHOICES, DESCR_PIE_TOBILLO_CHOICES,
     DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_ANTEPIE_CHOICES,
     DESCR_PIE_HALLUX_CHOICES, FUERZA_MUSCULAR_CHOICES, CONTROL_SELECTIVO_CHOICES,
@@ -78,7 +78,8 @@ class Session(models.Model):
     equilibrio_monopodal_i = models.CharField(max_length=50, help_text="Equilibrio monopodal izquierdo", null=True, blank=True)
 
     # Tono muscular ======================================================================================================
-    hiperlaxitud_articular = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
+    score_beighton = models.IntegerField(choices=SCORE_BEIGHTON_CHOICES)
+    score_beighton_observaciones = models.CharField(max_length=255, null=True, blank=True)
     signos_distonia = models.IntegerField(choices=YES_NO_CHOICES)
     tono_muscular = models.IntegerField(choices=TONO_MUSCULAR_CHOICES)
 

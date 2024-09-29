@@ -8,7 +8,7 @@ import styles from "./style.module.css";
 
 import { useRouter } from 'next/router'
 import Title from 'antd/lib/typography/Title';
-import { COGNITIVE_DEFICIT_CHOICES, CONTROL_SELECTIVO_CHOICES, DESCR_PIE_ANTEPIE_CHOICES, DESCR_PIE_HALLUX_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_TOBILLO_CHOICES, ESPASTICIDAD_CHOICES, FAQ_CHOICES, FMS_CHOICES, FUERZA_MUSCULAR_CHOICES, GMFCS_CHOICES, HIPERLAXITUD_CHOICES, PERFIL_RODILLA_CHOICES, POSITIVO_NEGATIVO_CHOICES, REFLEJOS_PATELAR_CHOICES, TONO_MUSCULAR_CHOICES, YES_NO_CHOICES } from 'constants/SessionForm_Choices';
+import { COGNITIVE_DEFICIT_CHOICES, CONTROL_SELECTIVO_CHOICES, DESCR_PIE_ANTEPIE_CHOICES, DESCR_PIE_HALLUX_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_TOBILLO_CHOICES, ESPASTICIDAD_CHOICES, FAQ_CHOICES, FMS_CHOICES, FUERZA_MUSCULAR_CHOICES, GMFCS_CHOICES, SCORE_BEIGHTON_CHOICES, PERFIL_RODILLA_CHOICES, POSITIVO_NEGATIVO_CHOICES, REFLEJOS_PATELAR_CHOICES, TONO_MUSCULAR_CHOICES, YES_NO_CHOICES } from 'constants/SessionForm_Choices';
 
 const { Link } = Anchor;
 const { TextArea } = Input;
@@ -233,7 +233,8 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             descr_pie_sin_apoyo_antepie_i: dataSubmit['descr_pie_sin_apoyo_antepie_i'] || 0,
             descr_pie_sin_apoyo_hallux_d: dataSubmit['descr_pie_sin_apoyo_hallux_d'] || 0,
             descr_pie_sin_apoyo_hallux_i: dataSubmit['descr_pie_sin_apoyo_hallux_i'] || 0,
-            hiperlaxitud_articular: dataSubmit['hiperlaxitud_articular'] || 0,
+            score_beighton: dataSubmit['score_beighton'] || 0,
+            score_beighton_observaciones: dataSubmit['score_beighton_observaciones'] || '',
             signos_distonia: dataSubmit['signos_distonia'] || 0,
             tono_muscular: dataSubmit['tono_muscular'] || 0,
             patela_alta_d: dataSubmit['patela_alta_d'] || 0,
@@ -619,14 +620,14 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Equilibrio Monopodal Derecho" className={styles.columnItem} style={{ fontSize: '8px', marginBottom: 0 }} name="equilibrio_monopodal_d">
+                                <Form.Item label="Equilibrio Monopodal Derecho Segundos" className={styles.columnItem} style={{ fontSize: '8px', marginBottom: 0 }} name="equilibrio_monopodal_d">
                                     <Input maxLength={50} />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row>
                             <Col span={24}>
-                                <Form.Item label="Equilibrio Monopodal Izquierdo" className={styles.columnItem} style={{ fontSize: '8px' }} name="equilibrio_monopodal_i">
+                                <Form.Item label="Equilibrio Monopodal Izquierdo Segundos" className={styles.columnItem} style={{ fontSize: '8px' }} name="equilibrio_monopodal_i">
                                     <Input maxLength={50} />
                                 </Form.Item>
                             </Col>
@@ -862,7 +863,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         </Row>
                         <Row>
                             <Col span={12}>
-                                <Form.Item label="Longitud MID (mm)" className={styles.columnItem} name="longitud_MID">
+                                <Form.Item label="Longitud MID (cm)" className={styles.columnItem} name="longitud_MID">
                                     <InputNumber controls={false} />
                                 </Form.Item>
                             </Col>
@@ -881,14 +882,21 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={8} >
-                                <span> Hiperlaxitud Muscular : </span>
+                                <span> Score Beighton: </span>
                             </Col>
                             <Col span={10}>
-                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="hiperlaxitud_articular">
-                                    <Select defaultValue={0} options={HIPERLAXITUD_CHOICES} />
+                                <Form.Item className={styles.selectItem} style={{ marginBottom: '0.5em' }} name="score_beighton">
+                                    <Select defaultValue={0} options={SCORE_BEIGHTON_CHOICES} />
                                 </Form.Item>
                             </Col>
-
+                            <Col span={8}>
+                                <span> Observaciones Score Beighton: </span>
+                            </Col>
+                            <Col span={15}>
+                                <Form.Item style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name="score_beighton_observaciones" >
+                                    <TextArea rows={2} maxLength={255} />
+                                </Form.Item>
+                            </Col>
                         </Row>
 
                         <Row>

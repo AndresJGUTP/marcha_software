@@ -66,7 +66,7 @@ export const FAQ_CHOICES = [
 
 
 /* ------------------------------ TONO MUSCULAR ----------------------------- */
-export const HIPERLAXITUD_CHOICES = [
+export const SCORE_BEIGHTON_CHOICES = [
     {value: 0, label: ' '},
     {value: 1, label: '1/9'},
     {value: 2, label: '2/9'},

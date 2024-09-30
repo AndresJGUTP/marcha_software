@@ -26,13 +26,15 @@ class Session(models.Model):
     patient_id = models.ForeignKey(Patient, help_text="patient document number", on_delete=models.CASCADE)
     session_date = models.DateTimeField(help_text="Session date", blank=False, null=False)
     physiotherapist_name = models.CharField(help_text ="physiotherapist name", max_length=30, blank=True, null=True)
+    medico_remitente = models.CharField(help_text ="medico remitente", max_length=30, blank=True, null=True)
+    especialidad = models.CharField(help_text ="especialidad", max_length=30, blank=True, null=True)
 
     # DATOS CLÍNICOS
     motivo_consulta = models.CharField(help_text="Motivo de consulta", max_length=255, blank=True, null=True)
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
     alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
-
+    dolor = models.CharField(help_text ="Dolor", max_length=30, blank=True, null=True)
 
     # ANTECEDENTES
     antecedentes_personales = models.TextField(help_text="Antecedentes personales", blank=True, null=True)

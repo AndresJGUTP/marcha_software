@@ -18,6 +18,7 @@ from django.urls import path
 from rest.views.parent import ParentViewSet
 from rest.views.patient import PatientViewSet
 from rest.views.survey import SurveyViewSet
+from rest.views.users import UserViewSet #UserList, UserDetail
 from rest.views.session import SessionViewSet, session_render_pdf_view
 from rest.views.upload_file import FileUploadView
 from rest.views.upload_config_file import ConfigFileUploadView
@@ -34,6 +35,7 @@ router.register(r'parent', ParentViewSet)
 router.register(r'patient', PatientViewSet)
 router.register(r'session', SessionViewSet)
 router.register(r'survey', SurveyViewSet)
+router.register(r'user', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,6 +52,8 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url':'openapi-schema'}
     ), name='swagger-ui'),
+    # path('users/', UserList.as_view()),
+    # path('users/<int:pk>/', UserDetail.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

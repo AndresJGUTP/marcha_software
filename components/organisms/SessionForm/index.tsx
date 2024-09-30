@@ -399,6 +399,14 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Input maxLength={30} />
                 </Form.Item>
 
+                <Form.Item label="Medico Remitente" name="medico_remitente" style={{ marginBottom: '0.5em' }}>
+                    <Input maxLength={30} />
+                </Form.Item>
+
+                <Form.Item label="Especialidad" name="especialidad" style={{ marginBottom: '0.5em' }}>
+                    <Input maxLength={30} />
+                </Form.Item>
+
                 {/* <Form.Item label="Fecha y Hora Sesión" name="session_date" style={{marginBottom: '0.5em'}}>
                     <Input />
                 </Form.Item> */}
@@ -458,6 +466,10 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 </Form.Item>
 
                 <Form.Item label="Diagnosticos Médicos" name="diagnosticos_medicos" style={{ marginBottom: '0.5em' }}>
+                    <TextArea rows={5} />
+                </Form.Item>
+
+                <Form.Item label="Dolor" name="dolor" style={{ marginBottom: '0.5em' }}>
                     <TextArea rows={5} />
                 </Form.Item>
             </div>

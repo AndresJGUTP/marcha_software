@@ -12,7 +12,7 @@ interface IPatientFormProps {
     readonly disabledForm?: boolean
 }
 
-const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm }) => {
+const PatientFormE: React.FC<IPatientFormProps> = ({ patientData, disabledForm }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [requestStatus, setRequestStatus] = useState<string>('');
     const [parent, setParent] = useState<Record<string, any>>();
@@ -45,7 +45,7 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
         //console.log("Valores del formulario antes de enviar:", values);
         console.log("Responsable seleccionado:", parent);
     
-        values = { ...values, 'id_parent': parent!['id'] };
+        values = { ...values, 'id_parent': parent!['id_parent'] };
         
         console.log("Valores del formulario después de agregar id_parent:", values);
     
@@ -160,4 +160,4 @@ const PatientForm: React.FC<IPatientFormProps> = ({ patientData, disabledForm })
     );
 }
 
-export default PatientForm;
+export default PatientFormE;

@@ -4,7 +4,7 @@ const axios = require('axios').default;
 
 import { Typography, Button, InputNumber, Form, Select, message, Steps } from 'antd';
 import ParentForm from 'components/organisms/ParentForm';
-import PatientForm from 'components/organisms/PatientForm';
+import PatientFormE from 'components/organisms/PatientForm/indexE';
 const { Title } = Typography;
 
 
@@ -84,7 +84,7 @@ export default function EditarUsuario (props: IEditarUsuarioProps) {
     },
     {
       title: 'Datos personales',
-      content: selectValue == 'parent' ? <ParentForm parentData={user} /> : <PatientForm patientData={user} />
+      content: selectValue == 'parent' ? <ParentForm parentData={user} /> : <PatientFormE patientData={user} />
     },
   ];
   const items = steps.map((item) => ({ key: item.title, title: item.title }));

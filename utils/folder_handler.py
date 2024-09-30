@@ -103,6 +103,34 @@ class FolderHandler():
                 print(e.response['Error'])
 
         return image_base64
+    
+    def get_kinematic_best_trial_plot_from_s3(self):
+        kinematic_plot_path = os.path.join(self.get_kinematic_dir(), f'report_best_trial_{self.patient_id}_{self.session_id}.png').replace("\\","/")
+        image_base64 = False
+        try:
+            image_file = s3.get_object(Bucket=S3_BUCKET_NAME, Key=kinematic_plot_path)['Body'].read()
+            image_base64 = base64.b64encode(image_file).decode('utf-8')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print(f'kinematic best trial plot does not exists {image_file}')
+            else:
+                print(e.response['Error'])
+
+        return image_base64
+    
+    def get_grf_plot_from_s3(self):
+        grf_plot_path = os.path.join(self.get_dynamic_dir(), f'GRF_{self.patient_id}_{self.session_id}.png').replace("\\","/")
+        image_base64 = False
+        try:
+            image_file = s3.get_object(Bucket=S3_BUCKET_NAME, Key=grf_plot_path)['Body'].read()
+            image_base64 = base64.b64encode(image_file).decode('utf-8')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print(f'grf plot does not exists {image_file}')
+            else:
+                print(e.response['Error'])
+
+        return image_base64
 
     def set_session_folder_name(self, folder_name):
         self.session_folder_name = folder_name

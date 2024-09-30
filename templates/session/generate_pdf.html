@@ -1220,6 +1220,50 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 {% endif %}
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- --------------PAGE kinematic_best_trial_plot continue------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+{% if kinematic_best_trial_plot %}
+<div>
+    <pdf:nextpage />
+</div>
+
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINEMÁTICA</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ kinematic_best_trial_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE GRF continue-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+{% if grf_plot %}
+<div>
+    <pdf:nextpage />
+</div>
+
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINÉTICA</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ grf_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
 <!-- ----------------------------------------------PAGE 8 continue-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 

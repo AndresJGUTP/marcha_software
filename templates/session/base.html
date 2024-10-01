@@ -2,234 +2,289 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>
-        {% block title %}
-        {% endblock title %}
-    </title>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-      @page {
-        size: a4 portrait;
-        @frame header_frame {           /* Static Frame */
-            -pdf-frame-content: header_content;
-            left: 30pt; right: 30pt; top: 10pt; height: 40pt;
-        }
-        @frame content_frame {          /* Content Frame */
-            left: 30pt; right: 30pt; top: 95pt; height: 675pt;
-        }
-        @frame footer_frame {           /* Another static Frame */
-            -pdf-frame-content: footer_content;
-            left: 30pt; right: 30pt; top: 772pt; height: 20pt;
-        }
+  <title>
+    {% block title %}
+    {% endblock title %}
+  </title>
+
+  <style>
+    @page {
+      size: a4 portrait;
+
+      @frame header_frame {
+        /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 30pt;
+        right: 30pt;
+        top: 10pt;
+        height: 40pt;
       }
 
-      .no-spacing dl {
-        margin: 0;
-        padding: 0;
+      @frame content_frame {
+        /* Content Frame */
+        left: 30pt;
+        right: 30pt;
+        top: 95pt;
+        height: 675pt;
       }
 
-      .no-spacing dt {
-        margin: 0;
-        padding: 0;
+      @frame footer_frame {
+        /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 30pt;
+        right: 30pt;
+        top: 772pt;
+        height: 20pt;
       }
-            
-      .section {
-        margin-bottom: 10px;
-      }
-      
-      .table_with_caption {
-        text-align: center;
-      }
+    }
 
-      .table_with_caption tr {
-        text-align: left;        
-      }
-      
+    .no-spacing dl {
+      margin: 0;
+      padding: 0;
+    }
 
-      .tr_data {
-        line-height: auto;
-        height: 32px;
-        min-height: 27px;
-      }
+    .no-spacing dt {
+      margin: 0;
+      padding: 0;
+    }
 
-      .recuadro {
-        border: 1px solid black;
-        background-color: white;
-        padding: 3px 2px;
-        margin: 0 3px;
-        /* text-align: left; */
-      }
+    .section {
+      margin-bottom: 10px;
+    }
 
-      .label_textarea {
-        line-height: auto;
-        padding-left: 2px;
-        padding-bottom: 1px;
-        margin-bottom: 10px
-      }
+    .table_with_caption {
+      text-align: center;
+    }
 
-      .text_datos_clinicos_antec {
-        line-height: 12px;
-        height: 52px;
-        vertical-align:top;
-        padding: 1px;
-        text-align: justify;
-      }
-
-      .label_text_ortesis {
-        vertical-align: top;
-        padding-right: 2px;
-        padding-top: 1px;
-        width: 22%;        
-        text-align: right;
-      }
-
-      .text_ortesis {
-        line-height: 12px;
-        height: 50px;
-        vertical-align:top;
-        padding: 1px;
-        width: 27%;
-      }
+    .table_with_caption tr {
+      text-align: left;
+    }
 
 
-      .data_patient_col1 {
-        width: 45%;
-        text-align: left;
-      }
+    .tr_data {
+      line-height: auto;
+      height: 32px;
+      min-height: 27px;
+    }
 
-      .data_patient_col2 {
-        width: 53%;
-        text-align: left;
-      }
+    .recuadro {
+      border: 1px solid black;
+      background-color: white;
+      padding: 3px 2px;
+      margin: 0 3px;
+      /* text-align: left; */
+    }
 
-      .falta {
-        color: red;
-        text-decoration: underline;
-      }
-      
+    .tr_dataOb {
+      height: auto;
+      /* Asegura que las filas puedan crecer */
+    }
 
-      table caption {
-        margin: 0;
-        text-align: center;
-        font-size: 15pt;
-        font-weight: bold;
-        line-height: auto;
-      }
+    .recuadroOb {
+      border: 1px solid black;
+      background-color: white;
+      padding: 2px 5px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+      margin: 0 3px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 10px;
+      min-height: 200px;
+    }
 
-      dt {
-        text-align: left;
-      }
+    .td_ob {
+      vertical-align: top;
+      height: auto;
+    }
 
-      .label_pat_col1 {
-        font-weight: normal;
-        text-align: right;
-        width: 35%;
-      }
 
-      .label_pat_col2 {
-        font-weight: normal;
-        text-align: right;
-        width: 23%;
-      }
+    .label_textarea {
+      line-height: auto;
+      padding-left: 2px;
+      padding-bottom: 1px;
+      margin-bottom: 10px
+    }
 
-      .label_funcionalidad {
-        font-weight: normal;
-        text-align: right;
-        width: 50%;
-      }
+    .text_datos_clinicos_antec {
+      line-height: 12px;
+      height: 52px;
+      vertical-align: top;
+      padding: 1px;
+      text-align: justify;
+    }
 
-      .border_grueso {
-        border: 3px solid rgba(144, 144, 144, 0.6);
-        padding-left: 2px;
-      }
+    .label_text_ortesis {
+      vertical-align: top;
+      padding-right: 2px;
+      padding-top: 1px;
+      width: 22%;
+      text-align: right;
+    }
 
-      .border_grueso th, tr {
-        border: hidden;
-      }
+    .text_ortesis {
+      line-height: 12px;
+      height: 50px;
+      vertical-align: top;
+      padding: 1px;
+      width: 27%;
+    }
 
-      .page3_derecha {
-        padding-left: 22px;
-        padding-right: 5px;
-      }
+    .observaciones {
+      line-height: 12px;
+      height: 50px;
+      vertical-align: top;
+      padding-left: 30px;
+      width: 27%;
+    }
 
-      .page3_izquier {
-        padding-left: 5px;
-        padding-right: 22px;
-      }
 
-      .page3_labelLeft {
-        text-align: left;
-        padding-left: 30px;
-        width: 25%;
-      }
+    .data_patient_col1 {
+      width: 45%;
+      text-align: left;
+    }
 
-      .table_control_selectivo {
-          width: 30px;
-          margin: 20px auto;
-          border-collapse: collapse;
-          text-align: left;
-        }
-        .thcs, .tdcs {
-          padding: 2px;
-          border-bottom: 1px solid #ddd;
-          font-size: 12px;
-        }
-        .value-cell {
-            width: 20%; 
-            text-align: center;
-            font-size: 12px;
-        }
-        .value-cell-2 {
-            width: 10%; 
-            text-align: center;
-            font-size: 12px;
-        }
-        .description-cell {
-            width: 70%;
-            text-align: left;
-            font-size: 12px;
-        }
-        .description-cell-2 {
-            width: 70%; 
-            text-align: center;
-            font-size: 12px;
-        }
-        .description-cell-3 {
-            width: 100%; 
-            text-align: left;
-            font-size: 12px;
-        }
+    .data_patient_col2 {
+      width: 53%;
+      text-align: left;
+    }
 
-        .section {
-        margin-bottom: 10px;
-      } 
+    .falta {
+      color: red;
+      text-decoration: underline;
+    }
 
-      .section-attacheds {
-          margin-bottom: 20px;
-          text-align: center;
-        }
-        .section-attacheds img {
-            width: 400px; 
-            height: 400px; 
-            margin: 10px auto;
-            display: block;
-        }
-    
-    </style>
-  </head>
 
-  <body style="font-size: 12px;">
-    <div class="container">
-        {% block content %}
-        {% endblock content %}
-    </div>
+    table caption {
+      margin: 0;
+      text-align: center;
+      font-size: 15pt;
+      font-weight: bold;
+      line-height: auto;
+    }
 
-  </body>
+    dt {
+      text-align: left;
+    }
+
+    .label_pat_col1 {
+      font-weight: normal;
+      text-align: right;
+      width: 35%;
+    }
+
+    .label_pat_col2 {
+      font-weight: normal;
+      text-align: right;
+      width: 23%;
+    }
+
+    .label_funcionalidad {
+      font-weight: normal;
+      text-align: right;
+      width: 50%;
+    }
+
+    .border_grueso {
+      border: 3px solid rgba(144, 144, 144, 0.6);
+      padding-left: 2px;
+    }
+
+    .border_grueso th,
+    tr {
+      border: hidden;
+    }
+
+    .page3_derecha {
+      padding-left: 22px;
+      padding-right: 5px;
+    }
+
+    .page3_izquier {
+      padding-left: 5px;
+      padding-right: 22px;
+    }
+
+    .page3_labelLeft {
+      text-align: left;
+      padding-left: 30px;
+      width: 25%;
+    }
+
+    .table_control_selectivo {
+      width: 30px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .thcs,
+    .tdcs {
+      padding: 2px;
+      border-bottom: 1px solid #ddd;
+      font-size: 12px;
+    }
+
+    .value-cell {
+      width: 20%;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .value-cell-2 {
+      width: 10%;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .description-cell {
+      width: 70%;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .description-cell-2 {
+      width: 70%;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .description-cell-3 {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .section {
+      margin-bottom: 10px;
+    }
+
+    .section-attacheds {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .section-attacheds img {
+      width: 400px;
+      height: 400px;
+      margin: 10px auto;
+      display: block;
+    }
+  </style>
+</head>
+
+<body style="font-size: 12px;">
+  <div class="container">
+    {% block content %}
+    {% endblock content %}
+  </div>
+
+</body>
+
 </html>
-
-

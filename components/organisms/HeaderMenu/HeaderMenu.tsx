@@ -7,6 +7,9 @@ import { Button, Menu, Grid } from 'antd';
 import { HomeOutlined, ToolOutlined, DownOutlined, FundOutlined} from '@ant-design/icons';
 import UserAccessMenu from '../UserAccessMenu/UserAccessMenu';
 import { useRouter } from 'next/router'
+import store from 'lib/store';
+import { useDispatch } from 'react-redux';
+import { resetUser } from 'lib/states/user';
 
 const { useBreakpoint } = Grid;
 
@@ -86,38 +89,40 @@ const items: MenuProps['items'] = [
       key: '/configuracion',
       icon: <ToolOutlined />,
     },
-    
-    // {
-    //   label: 'Visualizar Resonancia',
-    //   key: '/visualizar_resonancia',
-    //   icon: <FundOutlined />,
-    // },
   ]
 
   
-  const HeaderMenu : React.FC = () => {
+const HeaderMenu : React.FC = () => {
     
     const router = useRouter()
     const screens = useBreakpoint();
+    const dispatch = useDispatch()
 
-    const openInNewTab = (url: string) => {
-      const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-      if (newWindow) newWindow.opener = null
-    }
+    const user = store.getState().user
 
     const onClick: MenuProps['onClick'] = (e) => {
 
       router.push(e.key)
     };
 
-    if (!screens.lg) {
-      return null;
+    if (!screens.lg || !user.isAuthenticated  ) {
+      return <> </>;
+    }
+
+    const handleLogOut = () => {
+      dispatch(resetUser())
+      router.push('')
     }
 
     return(
         <Header className={styles.header} style={{backgroundColor: 'white', paddingLeft:'1em'}}>
             <HeaderIcon className={styles.headerIcon} />
             <Menu onClick={onClick} mode="horizontal" items={items} className={styles.menuHeader} />
+            {
+              user.isAuthenticated && 
+                <Button danger style={{margin: 'auto 0 auto auto'}} onClick={() => {handleLogOut()}}>Cerrar Sesión</Button>
+            }
+
             {/* <Button type='primary' style={{margin: 'auto 0 auto auto'}} onClick={() => openInNewTab(process.env.BASE_URL+'/admin')}>Admin</Button> */}
             {/* <UserAccessMenu /> */}
         </Header>

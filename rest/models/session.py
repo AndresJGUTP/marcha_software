@@ -3,7 +3,7 @@ from django.db import models
 from constants.choices import REFLEJOS_PATELAR_CHOICES
 from constants.choices import (
     YES_NO_CHOICES, COGNITIVE_DEFICIT_CHOICES, 
-    GMFCS_CHOICES, FMS_CHOICES, FAQ_CHOICES, HIPERLAXITUD_CHOICES,
+    GMFCS_CHOICES, FMS_CHOICES, FAQ_CHOICES, SCORE_BEIGHTON_CHOICES,
     TONO_MUSCULAR_CHOICES, ESPASTICIDAD_CHOICES, PERFIL_RODILLA_CHOICES, DESCR_PIE_TOBILLO_CHOICES,
     DESCR_PIE_RETROPIE_CHOICES, DESCR_PIE_MEDIOPIE_CHOICES, DESCR_PIE_ANTEPIE_CHOICES,
     DESCR_PIE_HALLUX_CHOICES, FUERZA_MUSCULAR_CHOICES, CONTROL_SELECTIVO_CHOICES,
@@ -26,13 +26,15 @@ class Session(models.Model):
     patient_id = models.ForeignKey(Patient, help_text="patient document number", on_delete=models.CASCADE)
     session_date = models.DateTimeField(help_text="Session date", blank=False, null=False)
     physiotherapist_name = models.CharField(help_text ="physiotherapist name", max_length=30, blank=True, null=True)
+    medico_remitente = models.CharField(help_text ="medico remitente", max_length=30, blank=True, null=True)
+    especialidad = models.CharField(help_text ="especialidad", max_length=30, blank=True, null=True)
 
     # DATOS CLÍNICOS
     motivo_consulta = models.CharField(help_text="Motivo de consulta", max_length=255, blank=True, null=True)
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
     alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
-
+    dolor = models.CharField(help_text ="Dolor", max_length=30, blank=True, null=True)
 
     # ANTECEDENTES
     antecedentes_personales = models.TextField(help_text="Antecedentes personales", blank=True, null=True)
@@ -78,8 +80,8 @@ class Session(models.Model):
     equilibrio_monopodal_i = models.CharField(max_length=50, help_text="Equilibrio monopodal izquierdo", null=True, blank=True)
 
     # Tono muscular ======================================================================================================
-    hiperlaxitud_articular_i = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
-    hiperlaxitud_articular_d = models.IntegerField(choices=HIPERLAXITUD_CHOICES)
+    score_beighton = models.IntegerField(choices=SCORE_BEIGHTON_CHOICES)
+    score_beighton_observaciones = models.CharField(max_length=255, null=True, blank=True)
     signos_distonia = models.IntegerField(choices=YES_NO_CHOICES)
     tono_muscular = models.IntegerField(choices=TONO_MUSCULAR_CHOICES)
 

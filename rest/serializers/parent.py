@@ -13,5 +13,6 @@ class ParentSerializer(serializers.ModelSerializer):
             'first_last_name', 
             'second_last_name', 
             'email', 
-            'phone'
+            'phone',
+            'sex'
             )

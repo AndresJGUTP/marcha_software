@@ -1,6 +1,7 @@
 from django.db import models
-from .validators import validator_document_number, validator_phone_number,validator_document_type
+from .validators import validator_document_number, validator_phone_number,validator_document_type, validator_sex_type
 from constants.document_choices import DOCUMENT_CHOICES
+from constants.choices import SEX_CHOICES
 
 class Parent(models.Model):
 
@@ -11,6 +12,7 @@ class Parent(models.Model):
                                                             # validators=[validator_document_number], 
                                                             unique=True, primary_key=True)
     
+    sex = models.CharField(help_text="Patient sex", max_length=2, blank=False, null=False, choices=SEX_CHOICES, validators=[validator_sex_type], default='M')
     first_name = models.CharField(help_text='First name', max_length=15, blank=False)
     second_name = models.CharField(help_text='Second name', max_length=15, blank=True)
     first_last_name = models.CharField(help_text='First last name', max_length=15, blank=False)
@@ -25,4 +27,4 @@ class Parent(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.first_name} {self.first_last_name} - {self.ID_document_type} - {self.id}'
+        return f'{self.first_name} {self.first_last_name} - {self.ID_document_type} - {self.id} - {self.sex}'

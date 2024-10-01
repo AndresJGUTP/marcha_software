@@ -65,7 +65,7 @@ FAQ_CHOICES = [
 ]
 
 # ------------------------------- TONO MUSCULAR ------------------------------ #
-HIPERLAXITUD_CHOICES = [
+SCORE_BEIGHTON_CHOICES = [
     (0,'-'),
     (1, '1/9'),
     (2, '2/9'),

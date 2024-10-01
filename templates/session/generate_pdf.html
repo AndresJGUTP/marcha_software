@@ -63,7 +63,15 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
             <td style="width: 20%; text-align: right;">Fecha de la sesión:</td>
             <td style="width: 30%; text-align: left;"><p class="recuadro">{{ session.session_date|date:"d/m/Y" }} - {{ session.session_date|time:"g:i a" }}</p></td>
         </tr>
-    </table>
+        <tr class="tr_data">
+            <td style="width: 20%; text-align: left;">Sexo del paciente:</td>
+            <td style="width: 30%; text-align: left;"><p class="recuadro">{% if session.patient_id.sex %}{{ session.patient_id.get_sex_display  }}{% else %}&nbsp;{% endif %}</p></td>
+            <td style="width: 20%; text-align: center;">Medico remitente:</td>
+            <td style="width: 30%; text-align: left;"><p class="recuadro">{% if session.medico_remitente %}{{ session.medico_remitente }}{% else %}&nbsp;{% endif %}</p></td>
+            <td style="width: 20%; text-align: center;">Especialidad:</td>
+            <td style="width: 30%; text-align: left;"><p class="recuadro">{% if session.especialidad %}{{ session.especialidad }}{% else %}&nbsp;{% endif %}</p></td>
+        </tr>
+
 </div>
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
@@ -141,6 +149,8 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
     
                     <tr class="label_textarea" style="padding-top: 6px;"><td>Alergias</td></tr>
                     <tr><td class="recuadro text_datos_clinicos_antec">{% if session.alergias %}{{ session.alergias }}{% else %}No refiere{% endif %}</td></tr>
+                    <tr class="label_textarea" style="padding-top: 6px;"><td>Dolor</td></tr>
+                    <tr><td class="recuadro text_datos_clinicos_antec">{% if session.dolor %}{{ session.dolor }}{% else %}No refiere{% endif %}</td></tr>
                 </table>
             </td>
             <td style="padding-left: 7px; padding-right: 10px; vertical-align: top;">
@@ -179,7 +189,14 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
         </tr>
     </table> 
 
-
+    <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 2-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+ 
+    <div>
+        <pdf:nextpage />
+    </div>
+    <br>
     <table class="table_with_caption" style="margin-top: 15px; padding-top: -2px;"> 
         <tr style="padding-bottom: 10px;">
             <td style="padding-left: 10px; padding-right: 7px; vertical-align: top;">
@@ -216,14 +233,6 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
         </tr>
     </table> 
 <div>
-<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 2-------------------------------------------------- -->
-<!-- ------------------------------------------------------------------------------------------------------ -->
-
-<div>
-    <pdf:nextpage />
-</div>
-
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
@@ -287,11 +296,131 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
         </table>
     </td>
 </tr></table> 
+
+    
+
 </div>
 
+<div style="border: 1pt solid rgb(130, 130, 130); padding: 10px;">
+    <h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">PRUEBA DE 6 MINUTOS</h1>
+    <table style=" width: 80%;">  <!-- TABLA - PRUEBA DE 6 MINUTOS -->
+        <tr style="padding: 5px;">  <!-- Frecuencia cardiaca -->
+            <td><table><tr class="tr_data" style="height: 35px; padding-bottom: 1px;">
+                <td style="width: 15%;"></td>
+                <td style="width: 15%; text-align: left;">Frecuencia cardiaca inicial:</td>
+                <td style="width: 17.5%; padding-bottom: 6px; text-align: center;"><p class="recuadro">{% if session.frec_cardiaca_inicial %}{{ session.frec_cardiaca_inicial }}{% else %}&nbsp;{% endif %}</p></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 15%; text-align: left;">Frecuencia cardiaca final:</td>
+                <td style="width: 17.5%; padding-bottom: 6px; text-align: center;"><p class="recuadro">{% if session.frec_cardiaca_final %}{{ session.frec_cardiaca_final }}{% else %}&nbsp;{% endif %}</p></td>
+                <td style="width: 15%;"></td>
+            </tr></table></td>
+        </tr>
+        <tr style="padding: 0;">  <!-- Tiempos -->
+            <td><table>
+                <tr class="tr_data">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">Tiempo [min]</td>
+                    <td style="width: 15%; padding: 0 10px; text-align: center;">Distancia [m]</td>
+                    <td style="width: 15%; padding: 0 6px; text-align: center;">Distancia acumulada [m]</td>
+                    <td style="width: 15%; padding: 0 8px; text-align: center;">Frecuencia cardiaca</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+    
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="padding-left: 5px; width: 15%; text-align: left;">1</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_distancia %}{{ session.tiempo_1_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_distancia_acumulada %}{{ session.tiempo_1_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_frec_cardiaca %}{{ session.tiempo_1_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">2</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_distancia %}{{ session.tiempo_2_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_distancia_acumulada %}{{ session.tiempo_2_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_frec_cardiaca %}{{ session.tiempo_2_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>            
+                </tr>
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">3</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_distancia %}{{ session.tiempo_3_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_distancia_acumulada %}{{ session.tiempo_3_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_frec_cardiaca %}{{ session.tiempo_3_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">4</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_distancia %}{{ session.tiempo_4_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_distancia_acumulada %}{{ session.tiempo_4_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_frec_cardiaca %}{{ session.tiempo_4_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">5</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_distancia %}{{ session.tiempo_5_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_distancia_acumulada %}{{ session.tiempo_5_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_frec_cardiaca %}{{ session.tiempo_5_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+                <tr class="tr_data" style="text-align: center;">
+                    <td style="width: 20%;"></td>
+                    <td style="width: 15%; padding-left: 5px; text-align: left;">6</td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_distancia %}{{ session.tiempo_6_distancia }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_distancia_acumulada %}{{ session.tiempo_6_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 15%; padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_frec_cardiaca %}{{ session.tiempo_6_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="width: 20%;"></td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+        <tr style="height: 15px; padding: 0;"><td></td></tr>
+        <tr style="padding: 0;">  <!-- Gasto energético|Velocidad|EscalaBorg-->
+            <td><table>
+                    <tr class="tr_data">
+                        <td style="width: 15%;"></td>
+                        <td style="width: 8.125%; text-align: left;">Gasto energético:</td>
+                        <td style="width: 12%;"><p class="recuadro">{% if session.gasto_energetico %}{{ session.gasto_energetico }}{% else %}&nbsp;{% endif %}</p></td>
+                        <td ></td>
+                        <td style="text-align: right; width: 8.125%;">Velocidad:</td>
+                        <td style="width: 12%;"><p class="recuadro">{% if session.velocidad %}{{ session.velocidad }}{% else %}&nbsp;{% endif %}</p></td>
+                        <td>m/s</td>
+                        <td style="text-align: right; width: 8.125%;">Escala de Borg:</td>
+                        <td style="width: 12%"><p class="recuadro">{% if session.escala_borg %}{{ session.escala_borg }}{% else %}&nbsp;{% endif %}</p></td>
+                        <td style="width: 15%;"></td>
+                    </tr>
+                </table></td>
+        </tr>
+        <tr style="height: 15px; padding: 0;"><td></td></tr>
+        <tr style="padding: 0; padding-bottom: 8px;" > <!-- Observaciones prueba 6 minutos -->
+            <td>
+                <table>
+                    <tr style="height: 60px; line-height: auto; ">
+                        <td style="width: 20%;"></td>
+                        <td class="label_text_ortesis" style="width: 30%; text-align: left; padding-left: -2px;">Observaciones prueba de 6 minutos:</td>
+                        <td class="recuadro text_ortesis" style="width: 60%; height: 80px; text-align: left;">
+                            {% if session.observaciones_prueba_6_min %}{{ session.observaciones_prueba_6_min }}{% else %}No refiere{% endif %}</td>
+                        <td style="width: 20%;"></td>
+                    </tr>
+                </table>
+            </td>
+    
+        </tr>
+    
+    </table> 
+</div>
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 3-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
-<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: -20px;">EXAMEN FÍSICO</h1>
+<div></div>
+    <pdf:nextpage />
+</div>
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: 20px;">EXAMEN FÍSICO</h1>
 
 <div style="font-size: 13px;">
     <table><tr>
@@ -318,12 +447,14 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
             <table style="padding-top: 29px; padding-bottom: 10px;">  <!-- TABLA - BALANCE Y EQUILIBRIO -->
                 <caption>BALANCE Y EQUILIBRIO</caption>
                 <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right; width: 64%;">Equilibrio monopodal derecho:</td>
+                    <td style="text-align: right; width: 55%;">Equilibrio monopodal derecho:</td>
                     <td style="width: 25%;"><p class="recuadro">{% if session.equilibrio_monopodal_d %}{{ session.equilibrio_monopodal_d }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="padding-right: 18px;">seg</td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
                     <td style="text-align: right;">Equilibrio monopodal izquierdo:</td>
                     <td><p class="recuadro">{% if session.equilibrio_monopodal_i %}{{ session.equilibrio_monopodal_i }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="padding-right: 18px;">seg</td>
                 </tr>
             </table>
 
@@ -374,7 +505,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                     <tr class="tr_data">
                         <td style="text-align: right;">Longitud MID:</td>
                         <td><p class="recuadro">{% if session.longitud_MID %}{{ session.longitud_MID }}{% else %}&nbsp;{% endif %}</p></td>
-                        <td>mm</td>
+                        <td>cm</td>
                     </tr>
                 </table></td>
                 <td><table>
@@ -392,26 +523,26 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
             </tr>
             </table>
 
-            <table style="padding-top: 39px; padding-bottom: 10px;">  <!-- TABLA - TONO MUSCULAR -->
+            <table style="padding-top: 39px; padding-bottom: 10px; width: 100%;">
+                <!-- TABLA - TONO MUSCULAR -->
                 <caption>TONO MUSCULAR</caption>
-                <tr style="padding: 0; line-height: auto;">
-                    <td style="width: 40%;"></td>
-                    <td style="width: 25%;">Derecho</td>
-                    <td style="width: 25%;">Izquierdo</td>
+            
+                <tr class="tr_data" style="padding: 0;">
+                    <td style="text-align: right; width: 30%; padding-top: 5px;">Score Beighton:</td>
+                    <td colspan="2" style="width: 70%; padding-top: 10px;"><p class="recuadro">{% if session.score_beighton %}{{ session.get_score_beighton_display }}{% else %}&nbsp;{% endif %}</p></td>
+                </tr>
+                <tr class="tr_dataOb" style="padding: 0; padding-top: 10px;">
+                    <td style="text-align: right; width: 30%;">Score Beighton observaciones:</td>
+                    <td colspan="2" style="width: 70%;"><p class="recuadroOb">{% if session.score_beighton_observaciones %}{{ session.score_beighton_observaciones }}{% else %}&nbsp;{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Hiperlaxitud Articular:</td>
-                    <td><p class="recuadro">{% if session.hiperlaxitud_articular_d %}{{ session.get_hiperlaxitud_articular_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td><p class="recuadro">{% if session.hiperlaxitud_articular_i %}{{ session.get_hiperlaxitud_articular_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td style="text-align: right; width: 30%; padding-top: 5px;">Signos de distonía:</td>
+                    <td colspan="2" style="width: 70%; padding-top: 10px;"><p class="recuadro">{% if session.signos_distonia %}{{ session.get_signos_distonia_display }}{% else %}&nbsp;{% endif %}</p></td>
                 </tr>
                 <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Signos de distonía:</td>
-                    <td colspan="2" ><p class="recuadro">{% if session.signos_distonia %}{{ session.get_signos_distonia_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="td" style="text-align: right; width: 30%; padding-top: 5px;">Tono muscular:</td>
+                    <td colspan="2" style="width: 70%; padding-top: 10px;"><p class="recuadro">{% if session.tono_muscular %}{{ session.get_tono_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
                 </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Tono muscular:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.tono_muscular %}{{ session.get_tono_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>                
             </table>
 
             <hr>
@@ -464,7 +595,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 </div>
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 3-------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 4-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
 <div>
@@ -473,213 +604,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 
 <!-- PÁGINA 2 - COLUMNA 1 - CONTINUACION -->
 
-<div>
-    <table><tr>
-        <td style="vertical-align: top; text-align: center; width: 45%;">
-
-            <table style="padding-top: 40px; padding-bottom: 10px;">  <!-- TABLA - Varo/valgo de rodilla -->
-                <caption>Varo/valgo de rodilla</caption>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right; width: 55.5%;">Distancia intercondilea:</td>
-                    <td style="width: 25%;"><p class="recuadro">{% if session.dist_intercondilea %}{{ session.dist_intercondilea }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td style="width: 6%;">mm</td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Distancia intermaleolar:</td>
-                    <td><p class="recuadro">{% if session.dist_intermaleolar %}{{ session.dist_intermaleolar }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td style="text-align: right;">mm</td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Perfil de rodilla derecho:</td>
-                    <td><p class="recuadro">{% if session.perfil_rodilla_d %}{{ session.get_perfil_rodilla_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Perfil de rodilla izquierdo:</td>
-                    <td><p class="recuadro">{% if session.perfil_rodilla_i %}{{ session.get_perfil_rodilla_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-            </table>   
-
-            <table  style="padding-top: 41px; ">  <!-- TABLA - DESCRIPCIÓN DEL PIE -->
-                <caption>DESCRIPCIÓN DEL PIE</caption>
-                <tr style="padding-top: 8px; padding-bottom: 10px; padding-left: 36px;"><th colspan="5">Con apoyo</th></tr>
-                <tr style="line-height: auto; padding: 0; height: 12px;">
-                    <td style="width: 23%;"></td>
-                    <td colspan="2">Derecho</td>
-                    <td colspan="2">Izquierdo</td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Tobillo:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_tobillo_d %}{{ session.get_descr_pie_apoyo_tobillo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_tobillo_i %}{{ session.get_descr_pie_apoyo_tobillo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Retropie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_d %}{{ session.get_descr_pie_apoyo_retropie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_i %}{{ session.get_descr_pie_apoyo_retropie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Mediopie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Antepie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_antepie_d %}{{ session.get_descr_pie_apoyo_antepie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_antepie_i %}{{ session.get_descr_pie_apoyo_antepie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Hallux:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_hallux_d %}{{ session.get_descr_pie_apoyo_hallux_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_apoyo_hallux_i %}{{ session.get_descr_pie_apoyo_hallux_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-
-                <tr style="padding-top: 8px; padding-bottom: 10px;  padding-left: 36px;"><th colspan="5">Sin apoyo</th></tr>
-                <tr style="line-height: auto; padding: 0; height: 12px;">
-                    <td style="line-height: auto;"></td>
-                    <td colspan="2">Derecho</td>
-                    <td colspan="2">Izquierdo</td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Tobillo:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_tobillo_d %}{{ session.get_descr_pie_sin_apoyo_tobillo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_tobillo_i %}{{ session.get_descr_pie_sin_apoyo_tobillo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Retropie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_d %}{{ session.get_descr_pie_sin_apoyo_retropie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_i %}{{ session.get_descr_pie_sin_apoyo_retropie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Mediopie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Antepie:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_antepie_d %}{{ session.get_descr_pie_sin_apoyo_antepie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_antepie_i %}{{ session.get_descr_pie_sin_apoyo_antepie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data" style="padding: 0;">
-                    <td style="text-align: right;">Hallux:</td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_hallux_d %}{{ session.get_descr_pie_sin_apoyo_hallux_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td colspan="2"><p class="recuadro">{% if session.descr_pie_sin_apoyo_hallux_i %}{{ session.get_descr_pie_sin_apoyo_hallux_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-            </table>
-        </td>
-
-        <td style="vertical-align: top; text-align: center;"> <!-- PÁGINA 2 - COLUMNA 2  CONTINUACION-->
-            <table style="padding-top: 40px; padding-bottom: 10px;">  <!-- TABLA - PRUEBA DE 6 MINUTOS -->
-                <caption>PRUEBA DE 6 MINUTOS</caption>
-                <tr style="padding: 0;">  <!-- Frecuencia cardiaca -->
-                    <td><table><tr class="tr_data" style="height: 35px; padding-bottom: 4px;">
-                        <td style="width: 37%; text-align: right;">Frecuencia cardiaca inicial:</td>
-                        <td style="width: 13%; padding-bottom: 6px;"><p class="recuadro">{% if session.frec_cardiaca_inicial %}{{ session.frec_cardiaca_inicial }}{% else %}&nbsp;{% endif %}</p></td>
-                        <td style="width: 37%; text-align: right;">Frecuencia cardiaca final:</td>
-                        <td style="width: 13%; padding-bottom: 6px;"><p class="recuadro">{% if session.frec_cardiaca_final %}{{ session.frec_cardiaca_final }}{% else %}&nbsp;{% endif %}</p></td>
-                    </tr></table></td>
-                </tr>
-                <tr style="padding: 0;">  <!-- Tiempos -->
-                    <td><table>
-                        <tr class="tr_data">
-                            <td style="width: 19%; padding-left: 5px;">Tiempo [min]</td>
-                            <td style="width: 27%; padding: 0 10px;">Distancia [m]</td>
-                            <td style="width: 27%; padding: 0 6px;">Distancia acumulada [m]</td>
-                            <td style="width: 27%; padding: 0 8px;">Frecuencia cardiaca</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">1</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_distancia %}{{ session.tiempo_1_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_distancia_acumulada %}{{ session.tiempo_1_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_1_frec_cardiaca %}{{ session.tiempo_1_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">2</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_distancia %}{{ session.tiempo_2_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_distancia_acumulada %}{{ session.tiempo_2_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_2_frec_cardiaca %}{{ session.tiempo_2_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">3</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_distancia %}{{ session.tiempo_3_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_distancia_acumulada %}{{ session.tiempo_3_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_3_frec_cardiaca %}{{ session.tiempo_3_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">4</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_distancia %}{{ session.tiempo_4_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_distancia_acumulada %}{{ session.tiempo_4_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_4_frec_cardiaca %}{{ session.tiempo_4_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">5</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_distancia %}{{ session.tiempo_5_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_distancia_acumulada %}{{ session.tiempo_5_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_5_frec_cardiaca %}{{ session.tiempo_5_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        <tr class="tr_data">
-                            <td style="padding-left: 5px;">6</td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_distancia %}{{ session.tiempo_6_distancia }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_distancia_acumulada %}{{ session.tiempo_6_distancia_acumulada }}{% else %}&nbsp;{% endif %}</p></td>
-                            <td style="padding: 0 14px;"><p class="recuadro">{% if session.tiempo_6_frec_cardiaca %}{{ session.tiempo_6_frec_cardiaca }}{% else %}&nbsp;{% endif %}</p></td>
-                        </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr style="height: 15px; padding: 0;"><td></td></tr>
-                <tr style="padding: 0;">  <!-- Gasto energético|Velocidad|EscalaBorg-->
-                    <td><table>
-                            <tr class="tr_data">
-                                <td style="width: 53.5%; text-align: right;">Gasto energético:</td>
-                                <td style="width: 15%;"><p class="recuadro">{% if session.gasto_energetico %}{{ session.gasto_energetico }}{% else %}&nbsp;{% endif %}</p></td>
-                                <td style="width: 5%;"></td>
-                            </tr>
-                            <tr class="tr_data">
-                                <td style="text-align: right;">Velocidad:</td>
-                                <td><p class="recuadro">{% if session.velocidad %}{{ session.velocidad }}{% else %}&nbsp;{% endif %}</p></td>
-                                <td>m/s</td>
-                            </tr>
-                            <tr class="tr_data">
-                                <td style="text-align: right;">Escala de Borg:</td>
-                                <td><p class="recuadro">{% if session.escala_borg %}{{ session.escala_borg }}{% else %}&nbsp;{% endif %}</p></td>
-                                <td></td>
-                            </tr>
-                        </table></td>
-                </tr>
-                <tr style="height: 15px; padding: 0;"><td></td></tr>
-                <tr style="padding: 0; " > <!-- Observaciones prueba 6 minutos -->
-                    <td>
-                        <table>
-                            <tr style="height: 60px; line-height: auto;">
-                                <td style="width: 5%;"></td>
-                                <td class="label_text_ortesis" style="width: 30%; text-align: center;">Observaciones prueba de 6 minutos:</td>
-                                <td class="recuadro text_ortesis" style="width: 60%; height: 80px; text-align: left;">
-                                    {% if session.observaciones_prueba_6_min %}{{ session.observaciones_prueba_6_min }}{% else %}No refiere{% endif %}</td>
-                            </tr>
-                        </table>
-                    </td>
-
-                </tr>
-
-            </table> 
-
-        </td>
-    </tr></table> 
-</div>
-<br>
-<br>
-
-
-<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 4-------------------------------------------------- -->
-<!-- ------------------------------------------------------------------------------------------------------ -->
-
-
-<div>
-    <pdf:nextpage />
-</div>
-
-
-<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: 30px;">TEST ARTICULAR Y MUSCULAR</h1>
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto; padding-top: 20px;">TEST ARTICULAR Y MUSCULAR</h1>
 
 <div>
     <table><tr>
@@ -764,31 +689,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 
 <br>
 
-<div class="section" style="font-size: 12.5px;">
-    <table style="text-align: center; height: 20px;" >  <!-- PÁGINA 4 - TRONCO -->
-        <tr class="tr_data border_grueso" style="height: 42px">
-            <th style="text-align: left;">TRONCO</th>
-            <th>Movilidad articular</th>
-            <th>Control Selectivo</th>
-            <th>Fuerza muscular</th>
-        </tr>
-        <tr class="tr_data" style=" padding-top: 10px; ">
-            <td class="page3_labelLeft">Abdominales</td>
-            <td></td>
-            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_control_selectivo %}{{ session.get_tronco_abdominales_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
-            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_fuerza_muscular %}{{ session.get_tronco_abdominales_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
-        </tr>
-        <tr class="tr_data">
-            <td class="page3_labelLeft">Lumbares</td>
-            <td></td>
-            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_control_selectivo %}{{ session.get_tronco_lumbares_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
-            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_fuerza_muscular %}{{ session.get_tronco_lumbares_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
-        </tr>
-
-    </table>
-</div>
-
-<div class="section" style=" font-size: 12.5px;">
+<div class="section" style=" font-size: 12.5px;"></div>
     <table style="text-align: center; margin-bottom: 0;">  <!-- PÁGINA 4 - CADERA -->
         <tr>
             <td><table class="tr_data border_grueso">
@@ -859,7 +760,6 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
             </table></td>
         </tr>
     </table>
-
     <table style="margin-top: 0; padding-top: 10px; padding-bottom: 10px;"> <!-- PÁGINA 4 - CADERA - retracciones musculares | perfil torsional -->
         <tr>
             <td>
@@ -924,16 +824,12 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
     </table>
 </div>
 
-<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 5-------------------------------------------------- -->
-<!-- ------------------------------------------------------------------------------------------------------ -->
-
-<div>
+<div></div>
     <pdf:nextpage />
 </div>
-
 <br>
-<div class="section" style="font-size: 12.5px;">
+
+<div class="section" style="font-size: 12.5px;"></div>
     <table style="text-align: center; margin-bottom: 0;">  <!-- PÁGINA 5 - RODILLA -->
         <tr>
             <td><table class="tr_data border_grueso">
@@ -1018,9 +914,217 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                     </tr>
                 </table>           
             </td>
-            <td>
+            <td style="margin-top: 15px;">
                 <table><tr>  <!-- TABLA - PERFIL TORSIONAL - RODILLA -->
                     <td style="width: 10%;"></td>
+                    <td style="border: 1pt solid rgb(130, 130, 130); padding: 1px 0; margin: 0; width: 88%; text-align: center;">
+                        <table style="padding: 0;">
+                            <tr style="line-height: auto; padding: 0; padding-top: 1;">
+                                <th style="width: 57%; text-align: left; padding-left: 4px;">Otras pruebas</th>
+                                <td style="width: 21.4%;"></td>
+                                <td style="width: 21.4%;"></td>
+                            </tr>
+                            <tr class="tr_data" style="padding: 0;">
+                                <td style="padding-left: 5px; text-align: left;">Patela alta</td>
+                                <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.patela_alta_d %}{{ session.get_patela_alta_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.patela_alta_i %}{{ session.get_patela_alta_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Peroné corto</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.perone_corto_d %}{{ session.get_perone_corto_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.perone_corto_i %}{{ session.get_perone_corto_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                            </tr>
+                        </table>                
+                    </td>
+                    </tr>
+                </table>
+                <table style="margin-top: 11px;"><tr>  <!-- TABLA - PERFIL TORSIONAL - RODILLA -->
+                    <td style="width: 10%;"></td>
+                    <td style="border: 1pt solid rgb(130, 130, 130); padding: 1px 0; margin: 0; width: 88%; text-align: center;">
+                        <table style="padding: 0;">
+                            <tr style="line-height: auto; padding: 0; padding-top: 1;">
+                                <th style="width: 57%; text-align: left; padding-left: 4px;"><b>Varo/valgo de rodilla</b></th>
+                                <td style="width: 21.4%;"></td>
+                                <td style="width: 21.4%;"></td>
+                            </tr>
+                            <tr class="tr_data" style="padding: 0;">
+                                <td style="padding-left: 5px; text-align: left;">Distancia intercondilea:</td>
+                                <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.dist_intercondilea %}{{ session.dist_intercondilea }}{% else %}&nbsp;{% endif %}</p></td>
+                                <td style="width: 6%;">mm</td>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Distancia intermaleolar:</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.dist_intermaleolar %}{{ session.dist_intermaleolar }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="width: 6%;">mm</td>
+                                </tr>
+                                <td style="padding-left: 5px; text-align: left;">Perfil de rodilla derecho:</td>
+                                <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.perfil_rodilla_d %}{{ session.get_perfil_rodilla_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                <td style="width: 6%;">mm</td>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Perfil de rodilla izquierdo:</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.perfil_rodilla_i %}{{ session.get_perfil_rodilla_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="width: 6%;">mm</td>
+                                </tr>
+                            </tr>
+                        </table>                
+                    </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    
+    </table>
+</div>
+<br>
+<div class="section"></div>
+    <table style="text-align: center; font-size: 12.5px;">  <!-- PÁGINA 5 - PIE -->
+        <tr>
+            <td><table class="tr_data border_grueso">
+                <tr style="height: 20px;">
+                    <th rowspan="2" style="text-align: left; width: 25%;">PIE</th>
+                    <th colspan="2">Movilidad articular</th>
+                    <th colspan="2">Control selectivo</th>
+                    <th colspan="2">Fuerza muscular</th>
+                </tr>
+                <tr style="height: 20px;">
+                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
+                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
+                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
+                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
+                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
+                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
+                </tr>
+            </table></td>
+        </tr>
+        <tr>
+            <td><table style="padding-top: 10px;">
+                <tr class="tr_data">
+                    <td style="width: 25%;">Inversión</td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_movilidad_d %}{{ session.pie_inversion_movilidad_d }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_movilidad_i %}{{ session.pie_inversion_movilidad_i }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_control_selectivo_d %}{{ session.get_pie_inversion_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_control_selectivo_i %}{{ session.get_pie_inversion_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_fuerza_muscular_d %}{{ session.get_pie_inversion_fuerza_muscular_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_fuerza_muscular_i %}{{ session.get_pie_inversion_fuerza_muscular_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                </tr>
+                <tr class="tr_data">
+                    <td style="width: 25%;">Eversión</td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_movilidad_d %}{{ session.pie_eversion_movilidad_d }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_movilidad_i %}{{ session.pie_eversion_movilidad_i }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_control_selectivo_d %}{{ session.get_pie_eversion_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_control_selectivo_i %}{{ session.get_pie_eversion_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_fuerza_muscular_d %}{{ session.get_pie_eversion_fuerza_muscular_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_fuerza_muscular_i %}{{ session.get_pie_eversion_fuerza_muscular_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                </tr>
+                <tr class="tr_data">
+                    <td style="width: 25%;">Flexores Hallux</td>
+                    <td></td>
+                    <td></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_flexores_hallux_control_selectivo_d %}{{ session.get_pie_flexores_hallux_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_flexores_hallux_control_selectivo_i %}{{ session.get_pie_flexores_hallux_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                </tr>
+                <tr class="tr_data">
+                    <td style="width: 25%;">Extensores Hallux</td>
+                    <td></td>
+                    <td></td>
+                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_extensores_hallux_control_selectivo_d %}{{ session.get_pie_extensores_hallux_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_extensores_hallux_control_selectivo_i %}{{ session.get_pie_extensores_hallux_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                </tr>
+            </table></td>
+        </tr>  
+
+        <table style="margin-top: 0; padding-top: 10px; padding-bottom: 10px;"> <!-- PÁGINA 4 - CADERA - retracciones musculares | perfil torsional -->
+            <h1 style="text-align: center; font-size: 10pt; font-weight: bold; line-height: auto; padding-top: 5px;">DESCRIPCIÓN DEL PIE</h1>
+            <tr>
+                <td>
+                    <table ><tr>  <!-- TABLA - RETRACCIONES MUSCULATES - CADERA -->
+                        <td style="width: 10%;"></td>
+                        <td style="border: 1pt solid rgb(130, 130, 130); padding: 1px 0; margin: 0; width: 90%; text-align: center;">
+                            <table style="padding: 0;">
+                                <tr style="line-height: auto; padding-top: 1;">
+                                    <th style="width: 52.7%; text-align: left; padding-left: 3px;">Con apoyo</th>
+                                    <td style="width: 23.55%; padding-right: 12px;">Derecho</td>
+                                    <td style="width: 23.55%; padding-right: 12px;">Izquierdo</td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Tobillo</td>
+                                    <td style="padding-right: 16px; padding-left: -4px;"><p class="recuadro">{% if session.descr_pie_apoyo_tobillo_d %}{{ session.get_descr_pie_apoyo_tobillo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -6px; padding-right: 20px;"><p class="recuadro">{% if session.descr_pie_apoyo_tobillo_i %}{{ session.get_descr_pie_apoyo_tobillo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Retropie</td>
+                                    <td style="padding-right: 16px;  padding-left: -4px;"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_d %}{{ session.get_descr_pie_apoyo_retropie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -6px; padding-right: 20px;"><p class="recuadro">{% if session.descr_pie_apoyo_retropie_i %}{{ session.get_descr_pie_apoyo_retropie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Mediopie</td>
+                                    <td style="padding-right: 16px;  padding-left: -4px;"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_d %}{{ session.get_descr_pie_apoyo_mediopie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -6px; padding-right: 20px;"><p class="recuadro">{% if session.descr_pie_apoyo_mediopie_i %}{{ session.get_descr_pie_apoyo_mediopie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Antepie</td>
+                                    <td style="padding-right: 16px;  padding-left: -4px;"><p class="recuadro">{% if session.descr_pie_apoyo_antepie_d %}{{ session.get_descr_pie_apoyo_antepie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -6px; padding-right: 20px;"><p class="recuadro">{% if session.descr_pie_apoyo_antepie_i %}{{ session.get_descr_pie_apoyo_antepie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Hallux</td>
+                                    <td style="padding-right: 16px;  padding-left: -4px;"><p class="recuadro">{% if session.descr_pie_apoyo_hallux_d %}{{ session.get_descr_pie_apoyo_hallux_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -6px; padding-right: 20px;"><p class="recuadro">{% if session.descr_pie_apoyo_hallux_i %}{{ session.get_descr_pie_apoyo_hallux_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                            </table>
+                        
+                        </td>
+                        </tr>
+                    </table>           
+                </td>
+                <td>
+                    <table><tr>  <!-- TABLA - PERFIL TORSIONAL - CADERA -->
+                        <td style="width: 10%;"></td>
+                        <td style="border: 1pt solid rgb(130, 130, 130); padding: 1px 0; margin: 0; width: 88%; text-align: center;">
+                            <table style="padding: 0;">
+                                <tr style="line-height: auto; padding: 0; padding-top: 1;">
+                                    <th style="width: 57%; text-align: left; padding-left: 3px;">Sin apoyo</th>
+                                    <td style="width: 23.55%; padding-right: 12px;">Derecho</td>
+                                    <td style="width: 23.55%; padding-right: 12px;">Izquierdo</td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Tobillo</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_tobillo_d %}{{ session.get_descr_pie_sin_apoyo_tobillo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_tobillo_i %}{{ session.get_descr_pie_sin_apoyo_tobillo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Retropie</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_d %}{{ session.get_descr_pie_sin_apoyo_retropie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_retropie_i %}{{ session.get_descr_pie_sin_apoyo_retropie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Mediopie</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_d %}{{ session.get_descr_pie_sin_apoyo_mediopie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_mediopie_i %}{{ session.get_descr_pie_sin_apoyo_mediopie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Antepie</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_antepie_d %}{{ session.get_descr_pie_sin_apoyo_antepie_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_antepie_i %}{{ session.get_descr_pie_sin_apoyo_antepie_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>
+                                <tr class="tr_data" style="padding: 0;">
+                                    <td style="padding-left: 5px; text-align: left;">Hallux</td>
+                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_hallux_d %}{{ session.get_descr_pie_sin_apoyo_hallux_d_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.descr_pie_sin_apoyo_hallux_i %}{{ session.get_descr_pie_sin_apoyo_hallux_i_display }}{% else %}&nbsp;{% endif %}</p></td>
+                                </tr>                               
+                            </table>
+                        </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <tr>
+            <tr>
+                <table><tr>  <!-- TABLA - PERFIL TORSIONAL - RODILLA -->
+                    <td style="width: 10%;">
+                        
+                    </td>
                     <td style="border: 1pt solid rgb(130, 130, 130); padding: 1px 0; margin: 0; width: 88%; text-align: center;">
                         <table style="padding: 0;">
                             <tr style="line-height: auto; padding: 0; padding-top: 1;">
@@ -1043,25 +1147,43 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
                                 <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.test_2do_dedo_d %}{{ session.test_2do_dedo_d }}{% else %}&nbsp;{% endif %}</p></td>
                                 <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.test_2do_dedo_i %}{{ session.test_2do_dedo_i }}{% else %}&nbsp;{% endif %}</p></td>
                             </tr>
-                            <tr class="tr_data" style="padding: 0;">
-                                <td style="padding-left: 5px; text-align: left;">Patela alta</td>
-                                <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.patela_alta_d %}{{ session.get_patela_alta_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                                <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.patela_alta_i %}{{ session.get_patela_alta_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                                <tr class="tr_data" style="padding: 0;">
-                                    <td style="padding-left: 5px; text-align: left;">Peroné corto</td>
-                                    <td style="padding-right: 19px; padding-left: -15px;"><p class="recuadro">{% if session.perone_corto_d %}{{ session.get_perone_corto_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                                    <td style="padding-left: -9.5px; padding-right: 14px;"><p class="recuadro">{% if session.perone_corto_i %}{{ session.get_perone_corto_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                                </tr>
-                            </tr>
                         </table>                    
                     </td>
                     </tr>
                 </table>
-            </td>
+            </tr>
         </tr>
+    </td>
+    </td>    
     </table>
 </div>
 
+<br>
+<div class="section" style="font-size: 12.5px;"></div>
+    <table style="text-align: center; height: 20px;" >  <!-- PÁGINA 4 - TRONCO -->
+        <tr class="tr_data border_grueso" style="height: 42px">
+            <th style="text-align: left;">TRONCO</th>
+            <th>Movilidad articular</th>
+            <th>Control Selectivo</th>
+            <th>Fuerza muscular</th>
+        </tr>
+        <tr class="tr_data" style=" padding-top: 10px; ">
+            <td class="page3_labelLeft">Abdominales</td>
+            <td></td>
+            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_control_selectivo %}{{ session.get_tronco_abdominales_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
+            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_fuerza_muscular %}{{ session.get_tronco_abdominales_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
+        </tr>
+        <tr class="tr_data">
+            <td class="page3_labelLeft">Lumbares</td>
+            <td></td>
+            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_control_selectivo %}{{ session.get_tronco_lumbares_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
+            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_fuerza_muscular %}{{ session.get_tronco_lumbares_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
+        </tr>
+
+    </table>
+</div>
+
+<br>
 <div class="section">
     <table style="text-align: center; font-size: 12.5px;">  <!-- PÁGINA 5 - TOBILLO -->
         <tr>
@@ -1119,83 +1241,31 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
     </table>
 </div>
 
-<div class="section">
-    <table style="text-align: center; font-size: 12.5px;">  <!-- PÁGINA 5 - PIE -->
-        <tr>
-            <td><table class="tr_data border_grueso">
-                <tr style="height: 20px;">
-                    <th rowspan="2" style="text-align: left; width: 25%;">PIE</th>
-                    <th colspan="2">Movilidad articular</th>
-                    <th colspan="2">Control selectivo</th>
-                    <th colspan="2">Fuerza muscular</th>
-                </tr>
-                <tr style="height: 20px;">
-                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
-                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
-                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
-                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
-                    <th style="text-align: right; padding-right: 6px;">Derecho</th>
-                    <th style="text-align: left; padding-left: 5px;">Izquierdo</th>
-                </tr>
-            </table></td>
-        </tr>
-        <tr>
-            <td><table style="padding-top: 10px;">
-                <tr class="tr_data">
-                    <td style="width: 25%;">Inversión</td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_movilidad_d %}{{ session.pie_inversion_movilidad_d }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_movilidad_i %}{{ session.pie_inversion_movilidad_i }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_control_selectivo_d %}{{ session.get_pie_inversion_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_control_selectivo_i %}{{ session.get_pie_inversion_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_inversion_fuerza_muscular_d %}{{ session.get_pie_inversion_fuerza_muscular_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_inversion_fuerza_muscular_i %}{{ session.get_pie_inversion_fuerza_muscular_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data">
-                    <td style="width: 25%;">Eversión</td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_movilidad_d %}{{ session.pie_eversion_movilidad_d }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_movilidad_i %}{{ session.pie_eversion_movilidad_i }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_control_selectivo_d %}{{ session.get_pie_eversion_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_control_selectivo_i %}{{ session.get_pie_eversion_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_eversion_fuerza_muscular_d %}{{ session.get_pie_eversion_fuerza_muscular_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_eversion_fuerza_muscular_i %}{{ session.get_pie_eversion_fuerza_muscular_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data">
-                    <td style="width: 25%;">Flexores Hallux</td>
-                    <td></td>
-                    <td></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_flexores_hallux_control_selectivo_d %}{{ session.get_pie_flexores_hallux_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_flexores_hallux_control_selectivo_i %}{{ session.get_pie_flexores_hallux_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-                <tr class="tr_data">
-                    <td style="width: 25%;">Extensores Hallux</td>
-                    <td></td>
-                    <td></td>
-                    <td class="page3_derecha"><p class="recuadro">{% if session.pie_extensores_hallux_control_selectivo_d %}{{ session.get_pie_extensores_hallux_control_selectivo_d_display }}{% else %}&nbsp;{% endif %}</p></td>
-                    <td class="page3_izquier"><p class="recuadro">{% if session.pie_extensores_hallux_control_selectivo_i %}{{ session.get_pie_extensores_hallux_control_selectivo_i_display }}{% else %}&nbsp;{% endif %}</p></td>
-                </tr>
-            </table></td>
-        </tr>      
-    </table>
-</div>
+<br>
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 6 continue-------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 6-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
 <div>
     <pdf:nextpage />
 </div>
 
-<div>
+<br>
+
+<div></div>
     <td style="padding-left: 7px; padding-right: 10px; vertical-align: top;">
         <table style="font-size: 13px;">
             <tr class="label_textarea"><td>Diagnóstico Final</td></tr>
-            <tr><td class="recuadro text_datos_clinicos_antec" style="height: 208px;">
+            <tr><td class="recuadro text_datos_clinicos_antec" style="height: 208px;  padding-top: 5px;">
                 {% if session.diagnostico_realizado %}{{ session.diagnostico_realizado }}{% else %}No refiere{% endif %}
             </td></tr>
         </table>
     </td>
 </div>
+
+
+
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
 <!-- ----------------------------------------------PAGE 7 continue-------------------------------------------------- -->
@@ -1304,7 +1374,7 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 {% endif %}
 
 <!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
-<!-- ----------------------------------------------PAGE 10-------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 11-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
 

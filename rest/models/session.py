@@ -34,7 +34,7 @@ class Session(models.Model):
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
     alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
-    dolor = models.CharField(help_text ="Dolor", max_length=30, blank=True, null=True)
+    dolor = models.CharField(help_text ="Dolor", max_length=255, blank=True, null=True)
 
     # ANTECEDENTES
     antecedentes_personales = models.TextField(help_text="Antecedentes personales", blank=True, null=True)

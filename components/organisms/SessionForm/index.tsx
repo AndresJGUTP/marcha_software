@@ -269,6 +269,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     
                         if (error.response.status === 400) {
                             const missingFields = Object.keys(errorData).map((key) => `${key}: ${errorData[key]}`).join(", ");
+                            
                             message.error(`Error en los siguientes campos: ${missingFields}`);
                         } else {
                             message.error(`Error: ${error.message}`);
@@ -281,6 +282,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     console.log(error);
                 });
         }
+        
         // Si existe la sesión, actualizarla
         else {
             dataSubmit = { ...dataSubmit, session_date: sessionData['session_date'] };
@@ -301,6 +303,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         console.log("Detalles del error:", errorData);
     
                         if (error.response.status === 400) {
+
                             const missingFields = Object.keys(errorData).map((key) => `${key}: ${errorData[key]}`).join(", ");
                             message.error(`Error en los siguientes campos: ${missingFields}`);
                         } else {

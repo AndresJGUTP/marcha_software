@@ -97,7 +97,8 @@ const CreateSession : FC<ICreateSessionProps> = () => {
                 open: modalOpen,
                 cancelButtonProps: {hidden: true},
                 okButtonProps:{ hidden: requestStatus == 'loading' },
-                closable: false,
+                closable: true,
+                onCancel: () => {setModalOpen(false)},
                 okText: requestStatus == 'error' ? 'Reenviar' : 'Siguiente',
                 onOk: () => {
                     if(requestStatus == 'success'){

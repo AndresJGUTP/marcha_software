@@ -1,7 +1,10 @@
 .formStyles{
-    margin-top: 1em;
+    /* margin-top: 10em; */
     padding: 2em;
-    width: 90%
+    width: 75%;
+    margin: auto;
+    /* background-color: red; */
+    border: solid 1px #f0f0f0;
 }
 
 .anchorClassName{
@@ -36,3 +39,28 @@
     max-width: 100%;
     margin: 0;
 }
+
+.thcs,
+.tdcs{
+    padding: 2px;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+}
+
+.valueCell{
+    width: 20%;
+    text-align: center;
+    font-size: 13px;
+}
+
+.descriptionCell3{
+    width: 100%;
+    text-align: left;
+    font-size: 13px;
+}
+
+.descriptionCell2 {
+    width: 70%;
+    text-align: center;
+    font-size: 13px;
+  }

@@ -170,8 +170,8 @@ class Session(models.Model):
     # ---------------------------------- TRONCO ---------------------------------- #
     tronco_abdominales_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     tronco_lumbares_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
-    tronco_abdominales_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
-    tronco_lumbares_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
+    # tronco_abdominales_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
+    # tronco_lumbares_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
 
     # ---------------------------------- CADERA ---------------------------------- #
     cadera_flexion_movilidad_d = models.FloatField(null=True)

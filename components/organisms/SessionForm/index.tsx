@@ -1146,7 +1146,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <td style={{verticalAlign: 'top', textAlign: 'left', width: '60%'}}>
                             <table style={{paddingTop: "10px"}}>
                                 <tr>
-                                    <th colSpan={2} className={styles.thcs}>Escala Daniel's Fuerza Muscular</th>
+                                    <th colSpan={2} className={styles.thcs}>Escala Daniels Fuerza Muscular</th>
                                 </tr>
                                 <tr>
                                     <th className={styles.thcs} style={{textAlign: "left"}}>Valor</th>

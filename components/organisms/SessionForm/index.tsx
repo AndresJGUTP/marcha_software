@@ -141,7 +141,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     </Row>
 
     useEffect(() => {
-        if (!!sessionData) {
+        if (!!localStorage.sessionDataCache) {
+            form.setFieldsValue({
+                ...JSON.parse(localStorage.sessionDataCache),
+            });
+        }
+        else if (!!sessionData) {
             form.setFieldsValue({
                 ...sessionData,
             });
@@ -182,6 +187,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     
         // Copia los valores del formulario, o asigna null si están vacíos
         Object.keys(values).forEach((key, index) => dataSubmit[key] = values[key] || null);
+        localStorage.setItem( 'sessionDataCache', JSON.stringify(dataSubmit) )
     
         // Elimina los campos no necesarios
         delete dataSubmit.email;
@@ -259,6 +265,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             })
                 .then((response: any) => {
                     setRequestStatus('success');
+                    localStorage.removeItem('sessionDataCache')
                     setSessionId && setSessionId(response['data']['id']);
                 })
                 .catch((error: any) => {
@@ -292,6 +299,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             })
                 .then((response: any) => {
                     setRequestStatus('success');
+                    localStorage.removeItem('sessionDataCache')
                     setSessionId && setSessionId(sessionData['id']);
                 })
                 .catch((error: any) => {

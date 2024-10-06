@@ -141,7 +141,12 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
     </Row>
 
     useEffect(() => {
-        if (!!sessionData) {
+        if (!!localStorage.sessionDataCache) {
+            form.setFieldsValue({
+                ...JSON.parse(localStorage.sessionDataCache),
+            });
+        }
+        else if (!!sessionData) {
             form.setFieldsValue({
                 ...sessionData,
             });
@@ -177,12 +182,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
     const onFinish = (values: any) => {
         setRequestStatus('loading');
-    
+
         let dataSubmit: any = {};
-    
+
         // Copia los valores del formulario, o asigna null si están vacíos
         Object.keys(values).forEach((key, index) => dataSubmit[key] = values[key] || null);
-    
+        localStorage.setItem('sessionDataCache', JSON.stringify(dataSubmit))
+
         // Elimina los campos no necesarios
         delete dataSubmit.email;
         delete dataSubmit.age;
@@ -193,7 +199,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         delete dataSubmit.patientName;
         delete dataSubmit.phone;
         delete dataSubmit.sex;
-    
+
         // Asigna los campos con valores por defecto si están vacíos
         dataSubmit = {
             ...dataSubmit,
@@ -242,16 +248,16 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             perone_corto_d: dataSubmit['perone_corto_d'] || 0,
             perone_corto_i: dataSubmit['perone_corto_i'] || 0,
         };
-    
+
         // console.log("Datos a enviar:", dataSubmit);
         // console.log("Información del paciente:", patientData);
-    
+
         // Si no existe la sesión, crear una nueva
         if (!sessionData) {
             let session_date: any = new Date();
             session_date = new Date(session_date.getTime() - (session_date.getTimezoneOffset() * 60000)).toJSON();
             dataSubmit = { ...dataSubmit, session_date };
-    
+
             instance.post('/session/', dataSubmit, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -259,6 +265,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             })
                 .then((response: any) => {
                     setRequestStatus('success');
+                    localStorage.removeItem('sessionDataCache')
                     setSessionId && setSessionId(response['data']['id']);
                 })
                 .catch((error: any) => {
@@ -266,7 +273,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     if (error.response && error.response.data) {
                         const errorData = error.response.data;
                         console.log("Detalles del error:", errorData);
-    
+
                         if (error.response.status === 400) {
                             const missingFields = Object.keys(errorData).map((key) => `${key}: ${errorData[key]}`).join(", ");
                             message.error(`Error en los siguientes campos: ${missingFields}`);
@@ -276,7 +283,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     } else {
                         message.error(`Error: ${error.message}`);
                     }
-    
+
                     setRequestStatus('error');
                     console.log(error);
                 });
@@ -284,7 +291,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         // Si existe la sesión, actualizarla
         else {
             dataSubmit = { ...dataSubmit, session_date: sessionData['session_date'] };
-    
+
             instance.put(`/session/${sessionData['id']}/`, dataSubmit, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -292,6 +299,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             })
                 .then((response: any) => {
                     setRequestStatus('success');
+                    localStorage.removeItem('sessionDataCache')
                     setSessionId && setSessionId(sessionData['id']);
                 })
                 .catch((error: any) => {
@@ -299,7 +307,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     if (error.response && error.response.data) {
                         const errorData = error.response.data;
                         console.log("Detalles del error:", errorData);
-    
+
                         if (error.response.status === 400) {
                             const missingFields = Object.keys(errorData).map((key) => `${key}: ${errorData[key]}`).join(", ");
                             message.error(`Error en los siguientes campos: ${missingFields}`);
@@ -309,19 +317,22 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     } else {
                         message.error(`Error: ${error.message}`);
                     }
-    
+
                     setRequestStatus('error');
                     console.log(error);
                 });
         }
     };
-    
+
 
     const parse_name = (first_name: string, second_name: string | null, first_last_name: string, second_last_name: string | null): string => {
         second_name = !!second_name ? second_name : ''
         second_last_name = !!second_last_name ? second_last_name : ''
         return `${first_name} ${second_name} ${first_last_name} ${second_last_name}`
     }
+
+    const sectionTitleLevel = 2
+    const subSectionTitleLevel = 3
 
     return <div>
         <Anchor className={styles.anchorClassName} >
@@ -349,7 +360,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
         >
 
             <div id="datos_paciente">
-                <Divider orientation="left">Datos del paciente</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Datos del paciente</Title></Divider>
                 <Form.Item label="Paciente" name="patientName" style={{ marginBottom: '0.5em' }}>
                     <Input disabled />
                 </Form.Item>
@@ -373,7 +384,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id='datos_responsable'>
-                <Divider orientation="left">Datos del responsable</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Datos del responsable</Title></Divider>
                 <Form.Item label="Responsable" name="parentName" style={{ marginBottom: '0.5em' }}>
                     <Input disabled />
                 </Form.Item>
@@ -394,7 +405,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="datos_sesion">
-                <Divider orientation="left">Datos de la sesión</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Datos de la sesión</Title></Divider>
                 <Form.Item label="Fisioterapeuta" name="physiotherapist_name" style={{ marginBottom: '0.5em' }}>
                     <Input maxLength={30} />
                 </Form.Item>
@@ -413,7 +424,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="procedimientos_realizados">
-                <Divider orientation="left">Procedimientos realizados</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Procedimientos realizados</Title></Divider>
                 <Form.Item label="Examen Físico" name="examen_medico" style={{ marginBottom: '0.5em' }} valuePropName="checked" initialValue={false}>
                     <Switch
                         checkedChildren={<CheckOutlined />}
@@ -435,13 +446,6 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         defaultChecked
                     />
                 </Form.Item>
-                {/* <Form.Item label="Podobarometría" name="podobarometria" style={{marginBottom: '0.5em'}} valuePropName="checked" initialValue={false}>
-                    <Switch
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                        defaultChecked
-                        />
-                </Form.Item> */}
                 <Form.Item label="Examen computarizado de la marcha" name="examen_computarizado" style={{ marginBottom: '0.5em' }} valuePropName="checked" initialValue={false}>
                     <Switch
                         checkedChildren={<CheckOutlined />}
@@ -452,7 +456,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="datos_clinicos">
-                <Divider orientation="left">Datos del clínicos</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Datos del clínicos</Title></Divider>
                 <Form.Item label="Motivo Consulta" name="motivo_consulta" style={{ marginBottom: '0.5em' }}>
                     <TextArea maxLength={255} rows={2} />
                 </Form.Item>
@@ -475,7 +479,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="antecedentes">
-                <Divider orientation="left">Antecedentes</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Antecedentes</Title></Divider>
                 <Form.Item label="Personales" name="antecedentes_personales" style={{ marginBottom: '0.5em' }}>
                     <TextArea rows={2} />
                 </Form.Item>
@@ -505,13 +509,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 </Row>
             </div>
 
-            <div id="ortesis_ayudas_externas__funcionalidad">
+            <div id="ortesis_ayudas_externas__funcionalidad" style={{ margin: '2em 0' }}>
                 <Row>
                     <Col span={12}>
-                        <Title level={5}>Ortesis y ayudas externas</Title>
+                        <Divider orientation="left"><Title level={sectionTitleLevel}>Ortesis y ayudas externas</Title></Divider>
                     </Col>
                     <Col span={12}>
-                        <Title level={5}>Funcionalidad</Title>
+                        <Divider orientation="left"><Title level={sectionTitleLevel}>Funcionalidad</Title></Divider>
                     </Col>
                 </Row>
                 <Row>
@@ -577,13 +581,13 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="examen_fisico">
-                <Divider orientation="left">Examen Físico</Divider>
+                <Divider orientation="left"><Title level={sectionTitleLevel}> Examen Físico </Title></Divider>
 
                 <Row gutter={[24, 0]}>
-                    <Col span={12}>
+                    <Col span={12} style={{ borderRight: '1px solid #f0f0f0' }}>
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Reflejos OT </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}> Reflejos OT </Title></Divider>
                             </Col>
                         </Row>
 
@@ -626,7 +630,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Balance y Equilibrio </Title>
+                                <Divider orientation="left"><Title level={sectionTitleLevel}>Balance y Equilibrio</Title></Divider>
                             </Col>
                         </Row>
 
@@ -648,7 +652,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Varo/Valgo de Rodilla</Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Varo/Valgo de Rodilla</Title></Divider>
                             </Col>
                         </Row>
 
@@ -677,8 +681,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={6}>
-                                <Title level={5} style={{ margin: 0 }}> Descripción Del Pie </Title>
-                                <Title level={5} style={{ margin: 0 }}> CON APOYO </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Descripción Del Pie <br /> CON APOYO </Title></Divider>
                             </Col>
                         </Row>
 
@@ -765,8 +768,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         </Row>
                         <Row>
                             <Col span={24}>
-                                <Title level={5} style={{ margin: 0 }}> Descripción Del Pie </Title>
-                                <Title level={5} style={{ margin: 0 }}> SIN APOYO </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Descripción Del Pie <br /> SIN APOYO </Title></Divider>
                             </Col>
                         </Row>
 
@@ -857,7 +859,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     <Col span={12}>
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Medidas Antropométricas </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Medidas Antropométricas</Title></Divider>
                             </Col>
                         </Row>
 
@@ -888,7 +890,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Tono Muscular </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Tono Muscular</Title></Divider>
                             </Col>
                         </Row>
 
@@ -929,7 +931,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Espasticidad (ASHWORTH) </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Espasticidad (ASHWORTH)</Title></Divider>
                             </Col>
                         </Row>
 
@@ -1000,10 +1002,58 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                             </Col>
                         </Row>
 
+                        <Row>
+                            <table style={{ margin: "10px" }}>
+                                <tr>
+                                    <th colSpan={2} className={styles.thcs}>Escala Ashwort Modificada</th>
+                                </tr>
+
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>0</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Tono normal. No hay espasticidad.
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>1</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Leve incremento del tonomuscular.
+                                        Resistencia mínima al final del arco al estirar
+                                        pasivamente el grupo muscular.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>1+</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Leve incremento del tono. Resistencia a la
+                                        elongación en menos de la mitad del arco.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>2</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Incremento del tono. Resistencia a la
+                                        elongación en casi todo el arco. Movilidad fácilmente.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>3</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>
+                                        Considerable aumento del tono. Es difícil la movilización pasiva de la extremidad.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{ textAlign: "left" }}>4</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>
+                                        Hipertonía de la extremidad.
+                                    </td>
+                                </tr>
+                            </table>
+                        </Row>
+
+
+
 
                         <Row>
                             <Col span={24}>
-                                <Title level={5}> Prueba 6 Minutos </Title>
+                                <Divider orientation="left"><Title level={subSectionTitleLevel}>Prueba 6 Minutos</Title></Divider>
                             </Col>
                         </Row>
 
@@ -1090,19 +1140,96 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
             </div>
 
             <div id="test_articular_muscular">
-                <Divider orientation="left">Test Articular y Muscular</Divider>
-                <Title level={5}>Tronco</Title>
+                <Divider orientation="left"><Title level={sectionTitleLevel}>Test Articular y Muscular</Title></Divider>
+                <Row  >
+                    <table style={{width: '75%', margin: 'auto'}}><tr>
+                        <td style={{verticalAlign: 'top', textAlign: 'left', width: '60%'}}>
+                            <table style={{paddingTop: "10px"}}>
+                                <tr>
+                                    <th colSpan={2} className={styles.thcs}>Escala Daniel's Fuerza Muscular</th>
+                                </tr>
+                                <tr>
+                                    <th className={styles.thcs} style={{textAlign: "left"}}>Valor</th>
+                                    <th className={styles.thcs} style={{textAlign: "left"}}>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>0</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Ausente</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>1</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Se observa contracción muscular</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>2-</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Movimiento incompleto sin gravedad</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>2</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Movimiento completo sin gravedad</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>3</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Movimiento completo contra gravedad</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>3+</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}> Movimiento completo vence mínima resistencia</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>4</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Movimiento completo vence resistencia</td>
+                                </tr>
+                                <tr>
+                                    <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: "left"}}>5</td>
+                                    <td className={`${styles.tdcs} ${styles.descriptionCell}`}>Movimiento completo vence resistencia máxima</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td style={{verticalAlign: 'top', textAlign: 'left', width: '60%'}}>
+                            <table>
+                                <table className={styles.table_control_selectivo}>
+                                    <tr>
+                                        <th colSpan={2} className={styles.thcs}>Escala Control Selectivo</th>
+                                    </tr>
+                                    <tr>
+                                        <th className={styles.thcs} style={{textAlign: 'left'}}>Valor</th>
+                                        <th className={styles.thcs} style={{textAlign: 'left'}}>Descripción</th>
+                                    </tr>
+                                    <tr>
+                                        <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: 'left'}}>-1</td>
+                                        <td className={`${styles.tdcs} ${styles.descriptionCell2}`} style={{textAlign: 'left'}}>Paresia</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: 'left'}}>0</td>
+                                        <td className={`${styles.tdcs} ${styles.descriptionCell2}`} style={{textAlign: 'left'}}>Malo</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: 'left'}}>1</td>
+                                        <td className={`${styles.tdcs} ${styles.descriptionCell2}`} style={{textAlign: 'left'}}>Regular</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={`${styles.tdcs} ${styles.valueCell}`} style={{textAlign: 'left'}}>2</td>
+                                        <td className={`${styles.tdcs} ${styles.descriptionCell2}`} style={{textAlign: 'left'}}>Bueno</td>
+                                    </tr>
+                                </table>
+                            </table>
+
+                        </td>
+                    </tr></table>
+                </Row>
+
+                <Title level={subSectionTitleLevel}>Tronco</Title>
                 <Row>
                     <Col span={6}>
                     </Col>
                     <Col span={6}>
-                        <span> Movilidad Articular </span>
-                    </Col>
-                    <Col span={6}>
-                        <span> Control Selectivo </span>
-                    </Col>
-                    <Col span={6}>
                         <span> Fuerza Muscular </span>
+                    </Col>
+                    <Col span={6}>
+                    </Col>
+                    <Col span={6}>
                     </Col>
                 </Row>
                 <Row gutter={[12, 0]}>
@@ -1110,16 +1237,16 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <span> Abdominales </span>
                     </Col>
                     <Col span={6}>
-                    </Col>
-                    <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_control_selectivo">
-                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={6}>
                         <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_fuerza_muscular">
                             <Select defaultValue={0} options={FUERZA_MUSCULAR_CHOICES} />
                         </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                    </Col>
+                    <Col span={6}>
+                        {/* <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_abdominales_control_selectivo">
+                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES} />
+                        </Form.Item> */}
                     </Col>
                 </Row>
                 <Row gutter={[12, 0]}>
@@ -1127,20 +1254,20 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                         <span> Lumbares </span>
                     </Col>
                     <Col span={6}>
-                    </Col>
-                    <Col span={6}>
-                        <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_lumbares_control_selectivo">
-                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={6}>
                         <Form.Item className={styles.inputFullWidth} name="tronco_lumbares_fuerza_muscular">
                             <Select defaultValue={0} options={FUERZA_MUSCULAR_CHOICES} />
                         </Form.Item>
                     </Col>
+                    <Col span={6}>
+                    </Col>
+                    <Col span={6}>
+                        {/* <Form.Item className={styles.inputFullWidth} style={{ marginBottom: '0.5em' }} name="tronco_lumbares_control_selectivo">
+                            <Select defaultValue={0} options={CONTROL_SELECTIVO_CHOICES} />
+                        </Form.Item> */}
+                    </Col>
                 </Row>
 
-                <Title level={5}>Cadera</Title>
+                <Title level={subSectionTitleLevel}>Cadera</Title>
 
                 {RowEncabezado()}
                 {RowForm({ label: 'Flexión', name: 'cadera_flexion' })}
@@ -1194,10 +1321,10 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
 
                 <Row gutter={[24, 0]} >
                     <Col span={12}>
-                        <Title level={5} > Retracciones Musculares </Title>
+                        <Title level={subSectionTitleLevel}> Retracciones Musculares </Title>
                     </Col>
                     <Col span={12}>
-                        <Title level={5}>Perfil Torsional</Title>
+                        <Title level={subSectionTitleLevel}>Perfil Torsional</Title>
                     </Col>
                 </Row>
 
@@ -1278,17 +1405,17 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     </Col>
                 </Row>
 
-                <Title level={5}>Rodilla</Title>
+                <Title level={subSectionTitleLevel}>Rodilla</Title>
                 {RowEncabezado()}
                 {RowForm({ label: 'Flexión', name: 'rodilla_flexion' })}
                 {RowForm({ label: 'Extensión', name: 'rodilla_extension' })}
 
                 <Row gutter={[24, 0]} >
                     <Col span={12}>
-                        <Title level={5} > Retracciones Musculares </Title>
+                        <Title level={subSectionTitleLevel} > Retracciones Musculares </Title>
                     </Col>
                     <Col span={12}>
-                        <Title level={5}> Perfil Torsional y otros signos</Title>
+                        <Title level={subSectionTitleLevel}> Perfil Torsional y otros signos</Title>
                     </Col>
                 </Row>
 
@@ -1372,7 +1499,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                 }
 
 
-                <Title level={5}>Tobillo</Title>
+                <Title level={subSectionTitleLevel}>Tobillo</Title>
                 {RowEncabezado()}
                 {RowForm({ label: 'Plantiflexión G', name: 'tobillo_plantiflexion' })}
                 {RowForm({ label: 'Dorsiflexión', name: 'tobillo_dorsiflexion' })}
@@ -1447,7 +1574,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                     })
                 }
 
-                <Title level={5}>Pie</Title>
+                <Title level={subSectionTitleLevel}>Pie</Title>
                 {RowEncabezado()}
                 {RowForm({ label: 'Inversión', name: 'pie_inversion' })}
                 {RowForm({ label: 'Eversión', name: 'pie_eversion' })}

@@ -5,6 +5,7 @@ import styles from "./style.module.css";
 import SessionForm from 'components/organisms/SessionForm';
 import SessionFilesUpload from 'components/organisms/SessionFilesUpload';
 import ModalStatus from 'components/molecules/ModalStatus';
+import { useIsMount } from '../editar_sesion';
 
 const axios = require('axios').default;
 
@@ -24,19 +25,58 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   const [requestStatus, setRequestStatus] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const formSessionRef = useRef<any>();
+  const isMount = useIsMount();
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
     timeout: 60000,
   });
 
+  const retrieveStatesFromLocalStorage = () => {
+    if(localStorage){
+        console.log('Recuperando estados')
+
+        if(parseInt(localStorage.currentCrear) == 1){
+          setPatient( localStorage.getItem('patientCrear') ? JSON.parse(localStorage.patientCrear) : null  )
+          setParent( localStorage.getItem('parentCrear') ? JSON.parse(localStorage.parentCrear) : null  )
+          setCurrent( localStorage.currentCrear ? parseInt(localStorage.currentCrear) : 0  )
+          setSessionId( localStorage.sessionIdCrear ? parseInt(localStorage.sessionIdCrear) : null  )
+        }
+    }
+}
+
+  useEffect(() =>{
+    if(localStorage.patientCrear){
+        (JSON.parse(localStorage.patientCrear) && parseInt(localStorage.currentCrear) == 1 ) && alert('Se ha encontrado una sesión sin guardar. Si no se guarda, se perderán los datos')
+    }
+    retrieveStatesFromLocalStorage()
+  }, [])
+
+  useEffect(() => {
+    if(localStorage && isMount){
+        localStorage.setItem( 'patientCrear', JSON.stringify(patient) )
+        localStorage.setItem( 'parentCrear', JSON.stringify(parent) )
+        localStorage.currentCrear = current.toString()
+  }
+}, [patient, parent, current])
+
   useEffect(() => {
     patient && instance.get(`/parent/${patient['id_parent']}`).then((response: any) => {
       setParent(response.data)
   }).catch((error: any) => {
-          console.error(error)
-      });
+      console.error(error)
+      retrieveStatesFromLocalStorage()
+  });
   }, [patient])
+
+  useEffect(() => {
+    if(sessionId){
+      localStorage.removeItem( 'patientCrear')
+      localStorage.removeItem( 'parentCrear')
+      localStorage.removeItem('currentCrear')
+      localStorage.removeItem('sessionIdCrear')
+    }
+  }, [sessionId])
 
   const steps = [
     {
@@ -74,11 +114,21 @@ const CreateSession : FC<ICreateSessionProps> = () => {
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
   const next = () => {
+    if(current + 1 == 2){
+      localStorage.removeItem('sessionDataCache')
+    }
+
     setCurrent(current + 1);
   };
 
   const prev = () => {
     setCurrent(current - 1);
+    if(current - 1 == 0){
+      setParent(null)
+      setPatient(null)
+      setSessionId(null)
+      localStorage.removeItem('sessionDataCache')
+    }
   };
 
   const resetStates = () => {
@@ -86,6 +136,7 @@ const CreateSession : FC<ICreateSessionProps> = () => {
     setParent(null)
     setCurrent(0)
     setSessionId(null)
+    localStorage.removeItem('sessionDataCache')
   }
 
   return (
@@ -97,7 +148,8 @@ const CreateSession : FC<ICreateSessionProps> = () => {
                 open: modalOpen,
                 cancelButtonProps: {hidden: true},
                 okButtonProps:{ hidden: requestStatus == 'loading' },
-                closable: false,
+                closable: requestStatus == 'error',
+                onCancel: () => { requestStatus == 'error' && setModalOpen(false)},
                 okText: requestStatus == 'error' ? 'Reenviar' : 'Siguiente',
                 onOk: () => {
                     if(requestStatus == 'success'){

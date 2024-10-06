@@ -14,6 +14,14 @@ const { Title } = Typography;
 export interface IEditUserProps {
 }
 
+export const useIsMount = () => {
+  const isMountRef = useRef(false);
+  useEffect(() => {
+    isMountRef.current = true;
+  }, []);
+  return isMountRef.current;
+};
+
 const EditUser: FC<IEditUserProps> = () => {
 
     const [patient, setPatient] = useState(null)
@@ -21,21 +29,53 @@ const EditUser: FC<IEditUserProps> = () => {
     const [current, setCurrent] = useState(0)
     const [sessions, setSessions] = useState<any>(null)
     const [sessionEdit, setSessionEdit] = useState<any>(null)
-    const [sessionId, setSessionId] = useState(null)
+    const [sessionId, setSessionId] = useState<any>(null)
     const [isUserFound, setIsUserFound] = useState(false);
     const [isFormDisabled, setIsFormDisabled] = useState(true);
     const [requestStatus, setRequestStatus] = useState<string>('');
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const formSessionRef = useRef<any>();
+    const isMount = useIsMount();
 
     const instance = axios.create({
         baseURL: process.env.BASE_URL,
         timeout: 60000,
     });
 
+    const retrieveStatesFromLocalStorage = () => {
+        if(localStorage){
+            console.log('Recuperando estados')
+            if(parseInt(localStorage.current) == 1){
+                setPatient( localStorage.getItem('patient') ? JSON.parse(localStorage.patient) : null  )
+                setParent( localStorage.getItem('parent') ? JSON.parse(localStorage.parent) : null  )
+                setCurrent( localStorage.current ? parseInt(localStorage.current) : 0  )
+                setSessions( localStorage.getItem('sessions') ? JSON.parse(localStorage.sessions) : null )
+                setSessionEdit( localStorage.getItem('sessionEdit') ? JSON.parse(localStorage.sessionEdit) : null  )
+                setSessionId( localStorage.sessionId ? parseInt(localStorage.sessionId) : null  )
+            }
+        }
+    }
+
+    useEffect(() =>{
+        if(localStorage.patient && parseInt(localStorage.current) == 1){
+            JSON.parse(localStorage.patient) && alert('Se ha encontrado una sesión sin guardar. Si no se guarda, se perderán los datos')
+        }
+        retrieveStatesFromLocalStorage()
+    }, [])
+
+    useEffect(() => {
+        if(localStorage && isMount){
+            localStorage.setItem( 'patient', JSON.stringify(patient) )
+            localStorage.setItem( 'parent', JSON.stringify(parent) )
+            localStorage.current = current.toString()
+            localStorage.setItem( 'sessions', JSON.stringify(sessions) )
+            localStorage.setItem( 'sessionEdit', JSON.stringify(sessionEdit) )
+      }
+    }, [patient, parent, current, sessions, sessionEdit])
+    
     useEffect(() => {
 
-        if (patient) {
+        if (patient && isMount) {
             instance.get(`/parent/${patient['id_parent']}`).then((response: any) => {
                 setParent(response.data)
 
@@ -45,21 +85,28 @@ const EditUser: FC<IEditUserProps> = () => {
 
             }).catch((error: any) => {
                 console.error(error)
-                setSessions(null)
-                setParent(null)
-                setPatient(null)
-                setSessionId(null)
-                setSessionEdit(null)
+                retrieveStatesFromLocalStorage()
             });
         }
-        else{
-            setSessions(null)
-            setParent(null)
-            setPatient(null)
-            setSessionId(null)
-            setSessionEdit(null)
-        }
+        // else{
+        //     setSessions(null)
+        //     setParent(null)
+        //     setPatient(null)
+        //     setSessionId(null)
+        //     setSessionEdit(null)
+        // }
     }, [patient])
+
+    useEffect(() => {
+        if(sessionId){
+          localStorage.removeItem('patient')
+          localStorage.removeItem('parent')
+          localStorage.removeItem('current')
+          localStorage.removeItem('sessionIdCrear')
+          localStorage.removeItem('sessions')
+          localStorage.removeItem('sessionEdit')
+        }
+      }, [sessionId])
 
     const handleOnDelete = (id: number) => {
         instance.delete(`/session/${id}/`).then(() => {
@@ -163,6 +210,7 @@ const EditUser: FC<IEditUserProps> = () => {
             setPatient(null)
             setSessionId(null)
             setSessionEdit(null)
+            localStorage.removeItem('sessionDataCache')
         }
     };
 
@@ -173,7 +221,7 @@ const EditUser: FC<IEditUserProps> = () => {
         setPatient(null)
         setSessionId(null)
         setSessionEdit(null)
-        
+        localStorage.removeItem('sessionDataCache')
     };
 
     return (
@@ -185,13 +233,14 @@ const EditUser: FC<IEditUserProps> = () => {
                         open: modalOpen,
                         cancelButtonProps: {hidden: true},
                         okButtonProps:{ hidden: requestStatus == 'loading' },
-                        closable: true,
-                        onCancel: () => {setModalOpen(false)},
+                        closable: requestStatus == 'error',
+                        onCancel: () => { requestStatus == 'error' && setModalOpen(false)},
                         okText: requestStatus == 'error' ? 'Reenviar' : 'Siguiente',
                         onOk: () => {
                             if(requestStatus == 'success'){
                                 setModalOpen(false)
                                 next()
+                                localStorage.removeItem('sessionDataCache')
                             } else{
                                 setSessionId(null)
                                 setRequestStatus('loading')

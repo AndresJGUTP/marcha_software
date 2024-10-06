@@ -34,7 +34,7 @@ class Session(models.Model):
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
     alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
-    dolor = models.CharField(help_text ="Dolor", max_length=255, blank=True, null=True)
+    dolor = models.TextField(help_text="Dolor", blank=True, null=True)
 
     # ANTECEDENTES
     antecedentes_personales = models.TextField(help_text="Antecedentes personales", blank=True, null=True)
@@ -304,7 +304,7 @@ class Session(models.Model):
     pie_extensores_hallux_control_selectivo_i = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
 
     # ----------------------------- DIAGNOSTICO FINAL ---------------------------- #
-    diagnostico_realizado = models.CharField(help_text="Diagnostico Final", max_length=255, blank=True, null=True)
+    diagnostico_realizado = models.TextField(help_text="Diagnostico Final", blank=True, null=True)
 
     class Meta:
         db_table = 'session'

@@ -1163,21 +1163,21 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
     <table style="text-align: center; height: 20px;" >  <!-- PÁGINA 4 - TRONCO -->
         <tr class="tr_data border_grueso" style="height: 42px">
             <th style="text-align: left;">TRONCO</th>
-            <th>Movilidad articular</th>
-            <th>Control Selectivo</th>
             <th>Fuerza muscular</th>
+            <th> &nbsp; </th>
+            <th> &nbsp; </th>
         </tr>
         <tr class="tr_data" style=" padding-top: 10px; ">
             <td class="page3_labelLeft">Abdominales</td>
-            <td></td>
-            <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_control_selectivo %}{{ session.get_tronco_abdominales_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
             <td style="padding-top: 10px ;"><p class="recuadro">{% if session.tronco_abdominales_fuerza_muscular %}{{ session.get_tronco_abdominales_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr class="tr_data">
             <td class="page3_labelLeft">Lumbares</td>
-            <td></td>
-            <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_control_selectivo %}{{ session.get_tronco_lumbares_control_selectivo_display }}{% else %}&nbsp;{% endif %}</p></td>
             <td style="padding-top: 10px;"><p class="recuadro">{% if session.tronco_lumbares_fuerza_muscular %}{{ session.get_tronco_lumbares_fuerza_muscular_display }}{% else %}&nbsp;{% endif %}</p></td>
+            <td></td>
+            <td></td>
         </tr>
 
     </table>

@@ -129,6 +129,48 @@ class FolderHandler():
                 print(f'grf plot does not exists {image_file}')
             else:
                 print(e.response['Error'])
+        
+        return image_base64
+
+    def get_momento_lateral_plot_from_s3(self):
+        grf_plot_path = os.path.join(self.get_dynamic_dir(), f'momento_lateral_{self.patient_id}_{self.session_id}.png').replace("\\","/")
+        image_base64 = False
+        try:
+            image_file = s3.get_object(Bucket=S3_BUCKET_NAME, Key=grf_plot_path)['Body'].read()
+            image_base64 = base64.b64encode(image_file).decode('utf-8')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print(f'grf plot does not exists {image_file}')
+            else:
+                print(e.response['Error'])
+
+        return image_base64
+    
+    def get_momento_frontal_plot_from_s3(self):
+        grf_plot_path = os.path.join(self.get_dynamic_dir(), f'momento_frontal_{self.patient_id}_{self.session_id}.png').replace("\\","/")
+        image_base64 = False
+        try:
+            image_file = s3.get_object(Bucket=S3_BUCKET_NAME, Key=grf_plot_path)['Body'].read()
+            image_base64 = base64.b64encode(image_file).decode('utf-8')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print(f'grf plot does not exists {image_file}')
+            else:
+                print(e.response['Error'])
+
+        return image_base64
+    
+    def get_potencia_plot_from_s3(self):
+        grf_plot_path = os.path.join(self.get_dynamic_dir(), f'potencia_{self.patient_id}_{self.session_id}.png').replace("\\","/")
+        image_base64 = False
+        try:
+            image_file = s3.get_object(Bucket=S3_BUCKET_NAME, Key=grf_plot_path)['Body'].read()
+            image_base64 = base64.b64encode(image_file).decode('utf-8')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print(f'grf plot does not exists {image_file}')
+            else:
+                print(e.response['Error'])
 
         return image_base64
 

@@ -81,7 +81,7 @@ class Session(models.Model):
 
     # Tono muscular ======================================================================================================
     score_beighton = models.IntegerField(choices=SCORE_BEIGHTON_CHOICES)
-    score_beighton_observaciones = models.CharField(max_length=255, null=True, blank=True)
+    score_beighton_observaciones = models.TextField(help_text ="Score Beighton observaciones", null=True, blank=True)
     signos_distonia = models.IntegerField(choices=YES_NO_CHOICES)
     tono_muscular = models.IntegerField(choices=TONO_MUSCULAR_CHOICES)
 

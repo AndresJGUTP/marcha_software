@@ -1315,13 +1315,71 @@ PDF - Sesión ID {{ session.id }} - {{ session.patient_id.first_name }} {{ sessi
 <!-- ----------------------------------------------PAGE GRF continue-------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
-{% if grf_plot %}
+{% if momento_lateral_plot or potencia_plot %}
 <div>
     <pdf:nextpage />
 </div>
+{% else %}
 
+{% endif %}
 
-<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">CONSISTENCIA CINÉTICA</h1>
+{% if momento_lateral_plot %}
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">MOMENTOS DEL PLANO SAGITAL</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ momento_lateral_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+{% if potencia_plot %}
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">POTENCIA</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ potencia_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+<!-- ---------------------------------------------NEW PAGE------------------------------------------------- -->
+<!-- ----------------------------------------------PAGE 8 continue-------------------------------------------------- -->
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+{% if momento_frontal_plot or grf_plot %}
+<div>
+    <pdf:nextpage />
+</div>
+{% else %}
+
+{% endif %}
+
+{% if momento_frontal_plot %}
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">MOMENTOS DEL PLANO FRONTAL</h1>
+
+<div style="display: flex">
+    <span style="color: red;">Izquierdo</span>
+    <span style="color: green;">Derecho</span>
+</div>
+<img src="data:image/png;base64,{{ momento_frontal_plot|safe }}">
+
+{% else %}
+
+{% endif %}
+
+{% if grf_plot %}
+
+<h1 style="text-align: center; font-size: 17pt; font-weight: bold; line-height: auto;">FUERZA DE REACCIÓN EN EL PISO</h1>
 
 <div style="display: flex">
     <span style="color: red;">Izquierdo</span>

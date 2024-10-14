@@ -34,7 +34,7 @@ class Session(models.Model):
     expectativas = models.CharField(help_text="Expectativas", max_length=255, blank=True, null=True)
     alergias = models.CharField(help_text="Alergias", max_length=255, blank=True, null=True, default="-")
     diagnosticos_medicos = models.TextField(help_text="Diagnósticos médicos", blank=True, null=True)
-    dolor = models.TextField(help_text ="Dolor", blank=True, null=True)
+    dolor = models.TextField(help_text="Dolor", blank=True, null=True)
 
     # ANTECEDENTES
     antecedentes_personales = models.TextField(help_text="Antecedentes personales", blank=True, null=True)
@@ -170,8 +170,8 @@ class Session(models.Model):
     # ---------------------------------- TRONCO ---------------------------------- #
     tronco_abdominales_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
     tronco_lumbares_fuerza_muscular = models.IntegerField(null=True, blank=True, choices=FUERZA_MUSCULAR_CHOICES)
-    tronco_abdominales_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
-    tronco_lumbares_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
+    # tronco_abdominales_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
+    # tronco_lumbares_control_selectivo = models.IntegerField(null=True, blank=True, choices=CONTROL_SELECTIVO_CHOICES)
 
     # ---------------------------------- CADERA ---------------------------------- #
     cadera_flexion_movilidad_d = models.FloatField(null=True)

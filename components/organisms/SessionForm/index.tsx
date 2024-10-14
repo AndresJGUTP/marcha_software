@@ -908,7 +908,7 @@ const SessionForm: React.FC<ISessionFormProps> = ({ patientData, parentData, ses
                             </Col>
                             <Col span={15}>
                                 <Form.Item style={{ marginBottom: '0.5em' }} className={styles.inputFullWidth} name="score_beighton_observaciones" >
-                                    <TextArea rows={2} maxLength={255} />
+                                    <TextArea rows={2} />
                                 </Form.Item>
                             </Col>
                         </Row>
